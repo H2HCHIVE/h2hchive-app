@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>음방 직캠 | H2HCHIVE</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f5f6f8;
+    color:#222;
+}
+
+.content{
+    width:100%;
+    min-height:100vh;
+}
+
+.content-inner{
+    width:100%;
+    max-width:900px;
+    margin:0 auto;
+    padding:24px 16px 60px;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.main-title{
+    margin-bottom:14px;
+    padding-bottom:10px;
+    border-bottom:1px solid #ddd;
+}
+
+.main-title h1{
+    display:inline-block;
+    position:relative;
+
+    margin:0;
+    padding:0 0 10px;
+
+    font-size:1.1rem;
+    font-weight:700;
+}
+
+.main-title h1::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:-11px;
+
+    height:2px;
+
+    background:#89CFF0;
+}
+
+
+/* =========================================
+   TYPE FILTER
+========================================= */
+
+.type-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+
+    max-height:126px;
+    overflow-y:auto;
+
+    margin-bottom:16px;
+    padding:8px;
+
+    background:#fff;
+
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+}
+
+.type-list::-webkit-scrollbar,
+.sub-category-list::-webkit-scrollbar{
+    width:4px;
+}
+
+.type-list::-webkit-scrollbar-track,
+.sub-category-list::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.type-list::-webkit-scrollbar-thumb,
+.sub-category-list::-webkit-scrollbar-thumb{
+    background:#d5d5d5;
+    border-radius:999px;
+}
+
+.type-list,
+.sub-category-list{
+    scrollbar-width:thin;
+    scrollbar-color:#d5d5d5 transparent;
+}
+
+.type-button{
+    flex-shrink:0;
+
+    padding:8px 10px;
+
+    border:0;
+    border-radius:8px;
+
+    background:#fff;
+    color:#666;
+
+    font-family:inherit;
+    font-size:.75rem;
+
+    text-align:left;
+
+    cursor:pointer;
+}
+
+.type-button:hover{
+    background:#f5f6f8;
+}
+
+.type-button.active{
+    background:#eaf7fd;
+    color:#4aa8d5;
+    font-weight:600;
+}
+
+
+/* =========================================
+   SUB FILTER
+========================================= */
+
+.sub-category-list{
+    display:none;
+
+    flex-direction:column;
+    gap:6px;
+
+    max-height:126px;
+    overflow-y:auto;
+
+    margin-bottom:16px;
+    padding:8px;
+
+    background:#fff;
+
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+}
+
+.sub-category-list.show{
+    display:flex;
+}
+
+.sub-category-button{
+    flex-shrink:0;
+
+    padding:8px 10px;
+
+    border:0;
+    border-radius:8px;
+
+    background:#fff;
+    color:#666;
+
+    font-family:inherit;
+    font-size:.75rem;
+
+    text-align:left;
+
+    cursor:pointer;
+}
+
+.sub-category-button:hover{
+    background:#f5f6f8;
+}
+
+.sub-category-button.active{
+    background:#eaf7fd;
+    color:#4aa8d5;
+    font-weight:600;
+}
+
+
+/* =========================================
+   DATE SEARCH
+========================================= */
+
+.search-area{
+    margin-bottom:8px;
+}
+
+#dateSearch{
+    width:100%;
+
+    padding:10px 11px;
+
+    border:1px solid #ddd;
+    border-radius:9px;
+
+    background:#fff;
+    color:#222;
+
+    font-family:inherit;
+    font-size:.8rem;
+
+    outline:none;
+}
+
+#dateSearch:focus{
+    border-color:#b9dff0;
+}
+
+#dateSearch::placeholder{
+    color:#aaa;
+}
+
+
+/* =========================================
+   SORT
+========================================= */
+
+.sort-area{
+    display:flex;
+
+    justify-content:flex-end;
+    align-items:center;
+
+    margin-bottom:16px;
+
+    white-space:nowrap;
+}
+
+.sort-button{
+    padding:0;
+
+    border:0;
+
+    background:transparent;
+
+    color:#aaa;
+
+    font-family:inherit;
+
+    font-size:.75rem;
+
+    cursor:pointer;
+}
+
+.sort-button.active{
+    color:#4aa8d5;
+
+    font-weight:600;
+}
+
+.sort-divider{
+    margin:0 6px;
+
+    color:#ddd;
+
+    font-size:.75rem;
+}
+
+
+/* =========================================
+   VIDEO GRID
+========================================= */
+
+.video-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,minmax(0,1fr));
+
+    gap:10px;
+}
+
+
+/* =========================================
+   VIDEO CARD
+========================================= */
+
+.video-card{
+    display:block;
+
+    overflow:hidden;
+
+    background:#fff;
+
+    border-radius:13px;
+
+    text-decoration:none;
+    color:#222;
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,.05);
+}
+
+.video-thumbnail{
+    display:block;
+
+    width:100%;
+
+    aspect-ratio:16 / 9;
+
+    object-fit:cover;
+
+    background:#eee;
+}
+
+
+/* =========================================
+   VIDEO INFO
+========================================= */
+
+.video-info{
+    padding:9px 10px 11px;
+}
+
+
+/* =========================================
+   BROADCASTER / MEMBER
+========================================= */
+
+.video-broadcaster{
+    margin-bottom:5px;
+
+    color:#70b9d8;
+
+    font-size:.65rem;
+
+    font-weight:700;
+
+    line-height:1.3;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =========================================
+   ALBUM
+========================================= */
+
+.video-album{
+    margin-bottom:4px;
+
+    color:#777;
+
+    font-size:.68rem;
+
+    font-weight:400;
+
+    line-height:1.3;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =========================================
+   TITLE
+========================================= */
+
+.video-title{
+    margin-bottom:4px;
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    line-height:1.35;
+
+    display:-webkit-box;
+
+    -webkit-box-orient:vertical;
+
+    -webkit-line-clamp:2;
+
+    overflow:hidden;
+}
+
+
+/* =========================================
+   PROGRAM
+========================================= */
+
+.video-program{
+    margin-bottom:4px;
+
+    color:#777;
+
+    font-size:.68rem;
+
+    line-height:1.3;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+
+/* =========================================
+   DATE
+========================================= */
+
+.video-date{
+    color:#999;
+
+    font-size:.7rem;
+
+    font-weight:400;
+}
+
+
+/* =========================================
+   EMPTY
+========================================= */
+
+.empty{
+    grid-column:1 / -1;
+
+    padding:45px 10px;
+
+    color:#999;
+
+    font-size:.8rem;
+
+    text-align:center;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:360px){
+
+    .content-inner{
+        padding-left:12px;
+        padding-right:12px;
+    }
+
+    .video-grid{
+        gap:8px;
+    }
+
+    .video-info{
+        padding:8px 9px 10px;
+    }
+
+    .video-broadcaster{
+        font-size:.62rem;
+    }
+
+    .video-album{
+        font-size:.64rem;
+    }
+
+    .video-title{
+        font-size:.76rem;
+    }
+
+    .video-date{
+        font-size:.65rem;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="content">
+
+<div class="content-inner">
+
+
+<!-- =====================================
+     TITLE
+====================================== -->
+
+<div class="main-title">
+
+    <h1>
+        음방 직캠
+    </h1>
+
+</div>
+
+
+<!-- =====================================
+     TYPE FILTER
+====================================== -->
+
+<div class="type-list">
+
+    <button
+        type="button"
+        class="type-button active"
+        data-type="all"
+        onclick="showType('all')"
+    >
+        전체
+    </button>
+
+
+    <button
+        type="button"
+        class="type-button"
+        data-type="group"
+        onclick="showType('group')"
+    >
+        그룹 직캠
+    </button>
+
+
+    <button
+        type="button"
+        class="type-button"
+        data-type="member"
+        onclick="showType('member')"
+    >
+        멤버 직캠
+    </button>
+
+
+    <button
+        type="button"
+        class="type-button"
+        data-type="etc"
+        onclick="showType('etc')"
+    >
+        기타
+    </button>
+
+</div>
+
+
+<!-- =====================================
+     GROUP ALBUM FILTER
+====================================== -->
+
+<div
+    id="albumFilters"
+    class="sub-category-list"
+>
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="The Chase"
+        onclick="showAlbum('The Chase')"
+    >
+        The Chase
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="STYLE"
+        onclick="showAlbum('STYLE')"
+    >
+        STYLE
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="Pretty Please"
+        onclick="showAlbum('Pretty Please')"
+    >
+        Pretty Please
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="FOCUS"
+        onclick="showAlbum('FOCUS')"
+    >
+        FOCUS
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="RUDE!"
+        onclick="showAlbum('RUDE!')"
+    >
+        RUDE!
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="Lemon Tang"
+        onclick="showAlbum('Lemon Tang')"
+    >
+        Lemon Tang
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="15-LOVE"
+        onclick="showAlbum('15-LOVE')"
+    >
+        15-LOVE
+    </button>
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-album="ICONIC HEART(Korean Ver.)"
+        onclick="showAlbum('ICONIC HEART(Korean Ver.)')"
+    >
+        ICONIC HEART(Korean Ver.)
+    </button>
+
+</div>
+
+
+<!-- =====================================
+     MEMBER FILTER
+====================================== -->
+
+<div
+    id="memberFilters"
+    class="sub-category-list"
+>
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="지우"
+        onclick="showMember('지우')"
+    >
+        지우
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="카르멘"
+        onclick="showMember('카르멘')"
+    >
+        카르멘
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="유하"
+        onclick="showMember('유하')"
+    >
+        유하
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="스텔라"
+        onclick="showMember('스텔라')"
+    >
+        스텔라
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="주은"
+        onclick="showMember('주은')"
+    >
+        주은
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="에이나"
+        onclick="showMember('에이나')"
+    >
+        에이나
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="이안"
+        onclick="showMember('이안')"
+    >
+        이안
+    </button>
+
+
+    <button
+        type="button"
+        class="sub-category-button"
+        data-member="예온"
+        onclick="showMember('예온')"
+    >
+        예온
+    </button>
+
+</div>
+
+
+<!-- =====================================
+     DATE SEARCH
+====================================== -->
+
+<div class="search-area">
+
+    <input
+        id="dateSearch"
+        type="text"
+        placeholder="날짜 검색 · 예: 250224"
+        oninput="searchByDate()"
+    >
+
+</div>
+
+
+<!-- =====================================
+     SORT
+====================================== -->
+
+<div class="sort-area">
+
+    <button
+        type="button"
+        class="sort-button active"
+        data-sort="newest"
+        onclick="changeSort('newest')"
+    >
+        최신순
+    </button>
+
+    <span class="sort-divider">|</span>
+
+    <button
+        type="button"
+        class="sort-button"
+        data-sort="oldest"
+        onclick="changeSort('oldest')"
+    >
+        오래된순
+    </button>
+
+</div>
+
+
+<!-- =====================================
+     VIDEO GRID
+====================================== -->
+
+<div
+    class="video-grid"
+    id="videoGrid"
+>
+
+    <div class="empty">
+        영상을 불러오는 중입니다.
+    </div>
+
+</div>
+
+</div>
+
+</main>
+
+
+<script>
+
+
+/* =====================================================
+   JSON 설정
+===================================================== */
+
+const DATA_FILES = {
+
+    group: "video.json",
+
+    members: {
+
+        "지우": "jiwoo.json",
+
+        "카르멘": "carmen.json",
+
+        "유하": "yuha.json",
+
+        "스텔라": "stella.json",
+
+        "주은": "jueun.json",
+
+        "에이나": "aina.json",
+
+        "이안": "ian.json",
+
+        "예온": "yeon.json"
+
+    },
+
+    etc: "etc.json"
+
+};
+
+
+/* =====================================================
+   상태
+===================================================== */
+
+let allVideos = [];
+
+let groupVideos = [];
+
+let memberVideos = [];
+
+let etcVideos = [];
+
+let currentType = "all";
+
+let currentAlbum = "all";
+
+let currentMember = "all";
+
+let currentDate = "";
+
+let currentSort = "newest";
+
+
+/* =====================================================
+   앨범 자동 매칭
+===================================================== */
+
+function getAlbumByDate(date){
+
+    if(!date){
+        return "";
+    }
+
+
+    const matchedVideo =
+        groupVideos.find(
+            video =>
+                video.date === date &&
+                video.album
+        );
+
+
+    return matchedVideo
+        ? matchedVideo.album
+        : "";
+
+}
+
+
+/* =====================================================
+   영상 렌더링
+===================================================== */
+
+function renderVideos(videos){
+
+    const grid =
+        document.getElementById(
+            "videoGrid"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    if(videos.length === 0){
+
+        grid.innerHTML = `
+
+            <div class="empty">
+                해당하는 직캠이 없습니다.
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    videos.forEach(video => {
+
+        const card =
+            document.createElement("a");
+
+
+        card.className =
+            "video-card";
+
+
+        card.href =
+            `https://www.youtube.com/watch?v=${video.videoId}`;
+
+
+        card.target =
+            "_blank";
+
+
+        card.rel =
+            "noopener noreferrer";
+
+
+        /* =========================================
+           GROUP
+        ========================================= */
+
+        if(video.dataType === "group"){
+
+            card.innerHTML = `
+
+                <img
+                    class="video-thumbnail"
+                    src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg"
+                    alt="${video.title || ""}"
+                    loading="lazy"
+                >
+
+                <div class="video-info">
+
+                    <div class="video-broadcaster">
+                        ${video.broadcaster || ""}
+                    </div>
+
+                    <div class="video-album">
+                        ${video.album || getAlbumByDate(video.date)}
+                    </div>
+
+                    <div class="video-title">
+                        ${[video.program, video.type].filter(Boolean).join(" ")}
+                    </div>
+
+                    <div class="video-date">
+                        ${video.date || ""}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================================
+           MEMBER
+
+           album이 있으면:
+           이름 → album → title → date
+
+           content가 있으면:
+           이름 → title → content → date
+        ========================================= */
+
+        else if(video.dataType === "member"){
+
+            card.innerHTML = `
+
+                <img
+                    class="video-thumbnail"
+                    src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg"
+                    alt="${video.title || ""}"
+                    loading="lazy"
+                >
+
+                <div class="video-info">
+
+                    <div class="video-broadcaster">
+                        ${video.member || ""}
+                    </div>
+
+                    ${
+                        video.content
+                            ? `
+
+                                <div class="video-album">
+                                    ${video.title || ""}
+                                </div>
+
+                                <div class="video-title">
+                                    ${video.content || ""}
+                                </div>
+
+                              `
+                            : `
+
+                                ${
+                                    video.album
+                                        ? `
+
+                                            <div class="video-album">
+                                                ${video.album}
+                                            </div>
+
+                                          `
+                                        : ""
+                                }
+
+                                <div class="video-title">
+                                    ${video.title || ""}
+                                </div>
+
+                              `
+                    }
+
+                    <div class="video-date">
+                        ${video.date || ""}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /* =========================================
+           ETC
+
+           JSON:
+           broadcaster = 방송사
+           program    = 프로그램
+           title      = 곡명/무대명
+           album      = 기타
+           date       = 날짜
+
+           화면:
+           방송사
+           프로그램
+           곡명/무대명
+           날짜
+        ========================================= */
+
+        else if(video.dataType === "etc"){
+
+            card.innerHTML = `
+
+                <img
+                    class="video-thumbnail"
+                    src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg"
+                    alt="${video.title || ""}"
+                    loading="lazy"
+                >
+
+                <div class="video-info">
+
+                    <div class="video-broadcaster">
+                        ${video.broadcaster || ""}
+                    </div>
+
+                    <div class="video-title">
+                        ${video.program || ""}
+                    </div>
+
+                    <div class="video-album">
+                        ${video.title || ""}
+                    </div>
+
+                    <div class="video-date">
+                        ${video.date || ""}
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* =====================================================
+   날짜 필터
+===================================================== */
+
+function filterByDate(videos){
+
+    if(currentDate === ""){
+
+        return videos;
+
+    }
+
+
+    return videos.filter(video => {
+
+        const compactDate =
+            (video.date || "")
+                .replaceAll("-", "")
+                .slice(2);
+
+
+        return compactDate.includes(
+            currentDate
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   날짜 정렬
+===================================================== */
+
+function sortByDate(videos){
+
+    return videos.sort((a,b) => {
+
+        const dateA =
+            String(a.date || "");
+
+        const dateB =
+            String(b.date || "");
+
+
+        if(dateA === dateB){
+
+            return 0;
+
+        }
+
+
+        if(currentSort === "oldest"){
+
+            return dateA.localeCompare(
+                dateB
+            );
+
+        }
+
+
+        return dateB.localeCompare(
+            dateA
+        );
+
+    });
+
+}
+
+
+/* =====================================================
+   필터 적용
+===================================================== */
+
+function applyFilters(){
+
+    let filtered = [];
+
+
+    if(currentType === "all"){
+
+        filtered = [
+
+            ...groupVideos,
+            ...memberVideos,
+            ...etcVideos
+
+        ];
+
+    }
+
+
+    else if(currentType === "group"){
+
+        filtered = [
+
+            ...groupVideos
+
+        ];
+
+    }
+
+
+    else if(currentType === "member"){
+
+        filtered = [
+
+            ...memberVideos
+
+        ];
+
+    }
+
+
+    else if(currentType === "etc"){
+
+        filtered = [
+
+            ...etcVideos
+
+        ];
+
+    }
+
+
+    /* -----------------------------------------
+       GROUP ALBUM
+    ----------------------------------------- */
+
+    if(
+
+        currentType === "group" &&
+
+        currentAlbum !== "all"
+
+    ){
+
+        filtered =
+            filtered.filter(
+                video =>
+                    video.album === currentAlbum
+            );
+
+    }
+
+
+    /* -----------------------------------------
+       MEMBER
+    ----------------------------------------- */
+
+    if(
+
+        currentType === "member" &&
+
+        currentMember !== "all"
+
+    ){
+
+        filtered =
+            filtered.filter(
+                video =>
+                    video.member === currentMember
+            );
+
+    }
+
+
+    filtered =
+        filterByDate(filtered);
+
+
+    /* -----------------------------------------
+       DATE SORT
+    ----------------------------------------- */
+
+    filtered =
+        sortByDate(filtered);
+
+
+    renderVideos(filtered);
+
+}
+
+
+/* =====================================================
+   TYPE BUTTON
+===================================================== */
+
+function updateTypeButtons(){
+
+    document
+        .querySelectorAll(
+            ".type-button"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+
+                "active",
+
+                button.dataset.type ===
+                    currentType
+
+            );
+
+        });
+
+}
+
+
+/* =====================================================
+   FILTER VISIBILITY
+===================================================== */
+
+function updateFilterVisibility(){
+
+    const albumFilters =
+        document.getElementById(
+            "albumFilters"
+        );
+
+
+    const memberFilters =
+        document.getElementById(
+            "memberFilters"
+        );
+
+
+    albumFilters.classList.toggle(
+
+        "show",
+
+        currentType === "group"
+
+    );
+
+
+    memberFilters.classList.toggle(
+
+        "show",
+
+        currentType === "member"
+
+    );
+
+}
+
+
+/* =====================================================
+   ALBUM BUTTON
+===================================================== */
+
+function updateAlbumButtons(){
+
+    document
+        .querySelectorAll(
+            "#albumFilters .sub-category-button"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+
+                "active",
+
+                button.dataset.album ===
+                    currentAlbum
+
+            );
+
+        });
+
+}
+
+
+/* =====================================================
+   MEMBER BUTTON
+===================================================== */
+
+function updateMemberButtons(){
+
+    document
+        .querySelectorAll(
+            "#memberFilters .sub-category-button"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+
+                "active",
+
+                button.dataset.member ===
+                    currentMember
+
+            );
+
+        });
+
+}
+
+
+/* =====================================================
+   TYPE
+===================================================== */
+
+function showType(type){
+
+    currentType =
+        type;
+
+
+    currentAlbum =
+        "all";
+
+
+    currentMember =
+        "all";
+
+
+    updateTypeButtons();
+
+    updateFilterVisibility();
+
+    updateAlbumButtons();
+
+    updateMemberButtons();
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   ALBUM
+===================================================== */
+
+function showAlbum(album){
+
+    currentType =
+        "group";
+
+
+    currentAlbum =
+        album;
+
+
+    currentMember =
+        "all";
+
+
+    updateTypeButtons();
+
+    updateFilterVisibility();
+
+    updateAlbumButtons();
+
+    updateMemberButtons();
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   MEMBER
+===================================================== */
+
+function showMember(member){
+
+    currentType =
+        "member";
+
+
+    currentMember =
+        member;
+
+
+    currentAlbum =
+        "all";
+
+
+    updateTypeButtons();
+
+    updateFilterVisibility();
+
+    updateAlbumButtons();
+
+    updateMemberButtons();
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   DATE SEARCH
+===================================================== */
+
+function searchByDate(){
+
+    currentDate =
+
+        document
+            .getElementById(
+                "dateSearch"
+            )
+            .value
+            .trim()
+            .replace(/-/g,"");
+
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   SORT
+===================================================== */
+
+function changeSort(sort){
+
+    currentSort =
+        sort;
+
+
+    document
+        .querySelectorAll(
+            ".sort-button"
+        )
+        .forEach(button => {
+
+            button.classList.toggle(
+
+                "active",
+
+                button.dataset.sort ===
+                    currentSort
+
+            );
+
+        });
+
+
+    applyFilters();
+
+}
+
+
+/* =====================================================
+   LOAD JSON
+===================================================== */
+
+async function loadJSON(url){
+
+    const response =
+        await fetch(url);
+
+
+    if(!response.ok){
+
+        throw new Error(
+            `${url} HTTP ${response.status}`
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    if(!Array.isArray(data)){
+
+        throw new Error(
+            `${url} 배열 형식이 아닙니다.`
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+/* =====================================================
+   LOAD VIDEOS
+===================================================== */
+
+async function loadVideos(){
+
+    try{
+
+        /* GROUP */
+
+        const groupPromise =
+            loadJSON(
+                DATA_FILES.group
+            );
+
+
+        /* MEMBERS */
+
+        const memberEntries =
+            Object.entries(
+                DATA_FILES.members
+            );
+
+
+        const memberPromises =
+            memberEntries.map(
+                ([member,file]) =>
+
+                    loadJSON(file)
+                        .then(videos => ({
+
+                            member,
+                            videos
+
+                        }))
+
+            );
+
+
+        /* ETC */
+
+        const etcPromise =
+            loadJSON(
+                DATA_FILES.etc
+            );
+
+
+        /* LOAD */
+
+        const [
+
+            groupData,
+            memberData,
+            etcData
+
+        ] = await Promise.all([
+
+            groupPromise,
+
+            Promise.all(
+                memberPromises
+            ),
+
+            etcPromise
+
+        ]);
+
+
+        /* GROUP */
+
+        groupVideos =
+            groupData.map(video => ({
+
+                ...video,
+
+                dataType:
+                    "group"
+
+            }));
+
+
+        /* MEMBER */
+
+        memberVideos = [];
+
+
+        memberData.forEach(
+            ({member,videos}) => {
+
+                videos.forEach(video => {
+
+                    memberVideos.push({
+
+                        ...video,
+
+                        album:
+                            video.album ||
+                            getAlbumByDate(
+                                video.date
+                            ),
+
+                        member:
+                            member,
+
+                        dataType:
+                            "member"
+
+                    });
+
+                });
+
+            }
+        );
+
+
+        /* ETC */
+
+        etcVideos =
+            etcData.map(video => ({
+
+                ...video,
+
+                dataType:
+                    "etc"
+
+            }));
+
+
+        /* ALL */
+
+        allVideos = [
+
+            ...groupVideos,
+
+            ...memberVideos,
+
+            ...etcVideos
+
+        ];
+
+
+        applyFilters();
+
+    }
+
+
+    catch(error){
+
+        console.error(
+            "영상 JSON 불러오기 실패:",
+            error
+        );
+
+
+        document.getElementById(
+            "videoGrid"
+        ).innerHTML = `
+
+            <div class="empty">
+                영상을 불러오지 못했습니다.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadVideos();
+
+</script>
+
+</body>
+</html>

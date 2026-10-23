@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>외부 콘텐츠 | H2HCHIVE</title>
+
+<style>
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f5f6f8;
+    color:#222;
+}
+
+.content-inner{
+    max-width:900px;
+    margin:0 auto;
+    padding:24px 16px 60px;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.main-title{
+    margin-bottom:16px;
+}
+
+.main-title h1{
+    display:inline-block;
+    margin:0;
+    padding-bottom:8px;
+    font-size:1.2rem;
+    font-weight:700;
+    border-bottom:3px solid #89CFF0;
+}
+
+/* =========================
+   CATEGORY
+========================= */
+
+.category-list{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    max-height:126px;
+    overflow-y:auto;
+    margin-bottom:16px;
+    padding:8px;
+    background:#fff;
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+    box-sizing:border-box;
+}
+
+.category{
+    flex-shrink:0;
+    padding:8px 10px;
+    border:0;
+    border-radius:8px;
+    background:#fff;
+    color:#666;
+    font-family:inherit;
+    font-size:.75rem;
+    text-align:left;
+    cursor:pointer;
+}
+
+.category:hover{
+    background:#f5f6f8;
+}
+
+.category.active{
+    background:#eaf7fd;
+    color:#4aa8d5;
+    font-weight:600;
+}
+
+/* =========================
+   SEARCH / SORT
+========================= */
+
+.control-area{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-bottom:16px;
+}
+
+.search-area{
+    display:flex;
+    width:100%;
+    gap:8px;
+    min-width:0;
+}
+
+.search-area input{
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:10px 11px;
+    border:1px solid #ddd;
+    border-radius:9px;
+    background:#fff;
+    color:#333;
+    font-family:inherit;
+    font-size:.75rem;
+    outline:none;
+}
+
+.search-area input:focus{
+    border-color:#89CFF0;
+}
+
+
+/* =========================
+   SORT BUTTON
+========================= */
+
+.sort-select{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:0;
+    white-space:nowrap;
+}
+
+.sort-button{
+    padding:0;
+    border:0;
+    background:transparent;
+    color:#aaa;
+    font-family:inherit;
+    font-size:.75rem;
+    cursor:pointer;
+}
+
+.sort-button.active{
+    color:#4aa8d5;
+    font-weight:600;
+}
+
+.sort-divider{
+    margin:0 6px;
+    color:#ddd;
+    font-size:.75rem;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.content-area{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+}
+
+.content-card{
+    display:block;
+    overflow:hidden;
+    background:#fff;
+    border-radius:13px;
+    text-decoration:none;
+    color:#222;
+    box-shadow:0 2px 7px rgba(0,0,0,.05);
+    transition:.15s;
+}
+
+.content-card:hover{
+    transform:translateY(-1px);
+    box-shadow:0 4px 10px rgba(0,0,0,.07);
+}
+
+/* =========================
+   THUMBNAIL
+========================= */
+
+.thumbnail{
+    position:relative;
+    width:100%;
+    aspect-ratio:16 / 9;
+    overflow:hidden;
+    background:#eee;
+}
+
+.thumbnail img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.content-info{
+    padding:12px 13px 13px;
+}
+
+
+/* 이름 */
+
+.content-category{
+    margin-bottom:5px;
+    color:#70b9d8;
+    font-size:.65rem;
+    font-weight:600;
+    line-height:1.3;
+}
+
+
+/* 제목 */
+
+.content-title{
+    margin-bottom:5px;
+    font-size:.78rem;
+    font-weight:600;
+    line-height:1.4;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+
+/* 날짜 */
+
+.content-date{
+    color:#999;
+    font-size:.68rem;
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+    grid-column:1 / -1;
+    padding:50px 20px;
+    text-align:center;
+    color:#999;
+    font-size:.78rem;
+    background:#fff;
+    border-radius:13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .control-area{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .search-area{
+        width:100%;
+    }
+
+}
+
+@media(max-width:360px){
+
+    .content-inner{
+        padding:12px 12px 50px;
+    }
+
+    .category-list{
+        max-height:240px;
+    }
+
+    .content-area{
+        gap:8px;
+    }
+
+    .content-info{
+        padding:11px 11px 12px;
+    }
+
+    .content-title{
+        font-size:.74rem;
+    }
+
+    .content-date{
+        font-size:.65rem;
+    }
+
+    .content-category{
+        font-size:.62rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="content-inner">
+
+    <div class="main-title">
+        <h1>외부 콘텐츠</h1>
+    </div>
+
+    <!-- 카테고리 -->
+    <div class="category-list" id="categoryList">
+
+        <button
+            type="button"
+            class="category active"
+            data-category="전체"
+        >
+            전체
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="단체"
+        >
+            단체
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="지우"
+        >
+            지우
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="카르멘"
+        >
+            카르멘
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="유하"
+        >
+            유하
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="스텔라"
+        >
+            스텔라
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="주은"
+        >
+            주은
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="에이나"
+        >
+            에이나
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="이안"
+        >
+            이안
+        </button>
+
+        <button
+            type="button"
+            class="category"
+            data-category="예온"
+        >
+            예온
+        </button>
+
+    </div>
+
+
+    <!-- 검색 / 정렬 -->
+    <div class="control-area">
+
+        <div class="search-area">
+
+            <input
+                type="text"
+                id="titleSearch"
+                placeholder="제목 검색"
+            >
+
+            <input
+                type="text"
+                id="dateSearch"
+                placeholder="날짜 검색"
+            >
+
+        </div>
+
+
+        <div class="sort-select">
+
+            <button
+                type="button"
+                class="sort-button active"
+                data-sort="newest"
+            >
+                최신순
+            </button>
+
+            <span class="sort-divider">|</span>
+
+            <button
+                type="button"
+                class="sort-button"
+                data-sort="oldest"
+            >
+                오래된순
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- 콘텐츠 -->
+    <div
+        class="content-area"
+        id="contentArea"
+    >
+
+        <div class="empty">
+            콘텐츠를 불러오는 중입니다.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const JSON_URL = "external.json";
+
+let contents = [];
+
+let currentCategory = "전체";
+
+let currentSort = "newest";
+
+
+/* =========================
+   HTML ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   CATEGORY
+========================= */
+
+function matchesCategory(item){
+
+    if(currentCategory === "전체"){
+        return true;
+    }
+
+    if(!Array.isArray(item.category)){
+        return false;
+    }
+
+    return item.category.includes(
+        currentCategory
+    );
+
+}
+
+
+/* =========================
+   FILTER / SORT
+========================= */
+
+function getFilteredContents(){
+
+    const titleKeyword =
+        document
+            .getElementById("titleSearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    const dateKeyword =
+        document
+            .getElementById("dateSearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    let result =
+        contents.filter(item => {
+
+            const title =
+                String(
+                    item.title || ""
+                )
+                .toLowerCase();
+
+
+            const date =
+                String(
+                    item.date || ""
+                )
+                .toLowerCase();
+
+
+            if(!matchesCategory(item)){
+                return false;
+            }
+
+
+            if(
+                titleKeyword &&
+                !title.includes(titleKeyword)
+            ){
+                return false;
+            }
+
+
+            if(
+                dateKeyword &&
+                !date.includes(dateKeyword)
+            ){
+                return false;
+            }
+
+
+            return true;
+
+        });
+
+
+    result.sort((a,b) => {
+
+        const dateA =
+            String(a.date || "");
+
+        const dateB =
+            String(b.date || "");
+
+
+        if(dateA === dateB){
+            return 0;
+        }
+
+
+        if(currentSort === "oldest"){
+
+            return dateA.localeCompare(
+                dateB
+            );
+
+        }
+
+
+        return dateB.localeCompare(
+            dateA
+        );
+
+    });
+
+
+    return result;
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function renderContents(){
+
+    const contentArea =
+        document.getElementById(
+            "contentArea"
+        );
+
+
+    const result =
+        getFilteredContents();
+
+
+    if(result.length === 0){
+
+        contentArea.innerHTML = `
+            <div class="empty">
+                등록된 콘텐츠가 없습니다.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    contentArea.innerHTML =
+        result
+            .map(item => {
+
+                const title =
+                    escapeHtml(
+                        item.title
+                    );
+
+
+                const date =
+                    escapeHtml(
+                        item.date
+                    );
+
+
+                /*
+                 * external.json에는
+                 * 유튜브 영상 ID만 입력
+                 */
+
+                const videoId =
+                    String(
+                        item.id || ""
+                    ).trim();
+
+
+                const url =
+                    videoId
+                        ? `https://www.youtube.com/watch?v=${encodeURIComponent(videoId)}`
+                        : "#";
+
+
+                const thumbnail =
+                    videoId
+                        ? `https://img.youtube.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`
+                        : "";
+
+
+                const categories =
+                    Array.isArray(
+                        item.category
+                    )
+                        ? item.category.join(" · ")
+                        : "";
+
+
+                return `
+                    <a
+                        class="content-card"
+                        href="${escapeHtml(url)}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+
+                        <div class="thumbnail">
+
+                            ${
+                                thumbnail
+                                    ? `
+                                        <img
+                                            src="${thumbnail}"
+                                            alt=""
+                                            loading="lazy"
+                                            onerror="this.style.display='none';"
+                                        >
+                                      `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="content-info">
+
+
+                            <!-- 이름 -->
+
+                            ${
+                                categories
+                                    ? `
+                                        <div class="content-category">
+                                            ${escapeHtml(
+                                                categories
+                                            )}
+                                        </div>
+                                      `
+                                    : ""
+                            }
+
+
+                            <!-- 제목 -->
+
+                            <div class="content-title">
+                                ${title}
+                            </div>
+
+
+                            <!-- 날짜 -->
+
+                            <div class="content-date">
+                                ${date}
+                            </div>
+
+
+                        </div>
+
+                    </a>
+                `;
+
+            })
+            .join("");
+
+}
+
+
+/* =========================
+   CATEGORY EVENTS
+========================= */
+
+document
+    .querySelectorAll(".category")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".category"
+                    )
+                    .forEach(item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                currentCategory =
+                    button.dataset.category;
+
+
+                renderContents();
+
+            }
+        );
+
+    });
+
+
+/* =========================
+   SEARCH EVENTS
+========================= */
+
+document
+    .getElementById("titleSearch")
+    .addEventListener(
+        "input",
+        renderContents
+    );
+
+
+document
+    .getElementById("dateSearch")
+    .addEventListener(
+        "input",
+        renderContents
+    );
+
+
+/* =========================
+   SORT EVENTS
+========================= */
+
+document
+    .querySelectorAll(".sort-button")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".sort-button"
+                    )
+                    .forEach(item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                currentSort =
+                    button.dataset.sort;
+
+
+                renderContents();
+
+            }
+        );
+
+    });
+
+
+/* =========================
+   LOAD JSON
+========================= */
+
+async function loadContents(){
+
+    const contentArea =
+        document.getElementById(
+            "contentArea"
+        );
+
+
+    try{
+
+        const response =
+            await fetch(JSON_URL);
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "JSON loading failed"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(!Array.isArray(data)){
+
+            throw new Error(
+                "JSON must be an array"
+            );
+
+        }
+
+
+        contents = data;
+
+
+        renderContents();
+
+
+    }catch(error){
+
+        console.error(error);
+
+
+        contentArea.innerHTML = `
+            <div class="empty">
+                콘텐츠를 불러오지 못했습니다.
+            </div>
+        `;
+
+    }
+
+}
+
+
+loadContents();
+
+</script>
+
+</body>
+</html>
