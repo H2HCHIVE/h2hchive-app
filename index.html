@@ -3,771 +3,838 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>Hearts2Hearts 팬 앱</title>
+  <title>H2HCHIVE</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#89CFF0" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
   <style>
     :root {
       --bg-color: #F5F6F8;
       --card-bg: #FFFFFF;
       --point-color: #89CFF0;
-      --point-dark: #5eb0db;
-      --point-light: #e8f5fb;
+      --point-dark: #64b7dc;
+      --point-light: #eef8fd;
+      --point-purple: #8B5CF6;
       --text-main: #1F2937;
       --text-sub: #6B7280;
       --border-color: #E5E7EB;
-      --danger-color: #EF4444;
       --radius-card: 18px;
       --radius-btn: 12px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; width: 100vw; overflow: hidden; }
-    header { background: #FFFFFF; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; z-index: 10; }
-    .header-title { font-size: 19px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-    .header-title span.badge { background: var(--point-light); color: var(--point-dark); font-size: 11px; padding: 3px 8px; border-radius: 12px; font-weight: 600; }
-    main { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px; padding-bottom: 84px; -webkit-overflow-scrolling: touch; }
-    nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: #FFFFFF; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
-    .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-sub); font-size: 11px; font-weight: 500; width: 20%; height: 100%; cursor: pointer; }
-    .nav-btn svg { width: 22px; height: 22px; fill: currentColor; }
-    .nav-btn.active { color: var(--point-dark); font-weight: 700; }
-    .card { background: var(--card-bg); border-radius: var(--radius-card); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); border: 1px solid rgba(229, 231, 235, 0.7); }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; min-height: 44px; font-size: 14px; font-weight: 600; border-radius: var(--radius-btn); border: none; cursor: pointer; text-decoration: none; }
-    .btn:active { opacity: 0.8; }
-    .btn-point { background-color: var(--point-color); color: #FFFFFF; }
-    .btn-secondary { background-color: #E5E7EB; color: var(--text-main); }
-    .btn-danger { background-color: #FEE2E2; color: var(--danger-color); }
-    .btn-sm { min-height: 36px; padding: 6px 14px; font-size: 13px; }
-    .search-box { margin-bottom: 14px; display: flex; gap: 8px; }
-    .search-input { flex: 1; height: 44px; padding: 0 14px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-size: 14px; background: #FFFFFF; outline: none; }
-    .search-input:focus { border-color: var(--point-color); }
-    .filter-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
-    .chip { padding: 6px 14px; font-size: 12px; font-weight: 500; border-radius: 20px; background: #FFFFFF; border: 1px solid var(--border-color); color: var(--text-sub); white-space: nowrap; cursor: pointer; }
-    .chip.active { background: var(--point-color); color: #FFFFFF; border-color: var(--point-color); font-weight: 600; }
-    .archive-card { background: #FFFFFF; border-radius: var(--radius-card); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); cursor: pointer; }
-    .archive-card:active { background-color: #FAFAFA; transform: scale(0.99); }
-    .card-meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-    .card-tag { font-size: 11px; font-weight: 700; color: var(--point-dark); background: var(--point-light); padding: 3px 8px; border-radius: 6px; }
-    .card-date { font-size: 12px; color: var(--text-sub); font-weight: 500; }
-    .card-title-text { font-size: 15px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; color: var(--text-main); word-break: keep-all; }
-    .card-desc-text { font-size: 12px; color: var(--text-sub); line-height: 1.4; margin-bottom: 10px; word-break: break-all; }
-    .card-action-bar { display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid #F3F4F6; padding-top: 10px; margin-top: 4px; }
-    .yt-link-btn { display: inline-flex; align-items: center; gap: 5px; color: #DC2626; font-size: 12px; font-weight: 700; }
-    .yt-link-btn svg { width: 16px; height: 16px; fill: currentColor; }
-    .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 45px 16px; gap: 12px; color: var(--text-sub); font-size: 14px; }
-    .spinner { width: 32px; height: 32px; border: 3px solid var(--border-color); border-top-color: var(--point-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .error-card { background: #FFF1F2; border: 1px solid #FECDD3; border-radius: var(--radius-card); padding: 18px; margin-bottom: 14px; text-align: center; }
-    .error-title { font-size: 14px; font-weight: 700; color: #9F1239; margin-bottom: 6px; }
-    .error-msg { font-size: 12px; color: #BE123C; margin-bottom: 12px; line-height: 1.5; }
-    .empty-state { text-align: center; padding: 40px 16px; color: var(--text-sub); font-size: 14px; line-height: 1.6; }
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 100; }
-    .modal-overlay.open { display: flex; }
-    .modal-sheet { background: #FFFFFF; width: 100%; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
-    .form-group { margin-bottom: 14px; }
-    .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
-    .form-input, .form-select, .form-textarea { width: 100%; min-height: 44px; border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px 12px; font-size: 14px; outline: none; background: #FFFFFF; }
-    .form-textarea { min-height: 70px; resize: vertical; }
-    .switch-label { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer; }
-    .switch-input { width: 44px; height: 24px; accent-color: var(--point-color); }
-    .tab-view { display: none; }
-    .tab-view.active { display: block; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       상단 헤더 & 펼침 메뉴
+       ━━━━━━━━━━━━━━━━━━━━ */
+    header {
+      background: #FFFFFF;
+      height: 56px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 100;
+    }
+
+    .header-logo {
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .header-logo span.badge {
+      background: var(--point-light);
+      color: var(--point-dark);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .header-menu-btn {
+      background: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-main);
+      border-radius: 8px;
+    }
+
+    .header-menu-btn:active {
+      background-color: var(--bg-color);
+    }
+
+    .header-menu-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+    }
+
+    /* 상단 드롭다운 펼침 메뉴 */
+    .top-dropdown-menu {
+      position: absolute;
+      top: 56px;
+      right: 12px;
+      width: 170px;
+      background: #FFFFFF;
+      border-radius: var(--radius-card);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+      border: 1px solid var(--border-color);
+      padding: 6px;
+      display: none;
+      flex-direction: column;
+      z-index: 101;
+      animation: fadeInDown 0.18s ease-out forwards;
+    }
+
+    .top-dropdown-menu.open {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      border-radius: 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .dropdown-item:active {
+      background-color: var(--point-light);
+      color: var(--point-dark);
+    }
+
+    .dropdown-item svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      opacity: 0.8;
+    }
+
+    /* 드롭다운 외부 클릭 닫기용 백드롭 */
+    .dropdown-backdrop {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: transparent;
+      z-index: 99;
+      display: none;
+    }
+
+    .dropdown-backdrop.open {
+      display: block;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       메인 스크롤 뷰
+       ━━━━━━━━━━━━━━━━━━━━ */
+    main {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 14px 16px;
+      padding-bottom: 90px; /* 하단 네비게이션 가림 방지 여백 */
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       카드 공통 스타일
+       ━━━━━━━━━━━━━━━━━━━━ */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      border: 1px solid rgba(229, 231, 235, 0.7);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 1. D-DAY 카드 */
+    .dday-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #ffffff 0%, #f0f8fd 100%);
+      border: 1px solid #dceef9;
+      border-radius: var(--radius-card);
+      padding: 14px 18px;
+      margin-bottom: 12px;
+    }
+
+    .dday-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dday-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .dday-badge {
+      background-color: var(--point-color);
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 800;
+      padding: 5px 12px;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(137, 207, 240, 0.4);
+    }
+
+    .dday-dots {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: -6px;
+      margin-bottom: 12px;
+    }
+
+    .dday-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #D1D5DB;
+    }
+
+    .dday-dot.active {
+      background: var(--point-color);
+      width: 14px;
+      border-radius: 6px;
+    }
+
+    /* 2. 뮤직비디오 (MV) 카드 */
+    .mv-frame {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #111827;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+
+    .mv-play-btn {
+      width: 48px;
+      height: 48px;
+      background: rgba(137, 207, 240, 0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .mv-play-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #FFFFFF;
+      margin-left: 2px;
+    }
+
+    .mv-caption {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .mv-sub {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* 3. 오늘의 일정 카드 */
+    .schedule-empty {
+      color: var(--text-sub);
+      font-size: 14px;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .schedule-item-preview {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--bg-color);
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+
+    .schedule-time-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--point-dark);
+      background: #FFFFFF;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* 4. 오늘의 미션 카드 */
+    .mission-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #FAFAFA;
+      border: 1px solid var(--border-color);
+      margin-bottom: 8px;
+    }
+
+    .mission-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mission-btn {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--point-dark);
+      background: var(--point-light);
+      border: 1px solid #cce8f6;
+      border-radius: 8px;
+      padding: 5px 10px;
+      text-decoration: none;
+    }
+
+    /* 5. 스밍 상태 카드 */
+    .streaming-card {
+      border: 1px solid #E9D5FF;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);
+    }
+
+    .streaming-header {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 4px;
+    }
+
+    .streaming-counter {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--point-purple);
+      margin-bottom: 12px;
+    }
+
+    .streaming-player-box {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .player-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .player-song-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .player-track-num {
+      font-size: 11px;
+      color: var(--text-sub);
+      background: #F3F4F6;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #E5E7EB;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .progress-bar-fill {
+      width: 45%;
+      height: 100%;
+      background: var(--point-color);
+      border-radius: 3px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       각 메뉴별 화면 시안
+       ━━━━━━━━━━━━━━━━━━━━ */
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    .page-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip-group {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 20px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      white-space: nowrap;
+    }
+
+    .chip.active {
+      background: var(--point-color);
+      color: #FFFFFF;
+      border-color: var(--point-color);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       하단 고정 내비게이션 (5개 메뉴)
+       ━━━━━━━━━━━━━━━━━━━━ */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 90;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--text-sub);
+      font-size: 11px;
+      font-weight: 500;
+      width: 20%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .nav-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* 선택된 메뉴 (#89CFF0 포인트 색상) */
+    .nav-btn.active {
+      color: var(--point-dark);
+      font-weight: 700;
+    }
+
+    .nav-btn.active svg {
+      fill: var(--point-color);
+    }
   </style>
 </head>
 <body>
 
+  <!-- 외부 터치 시 메뉴 닫기 백드롭 -->
+  <div class="dropdown-backdrop" id="dropdownBackdrop" onclick="toggleTopMenu(false)"></div>
+
+  <!-- ━━━━━━━━━━━━━━━━━━━━
+       상단 헤더
+       ━━━━━━━━━━━━━━━━━━━━ -->
   <header>
-    <div class="header-title">Hearts2Hearts <span class="badge">H2H</span></div>
-    <div id="connectionStatus" style="font-size: 12px; color: var(--text-sub);">온라인</div>
+    <div class="header-logo">
+      H2HCHIVE <span class="badge">FAN</span>
+    </div>
+    <!-- 상단 펼침 메뉴 버튼 -->
+    <button class="header-menu-btn" onclick="toggleTopMenu()" aria-label="메뉴 열기">
+      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+
+    <!-- 4. 상단 펼침 메뉴 -->
+    <div class="top-dropdown-menu" id="topDropdownMenu">
+      <div class="dropdown-item" onclick="handleMenuClick('MV')">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        <span>MV</span>
+      </div>
+      <div class="dropdown-item" onclick="handleMenuClick('응원법')">
+        <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+        <span>응원법</span>
+      </div>
+      <div class="dropdown-item" onclick="handleMenuClick('아카이브')">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+        <span>아카이브</span>
+      </div>
+      <div class="dropdown-item" onclick="handleMenuClick('설정')">
+        <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        <span>설정</span>
+      </div>
+    </div>
   </header>
 
+  <!-- ━━━━━━━━━━━━━━━━━━━━
+       메인 컨텐츠
+       ━━━━━━━━━━━━━━━━━━━━ -->
   <main>
-    <!-- 1. 홈 탭 -->
+    <!-- [화면 1] 홈 화면 (중심 요소 5가지 정적 시안) -->
     <section id="view-home" class="tab-view active">
-      <div class="card" style="background: linear-gradient(135deg, #89CFF0 0%, #BFE9FF 100%); color: #fff;">
-        <h2 style="font-size: 18px; margin-bottom: 4px; color: #fff;">Hearts2Hearts Archive</h2>
-        <p style="font-size: 12px; opacity: 0.9;">하츠투하츠의 모든 콘텐츠와 일정을 한곳에서</p>
+      <!-- 1. D-DAY -->
+      <div class="dday-wrapper">
+        <div class="dday-info">
+          <span style="font-size: 18px;">👾</span>
+          <span class="dday-title">주은 생일</span>
+        </div>
+        <div class="dday-badge">D-41</div>
+      </div>
+      <div class="dday-dots">
+        <span class="dday-dot active"></span>
+        <span class="dday-dot"></span>
+        <span class="dday-dot"></span>
       </div>
 
+      <!-- 2. 뮤직비디오 (MV) -->
       <div class="card">
-        <div class="card-title">
-          <span>오늘의 일정</span>
-          <button class="btn btn-point btn-sm" onclick="switchTab('schedule')">전체보기</button>
+        <div class="card-header">
+          <div class="card-title">🎬 뮤직비디오</div>
+          <span style="font-size: 12px; color: var(--point-dark); font-weight: 600;">최신작</span>
         </div>
-        <div id="homeTodaySchedules"></div>
+        <div class="mv-frame">
+          <div class="mv-play-btn">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div style="font-size: 13px; font-weight: 700;">Hearts2Hearts - ICONIC HEART</div>
+          <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">Official Music Video</div>
+        </div>
+        <div class="mv-caption">
+          <span>ICONIC HEART (Korean.ver)</span>
+          <span class="mv-sub">2026.10</span>
+        </div>
       </div>
 
+      <!-- 3. 오늘의 일정 -->
       <div class="card">
-        <div class="card-title">
-          <span>최신 음악방송</span>
-          <button class="btn btn-secondary btn-sm" onclick="switchTab('music')">더보기</button>
+        <div class="card-header">
+          <div class="card-title">📅 오늘의 일정</div>
+          <span style="font-size: 12px; color: var(--text-sub);">TODAY</span>
         </div>
-        <div id="homeRecentMusic"></div>
+        <!-- 실제 팬페이지 구성 반영 예시 -->
+        <div class="schedule-item-preview">
+          <div>
+            <strong style="font-size: 14px;">KBS2 뮤직뱅크 생방송</strong>
+            <div style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">음악방송 출연</div>
+          </div>
+          <span class="schedule-time-badge">17:05</span>
+        </div>
+        <div class="schedule-empty" style="display: none;">오늘 일정이 없습니다.</div>
       </div>
 
+      <!-- 4. 오늘의 미션 -->
       <div class="card">
-        <div class="card-title">
-          <span>최신 자체 콘텐츠</span>
-          <button class="btn btn-secondary btn-sm" onclick="switchTab('self')">더보기</button>
+        <div class="card-header">
+          <div class="card-title">📍 오늘의 미션</div>
+          <span style="font-size: 12px; color: var(--point-dark); font-weight: 600;">진행 중</span>
         </div>
-        <div id="homeRecentSelf"></div>
+        <div class="mission-row">
+          <div class="mission-text">
+            <span>🗳️</span>
+            <span>KGMA 팬스 초이스 투표</span>
+          </div>
+          <span class="mission-btn">바로가기</span>
+        </div>
+        <div class="mission-row">
+          <div class="mission-text">
+            <span>🗳️</span>
+            <span>MAMA FANS' CHOICE 투표</span>
+          </div>
+          <span class="mission-btn">바로가기</span>
+        </div>
+      </div>
+
+      <!-- 5. 스밍 상태 -->
+      <div class="card streaming-card">
+        <div class="streaming-header">스밍이 끊기지 않았다면</div>
+        <div class="streaming-counter">💜 ICONIC HEART (Korean.ver) 누적 0회</div>
+
+        <div class="streaming-player-box">
+          <div class="player-row">
+            <span class="player-song-title">17. ICONIC HEART (Korean.ver)</span>
+            <span class="player-track-num">17 / 19</span>
+          </div>
+          <div class="player-row" style="color: var(--text-sub); font-size: 11px;">
+            <span>0:45</span>
+            <span>3:09</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill"></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- 2. 음악방송 탭 -->
-    <section id="view-music" class="tab-view">
-      <div class="search-box">
-        <input type="text" id="musicSearchInput" class="search-input" placeholder="제목, 프로그램명, 방송일 검색" oninput="filterMusicList()" />
+    <!-- [화면 2] 스밍 화면 시안 -->
+    <section id="view-stream" class="tab-view">
+      <div class="page-title">🎧 스밍 리스트</div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom: 8px;">총 재생 시간: 58분 25초 (19곡)</div>
+        <p style="font-size: 12px; color: var(--text-sub); line-height: 1.5;">
+          반복 재생 시 1시간 단위 정각 주기로 권장되는 공식 스밍 목록입니다.
+        </p>
       </div>
-      <div id="musicContentArea"></div>
+      <div class="card" style="padding: 10px 14px;">
+        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+          01. Lemon Tang <span style="float: right; color: var(--text-sub); font-size: 12px;">2:43</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color); color: var(--point-dark);">
+          02. ICONIC HEART (Korean.ver) ★ <span style="float: right; color: var(--text-sub); font-size: 12px;">3:09</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
+          03. RUDE! <span style="float: right; color: var(--text-sub); font-size: 12px;">3:20</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; padding: 8px 0;">
+          04. FOCUS <span style="float: right; color: var(--text-sub); font-size: 12px;">2:58</span>
+        </div>
+      </div>
     </section>
 
-    <!-- 3. 자체 콘텐츠 탭 -->
-    <section id="view-self" class="tab-view">
-      <div class="search-box">
-        <input type="text" id="selfSearchInput" class="search-input" placeholder="콘텐츠 제목, 날짜 검색" oninput="filterSelfList()" />
-      </div>
-      <div class="filter-chips" id="selfCategoryChips">
-        <div class="chip active" onclick="setSelfCategory('ALL')">전체</div>
-      </div>
-      <div id="selfContentArea"></div>
-    </section>
-
-    <!-- 4. 일정 관리 탭 -->
+    <!-- [화면 3] 일정 화면 시안 -->
     <section id="view-schedule" class="tab-view">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <div class="filter-chips" style="margin-bottom: 0; padding-bottom: 0;">
-          <div class="chip active" id="chip-sch-today" onclick="setScheduleFilter('today')">오늘</div>
-          <div class="chip" id="chip-sch-upcoming" onclick="setScheduleFilter('upcoming')">다가오는 일정</div>
-          <div class="chip" id="chip-sch-past" onclick="setScheduleFilter('past')">지난 일정</div>
-          <div class="chip" id="chip-sch-all" onclick="setScheduleFilter('all')">전체</div>
-        </div>
-        <button class="btn btn-point btn-sm" onclick="openScheduleModal()">+ 등록</button>
+      <div class="page-title">📅 일정 아카이브</div>
+      <div class="chip-group">
+        <div class="chip active">전체 일정</div>
+        <div class="chip">음방/방송</div>
+        <div class="chip">행사/팬미팅</div>
+        <div class="chip">기념일</div>
       </div>
-      <div id="scheduleListContainer"></div>
+      <div class="card">
+        <div style="font-size: 12px; color: var(--point-dark); font-weight: 700; margin-bottom: 4px;">2026.10.23 (금)</div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">KBS2 뮤직뱅크</div>
+        <div style="font-size: 13px; color: var(--text-sub);">오후 5시 5분 방송 예정</div>
+      </div>
+      <div class="card">
+        <div style="font-size: 12px; color: var(--text-sub); font-weight: 700; margin-bottom: 4px;">2026.10.25 (일)</div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">SBS 인기가요</div>
+        <div style="font-size: 13px; color: var(--text-sub);">오후 3시 20분 방송 예정</div>
+      </div>
     </section>
 
-    <!-- 5. 설정 탭 -->
-    <section id="view-settings" class="tab-view">
+    <!-- [화면 4] 음방(음악방송) 화면 시안 -->
+    <section id="view-music" class="tab-view">
+      <div class="page-title">📺 음악방송 아카이브</div>
+      <div class="chip-group">
+        <div class="chip active">전체</div>
+        <div class="chip">뮤직뱅크</div>
+        <div class="chip">쇼! 음악중심</div>
+        <div class="chip">인기가요</div>
+        <div class="chip">엠카운트다운</div>
+      </div>
       <div class="card">
-        <div class="card-title">알림 권한 및 설정</div>
-        <div style="font-size: 13px; color: var(--text-sub); margin-bottom: 14px;">
-          현재 권한 상태: <strong id="notifPermissionStatus">확인 중</strong>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
+          <span>뮤직뱅크</span>
+          <span>2026.10.16</span>
         </div>
-        <button id="btnReqNotif" class="btn btn-point" style="width: 100%; margin-bottom: 16px;" onclick="requestNotificationPermission()">
-          알림 권한 활성화
-        </button>
-        <label class="switch-label">
-          <span>전체 알림 허용</span>
-          <input type="checkbox" id="settingMasterNotif" class="switch-input" onchange="saveNotificationSettings()" />
-        </label>
-        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 8px 0;" />
-        <label class="switch-label">
-          <span>매일 자정(00:00) 일정 요약</span>
-          <input type="checkbox" id="settingMidnightNotif" class="switch-input" onchange="saveNotificationSettings()" />
-        </label>
-        <label class="switch-label">
-          <span style="font-size: 12px; color: var(--text-sub); padding-left: 8px;">ㄴ 일정이 없는 날에도 안내받기</span>
-          <input type="checkbox" id="settingNotifyEmptyMidnight" class="switch-input" onchange="saveNotificationSettings()" />
-        </label>
-        <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 8px 0;" />
-        <label class="switch-label">
-          <span>일정 시작 5분 전 알림</span>
-          <input type="checkbox" id="setting5MinNotif" class="switch-input" onchange="saveNotificationSettings()" />
-        </label>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">ICONIC HEART - Hearts2Hearts 컴백 무대</div>
+        <div style="font-size: 12px; color: var(--point-dark); font-weight: 600;">무대 영상 · 직캠</div>
       </div>
       <div class="card">
-        <div class="card-title">데이터 새로고침</div>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">최신 음악방송 및 자체 콘텐츠를 서버에서 다시 가져옵니다.</p>
-        <button class="btn btn-secondary" style="width: 100%;" onclick="loadAllContentData(true)">전체 콘텐츠 새로고침</button>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
+          <span>엠카운트다운</span>
+          <span>2026.10.15</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">최초 공개 ICONIC HEART 본방송</div>
+        <div style="font-size: 12px; color: var(--point-dark); font-weight: 600;">무대 영상</div>
+      </div>
+    </section>
+
+    <!-- [화면 5] 자컨(자체 콘텐츠) 화면 시안 -->
+    <section id="view-self" class="tab-view">
+      <div class="page-title">🎬 자체 콘텐츠</div>
+      <div class="chip-group">
+        <div class="chip active">전체</div>
+        <div class="chip">자체 예능</div>
+        <div class="chip">비하인드</div>
+        <div class="chip">쇼츠/릴스</div>
       </div>
       <div class="card">
-        <div class="card-title">알림 즉시 테스트</div>
-        <button class="btn btn-secondary" style="width: 100%;" onclick="sendTestNotification()">테스트 알림 발송</button>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
+          <span style="color: var(--point-dark); font-weight: 700;">자체 예능</span>
+          <span>2026.10.18</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">[H2H] 하츠투하츠의 가을 소풍 EP.01</div>
+        <div style="font-size: 12px; color: var(--text-sub);">본격 힐링 소풍 리얼리티</div>
+      </div>
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
+          <span style="color: var(--point-dark); font-weight: 700;">비하인드</span>
+          <span>2026.10.12</span>
+        </div>
+        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">ICONIC HEART 뮤직비디오 촬영 비하인드</div>
+        <div style="font-size: 12px; color: var(--text-sub);">MV 현장 메이킹 필름</div>
       </div>
     </section>
   </main>
 
+  <!-- ━━━━━━━━━━━━━━━━━━━━
+       3. 하단 고정 내비게이션 (5개 메뉴, 홈 가운데 배치)
+       ━━━━━━━━━━━━━━━━━━━━ -->
   <nav class="bottom-nav">
-    <button class="nav-btn active" id="tabBtn-home" onclick="switchTab('home')">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>홈</span>
-    </button>
-    <button class="nav-btn" id="tabBtn-music" onclick="switchTab('music')">
+    <!-- 1. 스밍 -->
+    <button class="nav-btn" id="nav-stream" onclick="switchTab('stream')">
       <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-      <span>음악방송</span>
+      <span>스밍</span>
     </button>
-    <button class="nav-btn" id="tabBtn-self" onclick="switchTab('self')">
-      <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7v-3l4 2.5-4 2.5z"/></svg>
-      <span>자체콘텐츠</span>
-    </button>
-    <button class="nav-btn" id="tabBtn-schedule" onclick="switchTab('schedule')">
+    <!-- 2. 일정 -->
+    <button class="nav-btn" id="nav-schedule" onclick="switchTab('schedule')">
       <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
       <span>일정</span>
     </button>
-    <button class="nav-btn" id="tabBtn-settings" onclick="switchTab('settings')">
-      <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-      <span>설정</span>
+    <!-- 3. 홈 (중앙 배치) -->
+    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <span>홈</span>
+    </button>
+    <!-- 4. 음방 -->
+    <button class="nav-btn" id="nav-music" onclick="switchTab('music')">
+      <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7v-3l4 2.5-4 2.5z"/></svg>
+      <span>음방</span>
+    </button>
+    <!-- 5. 자컨 -->
+    <button class="nav-btn" id="nav-self" onclick="switchTab('self')">
+      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+      <span>자컨</span>
     </button>
   </nav>
 
-  <!-- 일정 등록/수정 모달 -->
-  <div class="modal-overlay" id="scheduleModal">
-    <div class="modal-sheet">
-      <div class="card-title">
-        <span id="modalScheduleTitle">새 일정 등록</span>
-        <button class="btn btn-secondary btn-sm" onclick="closeScheduleModal()">닫기</button>
-      </div>
-      <input type="hidden" id="schEditId" />
-      <div class="form-group">
-        <label class="form-label">일정 제목 *</label>
-        <input type="text" id="schInputTitle" class="form-input" placeholder="예: 뮤직뱅크 본방송, 팬사인회" />
-      </div>
-      <div class="form-group" style="display: flex; gap: 8px;">
-        <div style="flex: 1;">
-          <label class="form-label">날짜 *</label>
-          <input type="date" id="schInputDate" class="form-input" />
-        </div>
-        <div style="flex: 1;">
-          <label class="form-label">시작 시간 *</label>
-          <input type="time" id="schInputTime" class="form-input" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">카테고리</label>
-        <select id="schInputCategory" class="form-select">
-          <option value="방송">음악방송/예능</option>
-          <option value="행사">팬미팅/행사</option>
-          <option value="발매">음원/음반 발매</option>
-          <option value="콘텐츠">자체콘텐츠/유튜브</option>
-          <option value="기타">기타 일정</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">메모 (선택사항)</label>
-        <textarea id="schInputMemo" class="form-textarea" placeholder="위치, 링크, 준비물 등"></textarea>
-      </div>
-      <label class="switch-label" style="margin-bottom: 16px;">
-        <span>이 일정 알림 받기</span>
-        <input type="checkbox" id="schInputNotify" class="switch-input" checked />
-      </label>
-      <button class="btn btn-point" style="width: 100%;" onclick="saveScheduleItem()">일정 저장하기</button>
-    </div>
-  </div>
-
   <script>
-    const VIDEO_JSON_URL = 'https://raw.githubusercontent.com/H2HCHIVE/H2HCHIVE/main/video.json';
-    const SELF_JSON_URL = 'https://raw.githubusercontent.com/H2HCHIVE/H2HCHIVE/main/selfcontent.json';
-
-    let state = {
-      music: { loading: false, error: null, data: [] },
-      self: { loading: false, error: null, data: [], selectedCategory: 'ALL' },
-      schedules: [],
-      currentTab: 'home',
-      scheduleFilter: 'today',
-      settings: { masterNotif: true, midnightNotif: true, notifyEmptyMidnight: false, before5MinNotif: true }
-    };
-
-    function parseContentItem(raw, defaultType) {
-      if (!raw || typeof raw !== 'object') return null;
-      const date = raw.date || raw.broadcastDate || raw.broadcast_date || raw.day || raw.날짜 || '';
-      const title = raw.title || raw.name || raw.subject || raw.제목 || '제목 없음';
-      const program = raw.program || raw.show || raw.broadcaster || raw.프로그램명 || raw.방송명 || '';
-      const category = raw.category || raw.type || raw.카테고리 || (program ? program : defaultType);
-      const info = raw.info || raw.desc || raw.description || raw.details || raw.content || raw.관련정보 || raw.내용 || '';
-      let rawUrl = raw.url || raw.link || raw.youtube || raw.youtubeUrl || raw.youtube_url || raw.videoUrl || '';
-      const videoId = raw.videoId || raw.video_id || raw.id || '';
-      if (!rawUrl && videoId && typeof videoId === 'string' && videoId.length === 11) rawUrl = `https://www.youtube.com/watch?v=${videoId}`;
-      else if (rawUrl && !rawUrl.startsWith('http')) rawUrl = `https://www.youtube.com/watch?v=${rawUrl}`;
-      return { date, title, program, category, info, url: rawUrl };
-    }
-
-    function navigateToYoutube(url, title) {
-      if (!url) { alert(`'${title}' 영상의 연결 주소가 없습니다.`); return; }
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
-
-    async function loadMusicData(forceRefresh = false) {
-      state.music.loading = true;
-      state.music.error = null;
-      renderMusicLoading();
-      try {
-        const fetchUrl = forceRefresh ? `${VIDEO_JSON_URL}?_t=${Date.now()}` : VIDEO_JSON_URL;
-        const res = await fetch(fetchUrl);
-        if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다. (HTTP ${res.status})`);
-        const json = await res.json();
-        const rawList = Array.isArray(json) ? json : (json.videos || json.video || json.list || json.items || []);
-        state.music.data = rawList.map(item => parseContentItem(item, '음악방송')).filter(Boolean);
-        state.music.loading = false;
-        renderMusicList();
-        renderHomeRecentMusic();
-      } catch (err) {
-        state.music.loading = false;
-        state.music.error = err.message || '네트워크 연결 상태를 확인해주세요.';
-        renderMusicError();
-        renderHomeRecentMusic();
-      }
-    }
-
-    async function loadSelfData(forceRefresh = false) {
-      state.self.loading = true;
-      state.self.error = null;
-      renderSelfLoading();
-      try {
-        const fetchUrl = forceRefresh ? `${SELF_JSON_URL}?_t=${Date.now()}` : SELF_JSON_URL;
-        const res = await fetch(fetchUrl);
-        if (!res.ok) throw new Error(`자체 콘텐츠를 불러오지 못했습니다. (HTTP ${res.status})`);
-        const json = await res.json();
-        const rawList = Array.isArray(json) ? json : (json.selfcontent || json.contents || json.list || json.items || []);
-        state.self.data = rawList.map(item => parseContentItem(item, '자체콘텐츠')).filter(Boolean);
-        state.self.loading = false;
-        setupSelfCategoryChips();
-        renderSelfList();
-        renderHomeRecentSelf();
-      } catch (err) {
-        state.self.loading = false;
-        state.self.error = err.message || '네트워크 연결 상태를 확인해주세요.';
-        renderSelfError();
-        renderHomeRecentSelf();
-      }
-    }
-
-    function loadAllContentData(force = false) {
-      loadMusicData(force);
-      loadSelfData(force);
-    }
-
-    function renderMusicLoading() {
-      document.getElementById('musicContentArea').innerHTML = `
-        <div class="loading-box"><div class="spinner"></div><span>음악방송 데이터를 불러오는 중...</span></div>`;
-    }
-
-    function renderMusicError() {
-      document.getElementById('musicContentArea').innerHTML = `
-        <div class="error-card">
-          <div class="error-title">음악방송 데이터를 불러올 수 없습니다</div>
-          <div class="error-msg">${escapeHtml(state.music.error)}</div>
-          <button class="btn btn-point btn-sm" onclick="loadMusicData(true)">다시 시도하기</button>
-        </div>`;
-    }
-
-    function renderMusicList(filteredList = null) {
-      const area = document.getElementById('musicContentArea');
-      const list = filteredList !== null ? filteredList : state.music.data;
-      if (state.music.loading) return;
-      if (state.music.error) { renderMusicError(); return; }
-      if (!list || list.length === 0) {
-        area.innerHTML = `<div class="empty-state">등록된 음악방송 콘텐츠가 없습니다.</div>`;
-        return;
-      }
-      area.innerHTML = list.map(item => `
-        <div class="archive-card" onclick="navigateToYoutube('${escapeAttr(item.url)}', '${escapeAttr(item.title)}')">
-          <div class="card-meta-row">
-            <span class="card-tag">${escapeHtml(item.program || '음악방송')}</span>
-            <span class="card-date">${escapeHtml(item.date || '날짜 미정')}</span>
-          </div>
-          <div class="card-title-text">${escapeHtml(item.title)}</div>
-          ${item.info ? `<div class="card-desc-text">${escapeHtml(item.info)}</div>` : ''}
-          <div class="card-action-bar">
-            <span class="yt-link-btn">
-              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              YouTube 영상 보기 &gt;
-            </span>
-          </div>
-        </div>`).join('');
-    }
-
-    function filterMusicList() {
-      const q = document.getElementById('musicSearchInput').value.trim().toLowerCase();
-      if (!q) { renderMusicList(); return; }
-      renderMusicList(state.music.data.filter(i =>
-        (i.title && i.title.toLowerCase().includes(q)) ||
-        (i.program && i.program.toLowerCase().includes(q)) ||
-        (i.date && i.date.includes(q))
-      ));
-    }
-
-    function renderSelfLoading() {
-      document.getElementById('selfContentArea').innerHTML = `
-        <div class="loading-box"><div class="spinner"></div><span>자체 콘텐츠 데이터를 불러오는 중...</span></div>`;
-    }
-
-    function renderSelfError() {
-      document.getElementById('selfContentArea').innerHTML = `
-        <div class="error-card">
-          <div class="error-title">자체 콘텐츠를 불러올 수 없습니다</div>
-          <div class="error-msg">${escapeHtml(state.self.error)}</div>
-          <button class="btn btn-point btn-sm" onclick="loadSelfData(true)">다시 시도하기</button>
-        </div>`;
-    }
-
-    function setupSelfCategoryChips() {
-      const cats = new Set();
-      state.self.data.forEach(item => { if (item.category && item.category !== '자체콘텐츠') cats.add(item.category); });
-      let html = `<div class="chip ${state.self.selectedCategory === 'ALL' ? 'active' : ''}" onclick="setSelfCategory('ALL')">전체</div>`;
-      cats.forEach(c => {
-        html += `<div class="chip ${state.self.selectedCategory === c ? 'active' : ''}" onclick="setSelfCategory('${escapeHtml(c)}')">${escapeHtml(c)}</div>`;
-      });
-      document.getElementById('selfCategoryChips').innerHTML = html;
-    }
-
-    function setSelfCategory(cat) {
-      state.self.selectedCategory = cat;
-      setupSelfCategoryChips();
-      filterSelfList();
-    }
-
-    function getCategoryFilteredSelfData() {
-      if (state.self.selectedCategory === 'ALL') return state.self.data;
-      return state.self.data.filter(i => i.category === state.self.selectedCategory);
-    }
-
-    function renderSelfList(filteredList = null) {
-      const area = document.getElementById('selfContentArea');
-      const list = filteredList !== null ? filteredList : getCategoryFilteredSelfData();
-      if (state.self.loading) return;
-      if (state.self.error) { renderSelfError(); return; }
-      if (!list || list.length === 0) {
-        area.innerHTML = `<div class="empty-state">해당 조건의 자체 콘텐츠가 없습니다.</div>`;
-        return;
-      }
-      area.innerHTML = list.map(item => `
-        <div class="archive-card" onclick="navigateToYoutube('${escapeAttr(item.url)}', '${escapeAttr(item.title)}')">
-          <div class="card-meta-row">
-            <span class="card-tag">${escapeHtml(item.category || '자체콘텐츠')}</span>
-            <span class="card-date">${escapeHtml(item.date || '날짜 미정')}</span>
-          </div>
-          <div class="card-title-text">${escapeHtml(item.title)}</div>
-          ${item.info ? `<div class="card-desc-text">${escapeHtml(item.info)}</div>` : ''}
-          <div class="card-action-bar">
-            <span class="yt-link-btn">
-              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-              YouTube 영상 재생하기 &gt;
-            </span>
-          </div>
-        </div>`).join('');
-    }
-
-    function filterSelfList() {
-      const q = document.getElementById('selfSearchInput').value.trim().toLowerCase();
-      let list = getCategoryFilteredSelfData();
-      if (q) {
-        list = list.filter(i =>
-          (i.title && i.title.toLowerCase().includes(q)) ||
-          (i.date && i.date.includes(q)) ||
-          (i.info && i.info.toLowerCase().includes(q))
-        );
-      }
-      renderSelfList(list);
-    }
-
-    function renderHomeRecentMusic() {
-      const box = document.getElementById('homeRecentMusic');
-      if (state.music.loading) { box.innerHTML = `<div class="loading-box" style="padding:15px 0;"><div class="spinner"></div></div>`; return; }
-      if (state.music.error) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">데이터를 불러오지 못했습니다.</div>`; return; }
-      const recents = state.music.data.slice(0, 2);
-      if (recents.length === 0) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">음악방송 내역이 없습니다.</div>`; return; }
-      box.innerHTML = recents.map(m => `
-        <div style="padding: 10px 0; border-bottom: 1px solid #F3F4F6; cursor: pointer;" onclick="navigateToYoutube('${escapeAttr(m.url)}', '${escapeAttr(m.title)}')">
-          <div style="font-size: 11px; color: var(--text-sub);">${escapeHtml(m.date)} · <strong style="color:var(--point-dark);">${escapeHtml(m.program)}</strong></div>
-          <div style="font-size: 13px; font-weight: 700; margin-top: 3px;">${escapeHtml(m.title)}</div>
-        </div>`).join('');
-    }
-
-    function renderHomeRecentSelf() {
-      const box = document.getElementById('homeRecentSelf');
-      if (state.self.loading) { box.innerHTML = `<div class="loading-box" style="padding:15px 0;"><div class="spinner"></div></div>`; return; }
-      if (state.self.error) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">데이터를 불러오지 못했습니다.</div>`; return; }
-      const recents = state.self.data.slice(0, 2);
-      if (recents.length === 0) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">자체 콘텐츠 내역이 없습니다.</div>`; return; }
-      box.innerHTML = recents.map(s => `
-        <div style="padding: 10px 0; border-bottom: 1px solid #F3F4F6; cursor: pointer;" onclick="navigateToYoutube('${escapeAttr(s.url)}', '${escapeAttr(s.title)}')">
-          <div style="font-size: 11px; color: var(--text-sub);">${escapeHtml(s.date)} · <strong style="color:var(--point-dark);">${escapeHtml(s.category)}</strong></div>
-          <div style="font-size: 13px; font-weight: 700; margin-top: 3px;">${escapeHtml(s.title)}</div>
-        </div>`).join('');
-    }
-
+    /* ━━━━━━━━━━━━━━━━━━━━
+       화면 전환 로직 (디자인 확인용 정적 전환)
+       ━━━━━━━━━━━━━━━━━━━━ */
     function switchTab(tabId) {
-      state.currentTab = tabId;
-      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
       const targetView = document.getElementById(`view-${tabId}`);
-      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+      const targetBtn = document.getElementById(`nav-${tabId}`);
+
       if (targetView) targetView.classList.add('active');
       if (targetBtn) targetBtn.classList.add('active');
-      if (tabId === 'home') renderHomeToday();
-      if (tabId === 'schedule') renderSchedules();
-      if (tabId === 'music' && state.music.data.length === 0 && !state.music.loading) loadMusicData();
-      if (tabId === 'self' && state.self.data.length === 0 && !state.self.loading) loadSelfData();
+
+      toggleTopMenu(false);
     }
 
-    function getTodayString() {
-      const now = new Date();
-      return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-    }
+    /* ━━━━━━━━━━━━━━━━━━━━
+       상단 메뉴 펼침/닫힘 토글
+       ━━━━━━━━━━━━━━━━━━━━ */
+    function toggleTopMenu(forceState) {
+      const menu = document.getElementById('topDropdownMenu');
+      const backdrop = document.getElementById('dropdownBackdrop');
 
-    function sortSchedules(list) {
-      return [...list].sort((a, b) => new Date(`${a.date}T${a.time||'00:00'}`) - new Date(`${b.date}T${b.time||'00:00'}`));
-    }
+      const isOpen = forceState !== undefined ? forceState : !menu.classList.contains('open');
 
-    function setScheduleFilter(f) {
-      state.scheduleFilter = f;
-      ['today', 'upcoming', 'past', 'all'].forEach(k => {
-        const c = document.getElementById(`chip-sch-${k}`);
-        if (c) c.classList.toggle('active', k === f);
-      });
-      renderSchedules();
-    }
-
-    function renderSchedules() {
-      const container = document.getElementById('scheduleListContainer');
-      const today = getTodayString();
-      const sorted = sortSchedules(state.schedules);
-      let list = sorted;
-      if (state.scheduleFilter === 'today') list = sorted.filter(s => s.date === today);
-      else if (state.scheduleFilter === 'upcoming') list = sorted.filter(s => s.date > today);
-      else if (state.scheduleFilter === 'past') list = sorted.filter(s => s.date < today);
-
-      if (list.length === 0) {
-        container.innerHTML = `<div class="empty-state">${state.scheduleFilter === 'today' ? '오늘 예정된 일정이 없습니다.' : '등록된 일정이 없습니다.'}</div>`;
-        return;
-      }
-      container.innerHTML = list.map(item => `
-        <div class="card" style="margin-bottom: 10px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <div>
-              <span class="card-tag">${escapeHtml(item.category || '일정')}</span>
-              <span style="font-size: 13px; font-weight: 600; margin-left: 6px;">${item.date}</span>
-            </div>
-            <span style="font-size: 13px; font-weight: 700; color: var(--point-dark);">${item.time || '시간 미지정'}</span>
-          </div>
-          <div style="font-size: 15px; font-weight: 700; margin: 6px 0;">${escapeHtml(item.title)}</div>
-          ${item.memo ? `<div style="font-size: 13px; color: var(--text-sub); margin-bottom: 8px;">${escapeHtml(item.memo)}</div>` : ''}
-          <div style="font-size: 11px; color: ${item.notify ? '#0284C7' : '#9CA3AF'};">
-            ${item.notify ? '🔔 알림 켜짐' : '🔕 알림 꺼짐'}
-          </div>
-          <div style="display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;">
-            <button class="btn btn-secondary btn-sm" onclick="editScheduleItem('${item.id}')">수정</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteScheduleItem('${item.id}')">삭제</button>
-          </div>
-        </div>`).join('');
-    }
-
-    function renderHomeToday() {
-      const box = document.getElementById('homeTodaySchedules');
-      const today = getTodayString();
-      const todayList = sortSchedules(state.schedules.filter(s => s.date === today));
-      if (todayList.length === 0) {
-        box.innerHTML = `<div class="empty-state" style="padding: 16px 0;">오늘 예정된 일정이 없습니다.</div>`;
-        return;
-      }
-      box.innerHTML = todayList.map(s => `
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F3F4F6;">
-          <div><span class="card-tag" style="font-size: 10px;">${escapeHtml(s.category)}</span><strong style="font-size: 14px; margin-left: 4px;">${escapeHtml(s.title)}</strong></div>
-          <span style="font-size: 13px; font-weight: 700; color: var(--point-dark);">${s.time}</span>
-        </div>`).join('');
-    }
-
-    function openScheduleModal(editItem = null) {
-      const modal = document.getElementById('scheduleModal');
-      if (editItem) {
-        document.getElementById('modalScheduleTitle').textContent = '일정 수정';
-        document.getElementById('schEditId').value = editItem.id;
-        document.getElementById('schInputTitle').value = editItem.title;
-        document.getElementById('schInputDate').value = editItem.date;
-        document.getElementById('schInputTime').value = editItem.time;
-        document.getElementById('schInputCategory').value = editItem.category;
-        document.getElementById('schInputMemo').value = editItem.memo || '';
-        document.getElementById('schInputNotify').checked = editItem.notify !== false;
+      if (isOpen) {
+        menu.classList.add('open');
+        backdrop.classList.add('open');
       } else {
-        document.getElementById('modalScheduleTitle').textContent = '새 일정 등록';
-        document.getElementById('schEditId').value = '';
-        document.getElementById('schInputTitle').value = '';
-        document.getElementById('schInputDate').value = getTodayString();
-        document.getElementById('schInputTime').value = '18:00';
-        document.getElementById('schInputCategory').value = '방송';
-        document.getElementById('schInputMemo').value = '';
-        document.getElementById('schInputNotify').checked = true;
-      }
-      modal.classList.add('open');
-    }
-
-    function closeScheduleModal() {
-      document.getElementById('scheduleModal').classList.remove('open');
-    }
-
-    function saveScheduleItem() {
-      const title = document.getElementById('schInputTitle').value.trim();
-      const date = document.getElementById('schInputDate').value;
-      const time = document.getElementById('schInputTime').value;
-      const category = document.getElementById('schInputCategory').value;
-      const memo = document.getElementById('schInputMemo').value.trim();
-      const notify = document.getElementById('schInputNotify').checked;
-      const editId = document.getElementById('schEditId').value;
-
-      if (!title || !date || !time) {
-        alert('제목, 날짜, 시작 시간을 모두 입력해주세요.');
-        return;
-      }
-
-      if (editId) {
-        state.schedules = state.schedules.map(i => i.id === editId ? { ...i, title, date, time, category, memo, notify } : i);
-      } else {
-        state.schedules.push({
-          id: 'sch_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-          title, date, time, category, memo, notify
-        });
-      }
-
-      localStorage.setItem('h2h_schedules', JSON.stringify(state.schedules));
-      renderSchedules();
-      renderHomeToday();
-      closeScheduleModal();
-    }
-
-    function editScheduleItem(id) {
-      const target = state.schedules.find(s => s.id === id);
-      if (target) openScheduleModal(target);
-    }
-
-    function deleteScheduleItem(id) {
-      if (confirm('이 일정을 삭제하시겠습니까?')) {
-        state.schedules = state.schedules.filter(s => s.id !== id);
-        localStorage.setItem('h2h_schedules', JSON.stringify(state.schedules));
-        renderSchedules();
-        renderHomeToday();
+        menu.classList.remove('open');
+        backdrop.classList.remove('open');
       }
     }
 
-    function checkNotificationPermissionUI() {
-      const label = document.getElementById('notifPermissionStatus');
-      const btn = document.getElementById('btnReqNotif');
-      if (!('Notification' in window)) { label.textContent = '미지원 기기'; btn.disabled = true; return; }
-      if (Notification.permission === 'granted') {
-        label.textContent = '허용됨 (정상 수신)';
-        label.style.color = '#10B981';
-        btn.textContent = '알림 허용 완료';
-        btn.disabled = true;
-        btn.style.opacity = '0.6';
-      } else if (Notification.permission === 'denied') {
-        label.textContent = '차단됨 (설정 앱에서 허용 필요)';
-        label.style.color = '#EF4444';
-      } else {
-        label.textContent = '권한 필요';
-        label.style.color = '#F59E0B';
-      }
+    function handleMenuClick(name) {
+      toggleTopMenu(false);
+      alert(`[${name}] 디자인 메뉴가 선택되었습니다.`);
     }
-
-    async function requestNotificationPermission() {
-      if (!('Notification' in window)) { alert('이 기기는 웹 알림을 지원하지 않습니다.'); return; }
-      const res = await Notification.requestPermission();
-      checkNotificationPermissionUI();
-      if (res === 'granted') sendPushMessage('Hearts2Hearts 알림 활성화', '알림 설정이 완료되었습니다!');
-    }
-
-    function saveNotificationSettings() {
-      state.settings.masterNotif = document.getElementById('settingMasterNotif').checked;
-      state.settings.midnightNotif = document.getElementById('settingMidnightNotif').checked;
-      state.settings.notifyEmptyMidnight = document.getElementById('settingNotifyEmptyMidnight').checked;
-      state.settings.before5MinNotif = document.getElementById('setting5MinNotif').checked;
-      localStorage.setItem('h2h_settings', JSON.stringify(state.settings));
-    }
-
-    function loadSavedData() {
-      try {
-        const sch = localStorage.getItem('h2h_schedules');
-        if (sch) state.schedules = JSON.parse(sch);
-        const set = localStorage.getItem('h2h_settings');
-        if (set) state.settings = { ...state.settings, ...JSON.parse(set) };
-      } catch (e) { console.error(e); }
-    }
-
-    function loadSettingsUI() {
-      document.getElementById('settingMasterNotif').checked = state.settings.masterNotif;
-      document.getElementById('settingMidnightNotif').checked = state.settings.midnightNotif;
-      document.getElementById('settingNotifyEmptyMidnight').checked = state.settings.notifyEmptyMidnight;
-      document.getElementById('setting5MinNotif').checked = state.settings.before5MinNotif;
-    }
-
-    async function sendPushMessage(title, body) {
-      if (!state.settings.masterNotif || !('Notification' in window) || Notification.permission !== 'granted') return;
-      try {
-        if ('serviceWorker' in navigator) {
-          const reg = await navigator.serviceWorker.ready;
-          reg.showNotification(title, { body, icon: 'icon-192.png', badge: 'icon-192.png', vibrate: [200, 100, 200] });
-        } else {
-          new Notification(title, { body });
-        }
-      } catch (e) { console.error(e); }
-    }
-
-    function runNotificationChecker() {
-      const now = new Date();
-      const todayStr = getTodayString();
-      if (state.settings.midnightNotif && now.getHours() === 0 && now.getMinutes() === 0) {
-        const key = `h2h_midnight_${todayStr}`;
-        if (!localStorage.getItem(key)) {
-          const todays = state.schedules.filter(s => s.date === todayStr && s.notify !== false);
-          if (todays.length > 0) {
-            let msg = `오늘 예정된 일정 ${todays.length}개가 있습니다.\n`;
-            todays.forEach(s => msg += `${s.time} - ${s.title}\n`);
-            sendPushMessage('오늘의 H2H 일정', msg.trim());
-          } else if (state.settings.notifyEmptyMidnight) {
-            sendPushMessage('오늘의 H2H 일정', '오늘 예정된 일정이 없습니다.');
-          }
-          localStorage.setItem(key, 'sent');
-        }
-      }
-      if (state.settings.before5MinNotif) {
-        const nowMs = now.getTime();
-        state.schedules.forEach(item => {
-          if (!item.notify) return;
-          const targetMs = new Date(`${item.date}T${item.time}`).getTime();
-          const diff = nowMs - (targetMs - 5 * 60 * 1000);
-          if (diff >= 0 && diff < 15000) {
-            const k = `h2h_5m_${item.id}`;
-            if (!localStorage.getItem(k)) {
-              sendPushMessage(`[5분 전] ${item.title}`, `${item.time}에 일정이 시작됩니다.`);
-              localStorage.setItem(k, 'sent');
-            }
-          }
-        });
-      }
-    }
-
-    function sendTestNotification() {
-      if (!('Notification' in window) || Notification.permission !== 'granted') {
-        alert('먼저 상단의 [알림 권한 활성화] 버튼을 눌러주세요.');
-        return;
-      }
-      sendPushMessage('Hearts2Hearts 알림 테스트', '안드로이드 기기 알림이 정상적으로 작동합니다!');
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-    }
-    function escapeAttr(str) {
-      if (!str) return '';
-      return String(str).replace(/"/g, '&quot;').replace(/'/g, "\\'");
-    }
-
-    window.addEventListener('online', () => { document.getElementById('connectionStatus').textContent = '온라인'; loadAllContentData(); });
-    window.addEventListener('offline', () => { document.getElementById('connectionStatus').textContent = '오프라인'; });
-
-    window.addEventListener('DOMContentLoaded', () => {
-      loadSavedData();
-      loadSettingsUI();
-      checkNotificationPermissionUI();
-      renderHomeToday();
-      renderSchedules();
-      loadAllContentData();
-      setInterval(runNotificationChecker, 10000);
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(e => console.log('SW 실패:', e));
-      }
-    });
   </script>
 </body>
 </html>
