@@ -3,410 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
 <title>H2HCHIVE</title>
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#f5f6f8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <style>
-/* 모바일 앱 전용 기본 설정 및 새로고침(Pull-to-Refresh) 방지 */
 html {
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
 }
 
-body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo",sans-serif;
-    background:#f5f6f8;
-    color:#222;
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", sans-serif;
+    background: #f5f6f8;
+    color: #222;
     overscroll-behavior-y: none;
     padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
 }
 
-.container{
-    max-width:420px;
-    margin:0 auto;
-    padding:24px 16px 70px;
+.container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 24px 16px 32px;
     box-sizing: border-box;
 }
 
-.header{
-    margin-bottom:24px;
+.header {
+    margin-bottom: 24px;
 }
 
+/* =========================
+   D-DAY
+   ========================= */
 
-/* =========================================================
-   DDAY
-   ========================================================= */
-
-#dday-container{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    overflow:hidden;
+#dday-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    overflow: hidden;
 }
 
-#dday-box{
-    flex:1;
-    text-align:center;
-    padding:6px 0;
-    touch-action:pan-y;
-    user-select:none;
+#dday-box {
+    flex: 1;
+    text-align: center;
+    padding: 6px 0;
+    touch-action: pan-y;
+    user-select: none;
 }
 
-#dday-box.slide-out-left{
-    animation:ddaySlideOutLeft .4s ease forwards;
+#dday-box.slide-out-left {
+    animation: ddaySlideOutLeft .4s ease forwards;
 }
 
-#dday-box.slide-out-right{
-    animation:ddaySlideOutRight .4s ease forwards;
+#dday-box.slide-out-right {
+    animation: ddaySlideOutRight .4s ease forwards;
 }
 
-#dday-box.slide-in-left{
-    animation:ddaySlideInLeft .4s ease forwards;
+#dday-box.slide-in-left {
+    animation: ddaySlideInLeft .4s ease forwards;
 }
 
-#dday-box.slide-in-right{
-    animation:ddaySlideInRight .4s ease forwards;
+#dday-box.slide-in-right {
+    animation: ddaySlideInRight .4s ease forwards;
 }
 
-@keyframes ddaySlideOutLeft{
-    from{
-        opacity:1;
-        transform:translateX(0);
-    }
-    to{
-        opacity:0;
-        transform:translateX(-30px);
-    }
+@keyframes ddaySlideOutLeft {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-30px); }
 }
 
-@keyframes ddaySlideOutRight{
-    from{
-        opacity:1;
-        transform:translateX(0);
-    }
-    to{
-        opacity:0;
-        transform:translateX(30px);
-    }
+@keyframes ddaySlideOutRight {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(30px); }
 }
 
-@keyframes ddaySlideInLeft{
-    from{
-        opacity:0;
-        transform:translateX(30px);
-    }
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
+@keyframes ddaySlideInLeft {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-@keyframes ddaySlideInRight{
-    from{
-        opacity:0;
-        transform:translateX(-30px);
-    }
-    to{
-        opacity:1;
-        transform:translateX(0);
-    }
+@keyframes ddaySlideInRight {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-#dday-text{
-    font-size:1.1rem;
-    font-weight:800;
+#dday-text {
+    font-size: 1.1rem;
+    font-weight: 800;
 }
 
-#dday-label{
-    font-size:1.6rem;
-    font-weight:900;
+#dday-label {
+    font-size: 1.6rem;
+    font-weight: 900;
 }
 
-
-/* =========================================================
-   DDAY INDICATOR
-   ========================================================= */
-
-#dday-indicator{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:5px;
-    margin-top:5px;
-    margin-bottom:5px;
+#dday-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin: 5px 0;
 }
 
-.dday-dot{
-    font-size:8px;
-    line-height:1;
-    color:#d5d5d5;
-    transition:color .25s ease, transform .25s ease;
+.dday-dot {
+    font-size: 8px;
+    line-height: 1;
+    color: #d5d5d5;
+    transition: color .25s ease, transform .25s ease;
 }
 
-.dday-dot.active{
-    color:#89CFF0;
-    transform:scale(1.15);
+.dday-dot.active {
+    color: #89CFF0;
+    transform: scale(1.15);
 }
 
+/* =========================
+   SCHEDULE / MISSION
+   ========================= */
 
-/* =========================================================
-   GRID
-   ========================================================= */
-
-.grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
+.todo-section {
+    margin: 25px 0;
 }
 
-.card{
-    background:white;
-    border:none;
-    border-radius:18px;
-    padding:22px 12px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    font-size:1rem;
-    font-weight:600;
-    cursor:pointer;
-    transition:transform 0.1s ease;
+.todo-box {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    line-height: 2;
 }
 
-.card:active {
-    transform:scale(0.98);
+.todo-header {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
-.wide{
-    grid-column:1 / -1;
+.mission-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin: 8px 0;
 }
 
-
-/* =========================================================
-   TODO / MISSION
-   ========================================================= */
-
-.todo-section{
-    margin:25px 0 25px;
+.mission-row span {
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
-.todo-box{
-    background:white;
-    border-radius:18px;
-    padding:18px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
-    line-height:2;
+.mission-btn {
+    flex-shrink: 0;
+    background: #222;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.todo-header{
-    font-size:1rem;
-    font-weight:700;
-    margin-bottom:10px;
-    padding-bottom:10px;
-    border-bottom:1px solid #eee;
+/* =========================
+   EXPANDABLE MENU
+   ========================= */
+
+.menu-toggle-wrap {
+    margin: 24px 0;
 }
 
-.mission-row{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    margin:8px 0;
+.menu-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 17px 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #222;
+    cursor: pointer;
 }
 
-.mission-btn{
-    background:#222;
-    color:#fff;
-    text-decoration:none;
-    padding:5px 12px;
-    border-radius:999px;
-    font-size:.8rem;
-    font-weight:600;
-    white-space:nowrap;
+.toggle-mark {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #89CFF0;
+    transition: transform .2s ease;
 }
 
-
-/* =========================================================
-   COPYRIGHT
-   ========================================================= */
-
-.copyright{
-    margin-top:16px;
-    font-size:0.75rem;
-    line-height:1.6;
-    color:#777;
-    text-align:center;
+.menu-toggle[aria-expanded="true"] .toggle-mark {
+    transform: rotate(45deg);
 }
 
+.extra-menu {
+    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
 
-/* =========================================================
+.extra-menu.open {
+    display: grid;
+}
+
+.extra-menu a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    padding: 8px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 14px;
+    color: #222;
+    text-decoration: none;
+    font-size: .95rem;
+    font-weight: 600;
+    box-shadow: 0 3px 10px rgba(0,0,0,.05);
+}
+
+.extra-menu a:active {
+    transform: scale(.98);
+}
+
+/* =========================
+   ICONIC HEART COUNTER
+   ========================= */
+
+#iconic-heart-count {
+    font-variant-numeric: tabular-nums;
+}
+
+/* =========================
    OFFICIAL ACCOUNTS
-   ========================================================= */
+   ========================= */
 
-.sns-section{
-    margin-top:20px;
-    text-align:center;
+.sns-section {
+    margin-top: 20px;
+    text-align: center;
 }
 
-.sns-icons{
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    margin-top:14px;
+.sns-icons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 14px;
 }
 
-.sns-icons a img{
-    width:34px;
-    height:34px;
-    display:block;
+.sns-icons a img {
+    width: 34px;
+    height: 34px;
+    display: block;
 }
 
+.copyright {
+    margin-top: 16px;
+    font-size: .75rem;
+    line-height: 1.6;
+    color: #777;
+    text-align: center;
+}
 
-/* =========================================================
+/* =========================
    MV SWIPER
-   ========================================================= */
+   ========================= */
 
-.mvSwiper{
-    width:100%;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
+.mvSwiper {
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
 }
 
-.mvSwiper iframe{
-    width:100%;
-    height:220px;
-    border:0;
-    display:block;
+.mvSwiper iframe {
+    width: 100%;
+    height: 220px;
+    border: 0;
+    display: block;
 }
 
-.swiper-pagination{
-    position:relative;
-    margin-top:10px;
+.swiper-pagination {
+    position: relative;
+    margin-top: 10px;
 }
 
+/* =========================
+   KST MINI PLAYER
+   ========================= */
 
-/* =========================================================
-   KST SYNC MINI PLAYER
-   ========================================================= */
-
-.kst-player{
-    position:fixed;
-
-    right:12px;
-    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-
-    width:158px;
-    min-height:48px;
-
-    background:rgba(255,255,255,.96);
-
-    border:1px solid rgba(137,207,240,.45);
-    border-radius:14px;
-
-    box-shadow:0 4px 14px rgba(0,0,0,.10);
-
-    display:flex;
-    align-items:center;
-
-    padding:7px 9px;
-
-    box-sizing:border-box;
-
-    z-index:9999;
-
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease;
+.kst-player {
+    position: fixed;
+    right: 12px;
+    bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+    width: 158px;
+    min-height: 48px;
+    background: rgba(255,255,255,.96);
+    border: 1px solid rgba(137,207,240,.45);
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0,0,0,.10);
+    display: flex;
+    align-items: center;
+    padding: 7px 9px;
+    box-sizing: border-box;
+    z-index: 8000;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity .25s ease, transform .25s ease;
 }
 
-.kst-player.scrolling{
-    opacity:.28;
-    transform:translateX(2px);
+.kst-player.scrolling {
+    opacity: .28;
+    transform: translateX(2px);
 }
 
-.kst-player-info{
-    min-width:0;
-    width:100%;
-    overflow:hidden;
+.kst-player-info {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
-.kst-player-song{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    min-width:0;
+.kst-player-song {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
 }
 
-.kst-player-title{
-    min-width:0;
-
-    font-size:12px;
-    font-weight:700;
-
-    line-height:15px;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-
-    color:#222;
+.kst-player-title {
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #222;
 }
 
-.kst-player-number{
-    font-size:8px;
-    font-weight:600;
-
-    color:#89CFF0;
-
-    white-space:nowrap;
-    flex-shrink:0;
+.kst-player-number {
+    font-size: 8px;
+    font-weight: 600;
+    color: #89CFF0;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-.kst-player-time{
-    font-size:10px;
-    color:#888;
-    line-height:13px;
+.kst-player-time {
+    font-size: 10px;
+    color: #888;
+    line-height: 13px;
 }
 
-.kst-player-progress{
-    width:100%;
-    height:2px;
-
-    margin-top:2px;
-
-    background:#e5e5e5;
-
-    border-radius:999px;
-
-    overflow:hidden;
+.kst-player-progress {
+    width: 100%;
+    height: 2px;
+    margin-top: 2px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
 }
 
-.kst-player-progress-bar{
-    width:0%;
-    height:100%;
-
-    background:#89CFF0;
-
-    transition:width .5s linear;
+.kst-player-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #89CFF0;
+    transition: width .5s linear;
 }
 
-@media(max-width:360px){
-    .kst-player{
-        width:148px;
-        right:8px;
+/* =========================
+   FIXED BOTTOM NAVIGATION
+   ========================= */
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255,255,255,.97);
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 14px rgba(0,0,0,.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.bottom-nav a {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 0 2px;
+    color: #777;
+    text-decoration: none;
+    font-size: .72rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.bottom-nav a.active {
+    color: #222;
+    font-weight: 800;
+    position: relative;
+}
+
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: 28%;
+    right: 28%;
+    height: 3px;
+    border-radius: 4px;
+    background: #89CFF0;
+}
+
+@media (max-width: 360px) {
+    .bottom-nav a {
+        font-size: .66rem;
+    }
+
+    .kst-player {
+        width: 148px;
+        right: 8px;
+        bottom: calc(68px + env(safe-area-inset-bottom, 0px));
     }
 }
 </style>
@@ -416,321 +456,220 @@ body{
 
 <div class="container">
 
-<!-- =====================================================
-     HEADER
-     ===================================================== -->
+    <!-- HEADER / D-DAY / MV -->
+    <div class="header">
 
-<div class="header">
-
-    <div id="dday-container">
-
-        <div id="dday-box">
-
-            <div id="dday-text"></div>
-
-            <div id="dday-label"></div>
-
-        </div>
-
-    </div>
-
-    <div id="dday-indicator"></div>
-
-    <!-- MV -->
-    <div class="swiper mvSwiper">
-
-        <div class="swiper-wrapper">
-            <div class="swiper-slide">
-                <iframe
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/lu9GinsuyUQ"
-                    title="Next Chapter"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <div class="swiper-slide">
-                <iframe
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/gNUMxMuxH20"
-                    title="Moonride"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <div class="swiper-slide">
-                <iframe
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/chl0R8C4NJ8"
-                    title="ICONIC HEART"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-            <div class="swiper-slide">
-                <iframe
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/1VqxWNwgf5Q"
-                    title="Lemon Tang"
-                    allowfullscreen>
-                </iframe>
+        <div id="dday-container">
+            <div id="dday-box">
+                <div id="dday-text"></div>
+                <div id="dday-label"></div>
             </div>
         </div>
 
-        <div class="swiper-pagination"></div>
+        <div id="dday-indicator"></div>
 
-    </div>
+        <div class="swiper mvSwiper">
+            <div class="swiper-wrapper">
 
-</div>
+                <div class="swiper-slide">
+                    <iframe
+                        loading="lazy"
+                        src="https://www.youtube.com/embed/lu9GinsuyUQ"
+                        title="Next Chapter"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
 
+                <div class="swiper-slide">
+                    <iframe
+                        loading="lazy"
+                        src="https://www.youtube.com/embed/gNUMxMuxH20"
+                        title="Moonride"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                    </iframe>
+                </div>
 
-<!-- =====================================================
-     TODAY SCHEDULE
-     ===================================================== -->
+                <div class="swiper-slide">
+                    <iframe
+                        loading="lazy"
+                        src="https://www.youtube.com/embed/chl0R8C4NJ8"
+                        title="ICONIC HEART"
+                        allowfullscreen>
+                    </iframe>
+                </div>
 
-<div class="todo-section">
+                <div class="swiper-slide">
+                    <iframe
+                        loading="lazy"
+                        src="https://www.youtube.com/embed/1VqxWNwgf5Q"
+                        title="Lemon Tang"
+                        allowfullscreen>
+                    </iframe>
+                </div>
 
-    <div class="todo-box">
+            </div>
 
-        <div class="todo-header">
-            📅 오늘의 일정
-        </div>
-
-        <div id="today-schedule">오늘 일정을 확인하는 중입니다...</div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     MISSION
-     ===================================================== -->
-
-<div class="todo-section">
-
-    <div class="todo-box">
-
-        <div class="todo-header">
-            📍 오늘의 미션
-        </div>
-
-        <div id="mission-list"></div>
-
-    </div>
-
-</div>
-
-
-<!-- =====================================================
-     GRID
-     ===================================================== -->
-
-<div class="grid">
-
-    <button
-        class="card"
-        onclick="location.href='stream.html'"
-    >
-        스밍리스트
-    </button>
-
-    <button
-        class="card"
-        onclick="location.href='content.html'"
-    >
-        콘텐츠
-    </button>
-
-    <button
-        class="card"
-        onclick="location.href='mv.html'"
-    >
-        MV
-    </button>
-
-    <button
-        class="card"
-        onclick="location.href='cheer.html'"
-    >
-        응원법
-    </button>
-
-    <button
-        class="card"
-        onclick="location.href='schedule.html'"
-    >
-        일정
-    </button>
-
-    <button
-        class="card"
-        onclick="location.href='archive.html'"
-    >
-        아카이브
-    </button>
-
-</div>
-
-
-<!-- =====================================================
-     ICONIC HEART COUNTER
-     ===================================================== -->
-
-<div class="todo-section">
-
-    <div class="todo-box">
-
-        <div class="todo-header">
-            스밍이 끊기지 않았다면
-        </div>
-
-        <div style="font-weight:700;">
-
-            💜 ICONIC HEART (Korean.ver) 누적
-            <span id="iconic-heart-count">0</span>회
-
+            <div class="swiper-pagination"></div>
         </div>
 
     </div>
 
+    <!-- TODAY SCHEDULE -->
+    <section class="todo-section">
+        <div class="todo-box">
+            <div class="todo-header">오늘의 일정</div>
+            <div id="today-schedule">오늘 일정을 확인하는 중입니다...</div>
+        </div>
+    </section>
+
+    <!-- TODAY MISSION -->
+    <section class="todo-section">
+        <div class="todo-box">
+            <div class="todo-header">오늘의 미션</div>
+            <div id="mission-list"></div>
+        </div>
+    </section>
+
+    <!-- EXPANDABLE MENU -->
+    <section class="menu-toggle-wrap">
+
+        <button
+            class="menu-toggle"
+            id="menu-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="extra-menu">
+
+            <span>전체 메뉴</span>
+            <span class="toggle-mark" aria-hidden="true">＋</span>
+
+        </button>
+
+        <nav class="extra-menu" id="extra-menu" aria-label="전체 메뉴">
+            <a href="stream.html">스밍리스트</a>
+            <a href="mv.html">MV</a>
+            <a href="cheer.html">응원법</a>
+            <a href="archive.html">아카이브</a>
+        </nav>
+
+    </section>
+
+    <!-- ICONIC HEART COUNTER -->
+    <section class="todo-section">
+        <div class="todo-box">
+
+            <div class="todo-header">스밍이 끊기지 않았다면</div>
+
+            <div style="font-weight:700;">
+                ICONIC HEART (Korean.ver) 누적
+                <span id="iconic-heart-count">0</span>회
+            </div>
+
+        </div>
+    </section>
+
+    <!-- OFFICIAL ACCOUNTS -->
+    <section class="sns-section">
+
+        <div class="todo-header" style="border:none; margin-bottom:0;">
+            OFFICIAL ACCOUNTS
+        </div>
+
+        <div class="sns-icons">
+
+            <a href="https://www.instagram.com/hearts2hearts" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="instargram-logo.svg"
+                    alt="Instagram"
+                    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg'">
+            </a>
+
+            <a href="https://x.com/Hearts2Hearts" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="x-logo.svg"
+                    alt="X"
+                    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg'">
+            </a>
+
+            <a href="https://youtube.com/@hearts2hearts.official" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="youtube-logo.svg"
+                    alt="YouTube"
+                    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg'">
+            </a>
+
+            <a href="https://weverse.io/hearts2hearts/highlight" target="_blank" rel="noopener noreferrer">
+                <img
+                    src="weverse-logo.svg"
+                    alt="Weverse"
+                    onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/weverse.svg'">
+            </a>
+
+        </div>
+
+        <p class="copyright">
+            본 페이지는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
+            직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은
+            소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
+        </p>
+
+    </section>
+
 </div>
 
-<!-- =====================================================
-     OFFICIAL ACCOUNTS
-     ===================================================== -->
-
-<div class="sns-section">
-
-    <div class="todo-header" style="border:none; margin-bottom:0;">
-        OFFICIAL ACCOUNTS
-    </div>
-
-    <div class="sns-icons">
-
-        <a
-            href="https://www.instagram.com/hearts2hearts"
-            target="_blank"
-        >
-            <img
-                src="instargram-logo.svg"
-                alt="Instagram"
-                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg'"
-            >
-        </a>
-
-        <a
-            href="https://x.com/Hearts2Hearts"
-            target="_blank"
-        >
-            <img
-                src="x-logo.svg"
-                alt="X"
-                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg'"
-            >
-        </a>
-
-        <a
-            href="https://youtube.com/@hearts2hearts.official"
-            target="_blank"
-        >
-            <img
-                src="youtube-logo.svg"
-                alt="YouTube"
-                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg'"
-            >
-        </a>
-
-        <a
-            href="https://weverse.io/hearts2hearts/highlight"
-            target="_blank"
-        >
-            <img
-                src="weverse-logo.svg"
-                alt="Weverse"
-                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/weverse.svg'"
-            >
-        </a>
-
-    </div>
-
-    <p class="copyright">
-        본 페이지는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
-        직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은
-        소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
-    </p>
-
-</div>
-
-</div>
-
-
-<!-- =====================================================
-     KST SYNC MINI PLAYER
-     ===================================================== -->
-
-<div
-    class="kst-player"
-    id="kst-player"
->
+<!-- KST MINI PLAYER -->
+<div class="kst-player" id="kst-player">
 
     <div class="kst-player-info">
 
         <div class="kst-player-song">
-
-            <div
-                id="kst-player-title"
-                class="kst-player-title"
-            >
-                -
-            </div>
-
-            <div
-                id="kst-player-number"
-                class="kst-player-number"
-            >
-                17 / 19
-            </div>
-
+            <div id="kst-player-title" class="kst-player-title">-</div>
+            <div id="kst-player-number" class="kst-player-number">17 / 19</div>
         </div>
 
-        <div
-            id="kst-player-time"
-            class="kst-player-time"
-        >
-            0:00 / 3:09
-        </div>
+        <div id="kst-player-time" class="kst-player-time">0:00 / 3:09</div>
 
         <div class="kst-player-progress">
-
-            <div
-                id="kst-player-progress-bar"
-                class="kst-player-progress-bar"
-            ></div>
-
+            <div id="kst-player-progress-bar" class="kst-player-progress-bar"></div>
         </div>
 
     </div>
 
 </div>
 
+<!-- FIXED BOTTOM MENU -->
+<nav class="bottom-nav" aria-label="주요 메뉴">
+    <a href="index.html" class="active" aria-current="page">홈</a>
+    <a href="musicshow.html">음악방송</a>
+    <a href="selfcontent.html">자체 콘텐츠</a>
+    <a href="schedule.html">일정</a>
+    <a href="search.html">검색</a>
+</nav>
 
-<!-- Swiper JS CDN -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<!-- =====================================================
-     MAIN SCRIPT
-     ===================================================== -->
-
 <script>
+/* =========================
+   EXPANDABLE MENU
+   ========================= */
 
-/* =========================================================
+const menuToggle = document.getElementById("menu-toggle");
+const extraMenu = document.getElementById("extra-menu");
+
+menuToggle.addEventListener("click", function () {
+    const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+
+    menuToggle.setAttribute("aria-expanded", String(!expanded));
+    extraMenu.classList.toggle("open", !expanded);
+});
+
+/* =========================
    MISSION
-   ========================================================= */
+   ========================= */
 
-function toKSTDate(str){
+function toKSTDate(str) {
     return new Date(str + "T00:00:00+09:00");
 }
 
@@ -738,42 +677,42 @@ const mission = document.getElementById("mission-list");
 
 const schedules = [
     {
-        start:"2026-10-06",
-        end:"2026-10-19",
-        items:[
+        start: "2026-10-06",
+        end: "2026-10-19",
+        items: [
             {
-                text:"🗳KGMA Berriz Global Fans' Choice 투표하기",
-                link:"https://link.berriz.in/ko/web/main/vote/2026kgma"
+                text: "KGMA Berriz Global Fans' Choice 투표하기",
+                link: "https://link.berriz.in/ko/web/main/vote/2026kgma"
             }
         ]
     },
     {
-        start:"2026-10-12",
-        end:"2026-10-22",
-        items:[
+        start: "2026-10-12",
+        end: "2026-10-22",
+        items: [
             {
-                text:"🗳MAMA FANS' CHOICE 1차 투표하기",
-                link:"https://mnetplus.world/event/2026-mama?deeplink=mnetplus%3A%2F%2Fvote%2Ftemplates%2Fmama-fans-choice-vote-r1%2F6ab09532c314bb17315adc4e%3Furl_fallback_type%3Dupdate&missionType=MAMA_2026_FANS_CHOICE_VOTE_1ST_SHARE&refererCode=69Z57YA7"
+                text: "MAMA FANS' CHOICE 1차 투표하기",
+                link: "https://mnetplus.world/event/2026-mama?deeplink=mnetplus%3A%2F%2Fvote%2Ftemplates%2Fmama-fans-choice-vote-r1%2F6ab09532c314bb17315adc4e%3Furl_fallback_type%3Dupdate&missionType=MAMA_2026_FANS_CHOICE_VOTE_1ST_SHARE&refererCode=69Z57YA7"
             }
         ]
     },
     {
-        start:"2026-10-15",
-        end:"2026-10-29",
-        items:[
+        start: "2026-10-15",
+        end: "2026-10-29",
+        items: [
             {
-                text:"🗳MMA TOP10 투표하기",
-                link:"https://m2.melon.com/mma/2026/vote/top10/"
+                text: "MMA TOP10 투표하기",
+                link: "https://m2.melon.com/mma/2026/vote/top10/"
             }
         ]
     },
     {
-        start:"2026-10-08",
-        end:"2026-11-04",
-        items:[
+        start: "2026-10-08",
+        end: "2026-11-04",
+        items: [
             {
-                text:"🗳AAA 인기상 여자그룹 투표하기",
-                link:"https://promo-web.idolchamp.com/app_proxy.html?deeplink=https%3A%2F%2Fapp.idolchamp.com%2Fopen%2Fvote%2F01M4784X9DKK87B0J1GB669P3R"
+                text: "AAA 인기상 여자그룹 투표하기",
+                link: "https://promo-web.idolchamp.com/app_proxy.html?deeplink=https%3A%2F%2Fapp.idolchamp.com%2Fopen%2Fvote%2F01M4784X9DKK87B0J1GB669P3R"
             }
         ]
     }
@@ -782,50 +721,48 @@ const schedules = [
 const now = new Date();
 let currentMission = [];
 
-for(const s of schedules){
+for (const s of schedules) {
     const start = toKSTDate(s.start);
     const end = toKSTDate(s.end);
+
     end.setHours(23, 59, 59, 999);
 
-    if(now >= start && now <= end){
+    if (now >= start && now <= end) {
         currentMission.push(...s.items);
     }
 }
 
 mission.innerHTML = currentMission.length
-    ? currentMission.map(item => {
-        if(typeof item === "string"){
-            return `<div>✅ ${item}</div>`;
-        }
-        return `
-            <div class="mission-row">
-                <span>✅ ${item.text}</span>
-                <a class="mission-btn" href="${item.link}" target="_blank">바로가기</a>
-            </div>
-        `;
-    }).join("")
+    ? currentMission.map(item => `
+        <div class="mission-row">
+            <span>${item.text}</span>
+            <a class="mission-btn"
+               href="${item.link}"
+               target="_blank"
+               rel="noopener noreferrer">바로가기</a>
+        </div>
+    `).join("")
     : "진행 중인 미션이 없습니다.";
 
-
-/* =========================================================
-   DDAY
-   ========================================================= */
+/* =========================
+   D-DAY
+   ========================= */
 
 const ddayList = [
     {
-        name:"👾 주은 생일",
-        date:"2026-12-03T00:00:00+09:00",
-        type:"dday"
+        name: "주은 생일",
+        date: "2026-12-03T00:00:00+09:00",
+        type: "dday"
     },
     {
-        name:"🌻 에이나 생일",
-        date:"2026-12-20T00:00:00+09:00",
-        type:"dday"
+        name: "에이나 생일",
+        date: "2026-12-20T00:00:00+09:00",
+        type: "dday"
     },
     {
-        name:"🎉 데뷔",
-        date:"2025-02-24T00:00:00+09:00",
-        type:"debut"
+        name: "데뷔",
+        date: "2025-02-24T00:00:00+09:00",
+        type: "debut"
     }
 ];
 
@@ -835,18 +772,19 @@ const ddayText = document.getElementById("dday-text");
 const ddayLabel = document.getElementById("dday-label");
 const ddayIndicator = document.getElementById("dday-indicator");
 
-ddayIndicator.innerHTML = ddayList.map((item,index) => `
+ddayIndicator.innerHTML = ddayList.map((item, index) => `
     <span class="dday-dot ${index === 0 ? "active" : ""}" data-index="${index}">●</span>
 `).join("");
 
-function updateDdayIndicator(){
+function updateDdayIndicator() {
     const dots = ddayIndicator.querySelectorAll(".dday-dot");
-    dots.forEach((dot,index) => {
+
+    dots.forEach((dot, index) => {
         dot.classList.toggle("active", index === ddayIndex);
     });
 }
 
-function updateDday(){
+function updateDday() {
     const item = ddayList[ddayIndex];
     const nowDate = new Date();
     const target = new Date(item.date);
@@ -856,60 +794,63 @@ function updateDday(){
     const diff = target - nowDate;
     const day = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-    if(item.type === "debut"){
+    if (item.type === "debut") {
         const start = new Date(2025, 1, 24);
-        const todayDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
-        const diffDays = Math.floor((todayDate - start) / (1000 * 60 * 60 * 24)) + 1;
+        const todayDate = new Date(
+            nowDate.getFullYear(),
+            nowDate.getMonth(),
+            nowDate.getDate()
+        );
+
+        const diffDays = Math.floor(
+            (todayDate - start) / (1000 * 60 * 60 * 24)
+        ) + 1;
+
         ddayLabel.textContent = `D+${diffDays}`;
         updateDdayIndicator();
         return;
     }
 
-    if(diff > 0){
-        ddayLabel.textContent = `D-${day}`;
-    }else{
-        ddayLabel.textContent = "D-DAY";
-    }
-
+    ddayLabel.textContent = diff > 0 ? `D-${day}` : "D-DAY";
     updateDdayIndicator();
 }
-
-
-/* =========================================================
-   DDAY SLIDE
-   ========================================================= */
 
 let ddayAnimating = false;
 let ddayTimer;
 
-function resetDdayTimer(){
+function resetDdayTimer() {
     clearTimeout(ddayTimer);
-    ddayTimer = setTimeout(function(){
+
+    ddayTimer = setTimeout(function () {
         moveDday(1);
     }, 10000);
 }
 
-function moveDday(dir = 1){
-    if(ddayAnimating) return;
+function moveDday(dir = 1) {
+    if (ddayAnimating) return;
 
     ddayAnimating = true;
     clearTimeout(ddayTimer);
 
-    ddayBox.classList.remove("slide-in-left", "slide-in-right", "slide-out-left", "slide-out-right");
+    ddayBox.classList.remove(
+        "slide-in-left",
+        "slide-in-right",
+        "slide-out-left",
+        "slide-out-right"
+    );
 
-    if(dir > 0){
-        ddayBox.classList.add("slide-out-left");
-    }else{
-        ddayBox.classList.add("slide-out-right");
-    }
+    ddayBox.classList.add(
+        dir > 0 ? "slide-out-left" : "slide-out-right"
+    );
 
-    setTimeout(function(){
+    setTimeout(function () {
         ddayIndex += dir;
 
-        if(ddayIndex < 0){
+        if (ddayIndex < 0) {
             ddayIndex = ddayList.length - 1;
         }
-        if(ddayIndex >= ddayList.length){
+
+        if (ddayIndex >= ddayList.length) {
             ddayIndex = 0;
         }
 
@@ -917,13 +858,11 @@ function moveDday(dir = 1){
 
         ddayBox.classList.remove("slide-out-left", "slide-out-right");
 
-        if(dir > 0){
-            ddayBox.classList.add("slide-in-left");
-        }else{
-            ddayBox.classList.add("slide-in-right");
-        }
+        ddayBox.classList.add(
+            dir > 0 ? "slide-in-left" : "slide-in-right"
+        );
 
-        setTimeout(function(){
+        setTimeout(function () {
             ddayBox.classList.remove("slide-in-left", "slide-in-right");
             ddayAnimating = false;
             resetDdayTimer();
@@ -935,212 +874,236 @@ function moveDday(dir = 1){
 updateDday();
 resetDdayTimer();
 
-
-/* =========================================================
-   DDAY SWIPE
-   ========================================================= */
+/* D-DAY SWIPE */
 
 let ddayTouchStartX = 0;
 let ddayTouchStartY = 0;
 
-ddayBox.addEventListener("touchstart", function(e){
+ddayBox.addEventListener("touchstart", function (e) {
     ddayTouchStartX = e.touches[0].clientX;
     ddayTouchStartY = e.touches[0].clientY;
-}, { passive:true });
+}, { passive: true });
 
-ddayBox.addEventListener("touchend", function(e){
-    const ddayTouchEndX = e.changedTouches[0].clientX;
-    const ddayTouchEndY = e.changedTouches[0].clientY;
+ddayBox.addEventListener("touchend", function (e) {
+    const endX = e.changedTouches[0].clientX;
+    const endY = e.changedTouches[0].clientY;
 
-    const swipeDistanceX = ddayTouchEndX - ddayTouchStartX;
-    const swipeDistanceY = ddayTouchEndY - ddayTouchStartY;
+    const distanceX = endX - ddayTouchStartX;
+    const distanceY = endY - ddayTouchStartY;
 
-    if(Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)){
-        if(swipeDistanceX > 50){
+    if (Math.abs(distanceX) > Math.abs(distanceY)) {
+        if (distanceX > 50) {
             moveDday(-1);
-        } else if(swipeDistanceX < -50){
+        } else if (distanceX < -50) {
             moveDday(1);
         }
     }
-}, { passive:true });
+}, { passive: true });
 
-
-/* =========================================================
+/* =========================
    KST SYNC PLAYLIST
-   ========================================================= */
+   ========================= */
 
 const kstStartTime = new Date("2026-10-05T18:30:00+09:00");
-const kstStartIndex = 16; // 17번 곡 = index 16
+const kstStartIndex = 16;
 
 const kstPlaylist = [
-    { title:"Lemon Tang", duration:163 },
-    { title:"ICONIC HEART (Korean.ver)", duration:189 },
-    { title:"RUDE!", duration:200 },
-    { title:"FOCUS", duration:178 },
-    { title:"Moonride", duration:177 },
-    { title:"Lemon Tang", duration:163 },
-    { title:"ICONIC HEART (Japanese.ver)", duration:189 },
-    { title:"RUDE!", duration:200 },
-    { title:"STYLE", duration:210 },
-    { title:"15-LOVE", duration:155 },
-    { title:"Lemon Tang", duration:163 },
-    { title:"ICONIC HEART (Korean.ver)", duration:189 },
-    { title:"RUDE!", duration:200 },
-    { title:"FOCUS", duration:178 },
-    { title:"ICONIC HEART (Japanese.ver)", duration:189 },
-    { title:"Lemon Tang", duration:163 },
-    { title:"ICONIC HEART (Korean.ver)", duration:189 },
-    { title:"RUDE!", duration:200 },
-    { title:"STYLE", duration:210 }
+    { title: "Lemon Tang", duration: 163 },
+    { title: "ICONIC HEART (Korean.ver)", duration: 189 },
+    { title: "RUDE!", duration: 200 },
+    { title: "FOCUS", duration: 178 },
+    { title: "Moonride", duration: 177 },
+    { title: "Lemon Tang", duration: 163 },
+    { title: "ICONIC HEART (Japanese.ver)", duration: 189 },
+    { title: "RUDE!", duration: 200 },
+    { title: "STYLE", duration: 210 },
+    { title: "15-LOVE", duration: 155 },
+    { title: "Lemon Tang", duration: 163 },
+    { title: "ICONIC HEART (Korean.ver)", duration: 189 },
+    { title: "RUDE!", duration: 200 },
+    { title: "FOCUS", duration: 178 },
+    { title: "ICONIC HEART (Japanese.ver)", duration: 189 },
+    { title: "Lemon Tang", duration: 163 },
+    { title: "ICONIC HEART (Korean.ver)", duration: 189 },
+    { title: "RUDE!", duration: 200 },
+    { title: "STYLE", duration: 210 }
 ];
 
-const kstTotalDuration = kstPlaylist.reduce((total,song) => total + song.duration, 0);
-const kstStartOffset = kstPlaylist.slice(0, kstStartIndex).reduce((total, song) => total + song.duration, 0);
+const kstTotalDuration = kstPlaylist.reduce(
+    (total, song) => total + song.duration, 0
+);
+
+const kstStartOffset = kstPlaylist
+    .slice(0, kstStartIndex)
+    .reduce((total, song) => total + song.duration, 0);
 
 const kstPlayerTitle = document.getElementById("kst-player-title");
 const kstPlayerNumber = document.getElementById("kst-player-number");
 const kstPlayerTime = document.getElementById("kst-player-time");
 const kstPlayerProgress = document.getElementById("kst-player-progress-bar");
 
-function formatKstTime(seconds){
+function formatKstTime(seconds) {
     seconds = Math.max(0, Math.floor(seconds));
+
     const minutes = Math.floor(seconds / 60);
     const remaining = seconds % 60;
+
     return minutes + ":" + String(remaining).padStart(2, "0");
 }
 
-function getKstPlayerPosition(){
+function getKstPlayerPosition() {
     const nowMs = Date.now();
     const startMs = kstStartTime.getTime();
 
-    if(nowMs < startMs){
-        return { index:kstStartIndex, position:0 };
+    if (nowMs < startMs) {
+        return { index: kstStartIndex, position: 0 };
     }
 
     const elapsed = Math.floor((nowMs - startMs) / 1000);
     const cyclePosition = (kstStartOffset + elapsed) % kstTotalDuration;
 
     let accumulated = 0;
-    for(let i = 0; i < kstPlaylist.length; i++){
+
+    for (let i = 0; i < kstPlaylist.length; i++) {
         const song = kstPlaylist[i];
         const songEnd = accumulated + song.duration;
-        if(cyclePosition < songEnd){
-            return { index:i, position:cyclePosition - accumulated };
+
+        if (cyclePosition < songEnd) {
+            return {
+                index: i,
+                position: cyclePosition - accumulated
+            };
         }
+
         accumulated = songEnd;
     }
-    return { index:kstStartIndex, position:0 };
+
+    return { index: kstStartIndex, position: 0 };
 }
 
-function updateKstPlayer(){
+function updateKstPlayer() {
     const current = getKstPlayerPosition();
     const song = kstPlaylist[current.index];
     const position = current.position;
 
     kstPlayerTitle.textContent = song.title;
-    kstPlayerNumber.textContent = `${current.index + 1} / ${kstPlaylist.length}`;
-    kstPlayerTime.textContent = formatKstTime(position) + " / " + formatKstTime(song.duration);
+    kstPlayerNumber.textContent =
+        `${current.index + 1} / ${kstPlaylist.length}`;
+
+    kstPlayerTime.textContent =
+        formatKstTime(position) + " / " + formatKstTime(song.duration);
 
     const progress = (position / song.duration) * 100;
-    kstPlayerProgress.style.width = Math.min(100, Math.max(0, progress)) + "%";
+
+    kstPlayerProgress.style.width =
+        Math.min(100, Math.max(0, progress)) + "%";
 }
 
 setInterval(updateKstPlayer, 1000);
 updateKstPlayer();
 
-
-/* =========================================================
+/* =========================
    ICONIC HEART COUNTER
-   ========================================================= */
+   ========================= */
 
 const iconicHeartCompletionOffsets = [189, 951, 2775];
 
-function getIconicHeartCount(){
+function getIconicHeartCount() {
     const nowMs = Date.now();
     const startMs = kstStartTime.getTime();
 
-    if(nowMs < startMs) return 0;
+    if (nowMs < startMs) return 0;
 
     const elapsed = Math.floor((nowMs - startMs) / 1000);
     const completedCycles = Math.floor(elapsed / kstTotalDuration);
     const currentCyclePosition = elapsed % kstTotalDuration;
 
     let count = completedCycles * 3;
-    for(const offset of iconicHeartCompletionOffsets){
-        if(currentCyclePosition >= offset){
+
+    for (const offset of iconicHeartCompletionOffsets) {
+        if (currentCyclePosition >= offset) {
             count++;
         }
     }
+
     return count;
 }
 
-function updateIconicHeartCount(){
+function updateIconicHeartCount() {
     const el = document.getElementById("iconic-heart-count");
-    if(el) el.textContent = getIconicHeartCount();
+
+    if (el) {
+        el.textContent = getIconicHeartCount().toLocaleString("ko-KR");
+    }
 }
 
 setInterval(updateIconicHeartCount, 1000);
 updateIconicHeartCount();
 
-
-/* =========================================================
+/* =========================
    TODAY SCHEDULE
-   ========================================================= */
+   ========================= */
 
 const todaySchedule = document.getElementById("today-schedule");
+
 const todayObj = new Date();
 const yyyy = todayObj.getFullYear();
 const mm = String(todayObj.getMonth() + 1).padStart(2, "0");
 const dd = String(todayObj.getDate()).padStart(2, "0");
+
 const todayKey = `${yyyy}-${mm}-${dd}`;
 const scheduleFile = `./schedule-${yyyy}.json`;
 
 fetch(scheduleFile)
     .then(res => {
-        if(!res.ok) throw new Error(`${scheduleFile} 로드 실패`);
+        if (!res.ok) {
+            throw new Error(`${scheduleFile} 로드 실패`);
+        }
+
         return res.json();
     })
     .then(scheduleData => {
-        if(scheduleData && scheduleData[todayKey]){
-            todaySchedule.innerHTML = scheduleData[todayKey].replace(/\n/g, "<br>");
-        }else{
-            todaySchedule.innerHTML = "오늘 일정이 없습니다.";
+        if (scheduleData && scheduleData[todayKey]) {
+            todaySchedule.innerHTML =
+                scheduleData[todayKey].replace(/\n/g, "<br>");
+        } else {
+            todaySchedule.textContent = "오늘 일정이 없습니다.";
         }
     })
     .catch(() => {
-        todaySchedule.innerHTML = "오늘 일정이 없습니다.";
+        todaySchedule.textContent = "오늘 일정이 없습니다.";
     });
 
-
-/* =========================================================
+/* =========================
    SWIPER
-   ========================================================= */
+   ========================= */
 
 new Swiper(".mvSwiper", {
-    loop:true,
-    spaceBetween:10,
-    centeredSlides:true,
-    pagination:{
-        el:".swiper-pagination",
-        clickable:true
+    loop: true,
+    spaceBetween: 10,
+    centeredSlides: true,
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true
     }
 });
 
-
-/* =========================================================
-   SCROLL FADE
-   ========================================================= */
+/* =========================
+   MINI PLAYER SCROLL FADE
+   ========================= */
 
 const kstPlayer = document.getElementById("kst-player");
 let kstScrollTimer;
 
-window.addEventListener("scroll", function(){
+window.addEventListener("scroll", function () {
     kstPlayer.classList.add("scrolling");
+
     clearTimeout(kstScrollTimer);
-    kstScrollTimer = setTimeout(function(){
+
+    kstScrollTimer = setTimeout(function () {
         kstPlayer.classList.remove("scrolling");
     }, 500);
-}, { passive:true });
+}, { passive: true });
 
 </script>
 
