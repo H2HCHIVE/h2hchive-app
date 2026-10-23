@@ -49,20 +49,29 @@ body.menu-open {
    ========================= */
 
 #dday-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  overflow: visible;
 }
 
 #dday-box {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    padding: 6px 0;
-    touch-action: pan-y;
-    user-select: none;
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  padding: 6px 0;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.menu-toggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  flex-shrink: 0;
 }
 
 #dday-box.slide-out-left {
