@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H2HCHIVE | 프로모션 스케줄러</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f5f6f8;
+    color:#111;
+}
+
+header{
+    background:#fff;
+    padding:22px;
+    text-align:center;
+    font-size:24px;
+    font-weight:700;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.container{
+    max-width:700px;
+    margin:24px auto;
+    padding:16px;
+}
+
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:0 4px 14px rgba(0,0,0,.08);
+    cursor:pointer;
+    transition:.2s;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card:hover{
+    transform:translateY(-2px);
+}
+
+.card:active{
+    transform:scale(.98);
+}
+
+.card h2{
+    font-size:20px;
+    margin-bottom:6px;
+}
+
+.card p{
+    color:#666;
+    font-size:14px;
+}
+
+.arrow{
+    font-size:24px;
+    color:#aaa;
+}
+
+#viewer{
+    display:none;
+}
+
+.backBtn{
+    display:inline-block;
+    margin-bottom:18px;
+    color:#111;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.albumTitle{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:20px;
+}
+
+.imageBox img{
+    width:100%;
+    display:block;
+    border-radius:14px;
+    margin-bottom:18px;
+    box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+.footer{
+    text-align:center;
+    color:#999;
+    padding:25px;
+    font-size:13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🗓 프로모션 스케줄러
+</header>
+
+<div class="container">
+
+<div id="list"></div>
+
+<div id="viewer">
+
+<div class="backBtn" onclick="showList()">
+← 목록으로
+</div>
+
+<div class="albumTitle" id="albumTitle"></div>
+
+<div class="imageBox" id="imageBox"></div>
+
+</div>
+
+</div>
+
+<div class="footer">
+H2HCHIVE
+</div>
+
+<script>
+
+const albums = [
+{
+    title:"The Chase",
+    date:"2025.02.24",
+    images:[
+        "TheChase-scheduler.jpg"
+    ]
+},
+{
+    title:"STYLE",
+    date:"2025.06.18",
+    images:[
+        "STYLE-scheduler.jpg"
+    ]
+},
+{
+    title:"FOCUS",
+    date:"2025.10.20",
+    images:[
+        "FOCUS-scheduler.jpg"
+    ]
+},
+{
+    title:"RUDE!",
+    date:"2026.02.20",
+    images:[
+        "RUDE-scheduler.jpg"
+    ]
+},
+{
+    title:"Lemon Tang",
+    date:"2026.06.22",
+    images:[
+        "LemonTang-scheduler.jpg"
+    ]
+},
+{
+    title:"ICONIC HEART",
+    date:"2026.08.12",
+    images:[
+        "ICONICHEART-scheduler.png"
+    ]
+}
+];
+
+function renderList(){
+
+    const list=document.getElementById("list");
+    list.innerHTML="";
+
+    albums.forEach((album,index)=>{
+
+        list.innerHTML+=`
+        <div class="card" onclick="openAlbum(${index})">
+
+            <div>
+                <h2>${album.title}</h2>
+                <p>${album.date}</p>
+            </div>
+
+            <div class="arrow">›</div>
+
+        </div>
+        `;
+
+    });
+
+}
+
+function openAlbum(index){
+
+    document.getElementById("list").style.display="none";
+    document.getElementById("viewer").style.display="block";
+
+    const album=albums[index];
+
+    document.getElementById("albumTitle").textContent=album.title;
+
+    const imageBox=document.getElementById("imageBox");
+    imageBox.innerHTML="";
+
+    album.images.forEach(img=>{
+
+        imageBox.innerHTML+=`
+            <img src="${img}" alt="${album.title}">
+        `;
+
+    });
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+function showList(){
+
+    document.getElementById("viewer").style.display="none";
+    document.getElementById("list").style.display="block";
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+renderList();
+
+</script>
+
+</body>
+</html>
