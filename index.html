@@ -49,31 +49,72 @@ body.menu-open {
    ========================= */
 
 #dday-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  overflow: visible;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+    width: 100%;
+    min-height: 60px;
+    overflow: visible;
 }
 
 #dday-box {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-  padding: 6px 0;
-  touch-action: pan-y;
-  user-select: none;
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 6px 56px;
+    text-align: center;
+    touch-action: pan-y;
+    user-select: none;
 }
 
-.menu-toggle {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  flex-shrink: 0;
+#dday-text {
+    font-size: 1.1rem;
+    font-weight: 800;
 }
 
+#dday-label {
+    font-size: 1.6rem;
+    font-weight: 900;
+}
+
+/* 햄버거 메뉴 버튼 */
+.dday-menu-button {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    z-index: 2;
+
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 14px;
+    background: #fff;
+    color: #222;
+    font-family: inherit;
+    font-size: 27px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.dday-menu-button:active {
+    transform: scale(.96);
+}
+
+/* 디데이 슬라이드 애니메이션 */
 #dday-box.slide-out-left {
     animation: ddaySlideOutLeft .4s ease forwards;
 }
@@ -91,33 +132,47 @@ body.menu-open {
 }
 
 @keyframes ddaySlideOutLeft {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(-30px); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
 }
 
 @keyframes ddaySlideOutRight {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0; transform: translateX(30px); }
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(30px);
+    }
 }
 
 @keyframes ddaySlideInLeft {
-    from { opacity: 0; transform: translateX(30px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes ddaySlideInRight {
-    from { opacity: 0; transform: translateX(-30px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-#dday-text {
-    font-size: 1.1rem;
-    font-weight: 800;
-}
-
-#dday-label {
-    font-size: 1.6rem;
-    font-weight: 900;
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 #dday-indicator {
@@ -138,33 +193,6 @@ body.menu-open {
 .dday-dot.active {
     color: #89CFF0;
     transform: scale(1.15);
-}
-
-/* =========================
-   HAMBURGER MENU BUTTON
-   ========================= */
-
-.dday-menu-button {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 14px;
-    background: #fff;
-    color: #222;
-    font-family: inherit;
-    font-size: 27px;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,.07);
-    -webkit-tap-highlight-color: transparent;
-}
-
-.dday-menu-button:active {
-    transform: scale(.96);
 }
 
 /* =========================
@@ -924,7 +952,7 @@ for (const s of schedules) {
 mission.innerHTML = currentMission.length
     ? currentMission.map(item => `
         <div class="mission-row">
-            <span>${item.text}</span>
+            <span>✅️ ${item.text}</span>
             <a class="mission-btn"
                href="${item.link}"
                target="_blank"
