@@ -1,1224 +1,1148 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>H2HCHIVE</title>
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#FFFFFF" />
-  
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-  <style>
-    :root {
-      --bg-color: #F5F6F8;
-      --card-bg: #FFFFFF;
-      --point-color: #89CFF0;
-      --point-dark: #64b7dc;
-      --point-light: #eef8fd;
-      --point-purple: #8B5CF6;
-      --text-main: #1F2937;
-      --text-sub: #6B7280;
-      --border-color: #E5E7EB;
-      --radius-card: 18px;
-      --radius-btn: 12px;
-      --header-height: 56px;
-      --nav-height: 62px;
-      --mini-player-height: 52px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       모바일 스크롤 & 당겨서 새로고침(Pull-to-Refresh) 방지
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    html {
-      height: 100%;
-      overflow: hidden;
-      overscroll-behavior-y: none;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-      height: 100dvh;
-      width: 100vw;
-      overflow: hidden;
-      overscroll-behavior-y: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       상단 헤더
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    header {
-      background: #FFFFFF;
-      height: var(--header-height);
-      padding: 0 20px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: relative;
-      z-index: 100;
-    }
-
-    .header-logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: var(--text-main);
-      user-select: none;
-    }
-
-    .header-menu-btn {
-      background: none;
-      border: none;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-main);
-      border-radius: 10px;
-      transition: background-color 0.15s ease;
-    }
-
-    .header-menu-btn:active {
-      background-color: var(--bg-color);
-    }
-
-    .header-menu-btn svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       전체 화면 메뉴 오버레이 (A안)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .fullscreen-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100%;
-      height: 100dvh;
-      background: #FFFFFF;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.98) translateY(-6px);
-      transition: opacity 240ms cubic-bezier(0.16, 1, 0.3, 1), transform 240ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .fullscreen-menu.open {
-      opacity: 1;
-      pointer-events: auto;
-      transform: scale(1) translateY(0);
-    }
-
-    .fullscreen-menu-header {
-      height: var(--header-height);
-      padding: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border-color);
-      flex-shrink: 0;
-    }
-
-    .menu-close-btn {
-      background: none;
-      border: none;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-main);
-      border-radius: 10px;
-    }
-
-    .menu-close-btn:active {
-      background-color: var(--bg-color);
-    }
-
-    .menu-close-btn svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-
-    .fullscreen-menu-body {
-      flex: 1;
-      padding: 24px 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .menu-card-item {
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-card);
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      cursor: pointer;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-      transition: transform 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-    }
-
-    .menu-card-item:active {
-      transform: scale(0.98);
-      background-color: var(--point-light);
-      border-color: var(--point-color);
-    }
-
-    .menu-card-icon {
-      width: 46px;
-      height: 46px;
-      background: var(--point-light);
-      color: var(--point-dark);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .menu-card-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: currentColor;
-    }
-
-    .menu-card-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 3px;
-    }
-
-    .menu-card-desc {
-      font-size: 12px;
-      color: var(--text-sub);
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       메인 스크롤 영역
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    main {
-      flex: 1;
-      height: 100%;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 14px 16px;
-      /* 하단 고정 내비(62px) + 미니플레이어(52px) + 안전영역 + 여유공간(20px) */
-      padding-bottom: calc(var(--nav-height) + var(--mini-player-height) + env(safe-area-inset-bottom, 0px) + 20px);
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-y: contain;
-    }
-
-    /* 공통 카드 */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-card);
-      padding: 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-      border: 1px solid rgba(229, 231, 235, 0.7);
-    }
-
-    .card-header {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 12px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #F3F4F6;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       D-DAY 카드 (C안 세련된 카드 레이아웃)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .dday-c-card {
-      position: relative;
-      background: linear-gradient(135deg, #ffffff 0%, #eaf4fb 100%);
-      border: 1px solid #d5ebf8;
-      border-radius: var(--radius-card);
-      padding: 18px 14px;
-      box-shadow: 0 4px 12px rgba(137, 207, 240, 0.12);
-      overflow: hidden;
-      touch-action: pan-y;
-      user-select: none;
-      margin-bottom: 8px;
-    }
-
-    .dday-carousel-track {
-      display: flex;
-      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-      width: 100%;
-    }
-
-    .dday-c-slide {
-      min-width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 38px;
-    }
-
-    .dday-left-content {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .dday-icon-circle {
-      width: 44px;
-      height: 44px;
-      background: #FFFFFF;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-      flex-shrink: 0;
-    }
-
-    .dday-text-box {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .dday-event-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--point-dark);
-      letter-spacing: 0.5px;
-    }
-
-    .dday-event-name {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--text-main);
-      letter-spacing: -0.3px;
-    }
-
-    .dday-right-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-
-    .dday-number-large {
-      font-size: 22px;
-      font-weight: 900;
-      color: var(--point-dark);
-      background: #FFFFFF;
-      padding: 6px 14px;
-      border-radius: 14px;
-      border: 1px solid #d0e7f7;
-      box-shadow: 0 2px 5px rgba(100, 183, 220, 0.12);
-      letter-spacing: -0.5px;
-    }
-
-    .dday-nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 32px;
-      height: 32px;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(213, 235, 248, 0.8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #7DA6BD;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    .dday-nav-arrow:active {
-      background: #FFFFFF;
-      color: var(--point-dark);
-    }
-
-    .dday-nav-arrow.left { left: 8px; }
-    .dday-nav-arrow.right { right: 8px; }
-    .dday-nav-arrow svg { width: 16px; height: 16px; fill: currentColor; }
-
-    .dday-dots-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 5px;
-      margin-bottom: 14px;
-    }
-
-    .dday-dot-item {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #D5DCE2;
-      cursor: pointer;
-      transition: all 0.22s ease;
-    }
-
-    .dday-dot-item.active {
-      background: var(--point-color);
-      width: 14px;
-      border-radius: 4px;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       MV SWIPER (원본 연동)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .mv-swiper-container {
-      width: 100%;
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,.08);
-      margin-bottom: 14px;
-      background: #000;
-    }
-
-    .mvSwiper iframe {
-      width: 100%;
-      height: 215px;
-      border: 0;
-      display: block;
-    }
-
-    .swiper-pagination {
-      position: relative !important;
-      margin-top: 8px;
-      margin-bottom: 6px;
-    }
-
-    .swiper-pagination-bullet-active {
-      background: var(--point-color) !important;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       미션 및 일정 (원본 연동)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .mission-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: #FAFAFA;
-      border: 1px solid var(--border-color);
-      margin-bottom: 8px;
-    }
-
-    .mission-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .mission-text {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .mission-btn {
-      background: #222;
-      color: #fff;
-      text-decoration: none;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: .8rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    #today-schedule {
-      font-size: 14px;
-      color: var(--text-main);
-      line-height: 1.6;
-    }
-
-    /* 스밍 상태 카드 */
-    .streaming-status-card {
-      border: 1px solid #E9D5FF;
-      background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);
-    }
-
-    .streaming-counter {
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--point-purple);
-      margin-top: 4px;
-    }
-
-    /* 공식 SNS & 카피라이트 */
-    .sns-section {
-      margin-top: 24px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .sns-icons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 12px;
-    }
-
-    .sns-icons a img {
-      width: 32px;
-      height: 32px;
-      display: block;
-      opacity: 0.85;
-      transition: opacity 0.2s;
-    }
-
-    .sns-icons a img:active {
-      opacity: 1;
-    }
-
-    .copyright {
-      margin-top: 14px;
-      font-size: 0.72rem;
-      line-height: 1.55;
-      color: #888;
-      text-align: center;
-      padding: 0 10px;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       [2] 하단 고정 미니 플레이어 (A안)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .bottom-fixed-mini-player {
-      position: fixed;
-      bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
-      left: 0;
-      right: 0;
-      height: var(--mini-player-height);
-      background: rgba(255, 255, 255, 0.98);
-      border-top: 1px solid rgba(137, 207, 240, 0.45);
-      box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 16px;
-      z-index: 89;
-      cursor: pointer;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-
-    .mini-player-top-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .mini-player-left {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-
-    .mini-player-status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10B981;
-      flex-shrink: 0;
-    }
-
-    .mini-player-title {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .mini-player-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-
-    .mini-player-track {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--point-dark);
-      background: var(--point-light);
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-
-    .mini-player-time {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-
-    .mini-player-progress-track {
-      width: 100%;
-      height: 3px;
-      background: #E5E7EB;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .mini-player-progress-fill {
-      width: 0%;
-      height: 100%;
-      background: var(--point-color);
-      border-radius: 2px;
-      transition: width 0.5s linear;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       하단 고정 내비게이션 (5개 메뉴)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    nav.bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: var(--nav-height);
-      background: #FFFFFF;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 90;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-
-    .nav-btn {
-      background: none;
-      border: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 500;
-      width: 20%;
-      height: 100%;
-      cursor: pointer;
-    }
-
-    .nav-btn svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-
-    .nav-btn.active {
-      color: var(--point-dark);
-      font-weight: 700;
-    }
-
-    .nav-btn.active svg {
-      fill: var(--point-color);
-    }
-
-    /* 기타 화면 탭 시안 */
-    .tab-view { display: none; }
-    .tab-view.active { display: block; }
-    .page-title { font-size: 17px; font-weight: 800; margin-bottom: 14px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>H2HCHIVE</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#f5f6f8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+>
+
+<style>
+/* 모바일 앱 전용 기본 설정 및 새로고침(Pull-to-Refresh) 방지 */
+html {
+    overscroll-behavior-y: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Apple SD Gothic Neo",sans-serif;
+    background:#f5f6f8;
+    color:#222;
+    overscroll-behavior-y: none;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.container{
+    max-width:420px;
+    margin:0 auto;
+    padding:24px 16px 70px;
+    box-sizing: border-box;
+}
+
+.header{
+    margin-bottom:24px;
+}
+
+
+/* =========================================================
+   DDAY
+   ========================================================= */
+
+#dday-container{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    overflow:hidden;
+}
+
+#dday-box{
+    flex:1;
+    text-align:center;
+    padding:6px 0;
+    touch-action:pan-y;
+    user-select:none;
+}
+
+#dday-box.slide-out-left{
+    animation:ddaySlideOutLeft .4s ease forwards;
+}
+
+#dday-box.slide-out-right{
+    animation:ddaySlideOutRight .4s ease forwards;
+}
+
+#dday-box.slide-in-left{
+    animation:ddaySlideInLeft .4s ease forwards;
+}
+
+#dday-box.slide-in-right{
+    animation:ddaySlideInRight .4s ease forwards;
+}
+
+@keyframes ddaySlideOutLeft{
+    from{
+        opacity:1;
+        transform:translateX(0);
+    }
+    to{
+        opacity:0;
+        transform:translateX(-30px);
+    }
+}
+
+@keyframes ddaySlideOutRight{
+    from{
+        opacity:1;
+        transform:translateX(0);
+    }
+    to{
+        opacity:0;
+        transform:translateX(30px);
+    }
+}
+
+@keyframes ddaySlideInLeft{
+    from{
+        opacity:0;
+        transform:translateX(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes ddaySlideInRight{
+    from{
+        opacity:0;
+        transform:translateX(-30px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+#dday-text{
+    font-size:1.1rem;
+    font-weight:800;
+}
+
+#dday-label{
+    font-size:1.6rem;
+    font-weight:900;
+}
+
+
+/* =========================================================
+   DDAY INDICATOR
+   ========================================================= */
+
+#dday-indicator{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:5px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.dday-dot{
+    font-size:8px;
+    line-height:1;
+    color:#d5d5d5;
+    transition:color .25s ease, transform .25s ease;
+}
+
+.dday-dot.active{
+    color:#89CFF0;
+    transform:scale(1.15);
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.card{
+    background:white;
+    border:none;
+    border-radius:18px;
+    padding:22px 12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform 0.1s ease;
+}
+
+.card:active {
+    transform:scale(0.98);
+}
+
+.wide{
+    grid-column:1 / -1;
+}
+
+
+/* =========================================================
+   TODO / MISSION
+   ========================================================= */
+
+.todo-section{
+    margin:25px 0 25px;
+}
+
+.todo-box{
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    line-height:2;
+}
+
+.todo-header{
+    font-size:1rem;
+    font-weight:700;
+    margin-bottom:10px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eee;
+}
+
+.mission-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    margin:8px 0;
+}
+
+.mission-btn{
+    background:#222;
+    color:#fff;
+    text-decoration:none;
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:600;
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   COPYRIGHT
+   ========================================================= */
+
+.copyright{
+    margin-top:16px;
+    font-size:0.75rem;
+    line-height:1.6;
+    color:#777;
+    text-align:center;
+}
+
+
+/* =========================================================
+   OFFICIAL ACCOUNTS
+   ========================================================= */
+
+.sns-section{
+    margin-top:20px;
+    text-align:center;
+}
+
+.sns-icons{
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    margin-top:14px;
+}
+
+.sns-icons a img{
+    width:34px;
+    height:34px;
+    display:block;
+}
+
+
+/* =========================================================
+   MV SWIPER
+   ========================================================= */
+
+.mvSwiper{
+    width:100%;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+.mvSwiper iframe{
+    width:100%;
+    height:220px;
+    border:0;
+    display:block;
+}
+
+.swiper-pagination{
+    position:relative;
+    margin-top:10px;
+}
+
+
+/* =========================================================
+   KST SYNC MINI PLAYER
+   ========================================================= */
+
+.kst-player{
+    position:fixed;
+
+    right:12px;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+
+    width:158px;
+    min-height:48px;
+
+    background:rgba(255,255,255,.96);
+
+    border:1px solid rgba(137,207,240,.45);
+    border-radius:14px;
+
+    box-shadow:0 4px 14px rgba(0,0,0,.10);
+
+    display:flex;
+    align-items:center;
+
+    padding:7px 9px;
+
+    box-sizing:border-box;
+
+    z-index:9999;
+
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease;
+}
+
+.kst-player.scrolling{
+    opacity:.28;
+    transform:translateX(2px);
+}
+
+.kst-player-info{
+    min-width:0;
+    width:100%;
+    overflow:hidden;
+}
+
+.kst-player-song{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    min-width:0;
+}
+
+.kst-player-title{
+    min-width:0;
+
+    font-size:12px;
+    font-weight:700;
+
+    line-height:15px;
+
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    color:#222;
+}
+
+.kst-player-number{
+    font-size:8px;
+    font-weight:600;
+
+    color:#89CFF0;
+
+    white-space:nowrap;
+    flex-shrink:0;
+}
+
+.kst-player-time{
+    font-size:10px;
+    color:#888;
+    line-height:13px;
+}
+
+.kst-player-progress{
+    width:100%;
+    height:2px;
+
+    margin-top:2px;
+
+    background:#e5e5e5;
+
+    border-radius:999px;
+
+    overflow:hidden;
+}
+
+.kst-player-progress-bar{
+    width:0%;
+    height:100%;
+
+    background:#89CFF0;
+
+    transition:width .5s linear;
+}
+
+@media(max-width:360px){
+    .kst-player{
+        width:148px;
+        right:8px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-  <!-- [전체 화면 메뉴 오버레이 (A안)] -->
-  <div class="fullscreen-menu" id="fullscreenMenu">
-    <div class="fullscreen-menu-header">
-      <div class="header-logo">H2HCHIVE</div>
-      <button class="menu-close-btn" onclick="toggleFullscreenMenu(false)" aria-label="메뉴 닫기">
-        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-      </button>
+<div class="container">
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
+<div class="header">
+
+    <div id="dday-container">
+
+        <div id="dday-box">
+
+            <div id="dday-text"></div>
+
+            <div id="dday-label"></div>
+
+        </div>
+
     </div>
-    <div class="fullscreen-menu-body">
-      <div class="menu-card-item" onclick="handleMenuAction('MV')">
-        <div class="menu-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+
+    <div id="dday-indicator"></div>
+
+    <!-- MV -->
+    <div class="swiper mvSwiper">
+
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <iframe
+                    loading="lazy"
+                    src="https://www.youtube.com/embed/lu9GinsuyUQ"
+                    title="Next Chapter"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="swiper-slide">
+                <iframe
+                    loading="lazy"
+                    src="https://www.youtube.com/embed/gNUMxMuxH20"
+                    title="Moonride"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="swiper-slide">
+                <iframe
+                    loading="lazy"
+                    src="https://www.youtube.com/embed/chl0R8C4NJ8"
+                    title="ICONIC HEART"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+            <div class="swiper-slide">
+                <iframe
+                    loading="lazy"
+                    src="https://www.youtube.com/embed/1VqxWNwgf5Q"
+                    title="Lemon Tang"
+                    allowfullscreen>
+                </iframe>
+            </div>
         </div>
-        <div>
-          <div class="menu-card-title">MV 아카이브</div>
-          <div class="menu-card-desc">Hearts2Hearts 공식 뮤직비디오 모음</div>
-        </div>
-      </div>
-      <div class="menu-card-item" onclick="handleMenuAction('응원법')">
-        <div class="menu-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-        </div>
-        <div>
-          <div class="menu-card-title">공식 응원법</div>
-          <div class="menu-card-desc">음악방송 타이틀곡 공식 응원법 가이드</div>
-        </div>
-      </div>
-      <div class="menu-card-item" onclick="handleMenuAction('아카이브')">
-        <div class="menu-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-        </div>
-        <div>
-          <div class="menu-card-title">통합 아카이브</div>
-          <div class="menu-card-desc">H2H 관련 전체 기록 및 미디어 저장소</div>
-        </div>
-      </div>
-      <div class="menu-card-item" onclick="handleMenuAction('설정')">
-        <div class="menu-card-icon">
-          <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-        </div>
-        <div>
-          <div class="menu-card-title">앱 설정</div>
-          <div class="menu-card-desc">알림 권한 및 앱 세부 환경설정</div>
-        </div>
-      </div>
+
+        <div class="swiper-pagination"></div>
+
     </div>
-  </div>
 
-  <!-- 상단 헤더 -->
-  <header>
-    <div class="header-logo">H2HCHIVE</div>
-    <button class="header-menu-btn" onclick="toggleFullscreenMenu(true)" aria-label="메뉴 열기">
-      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-    </button>
-  </header>
+</div>
 
-  <!-- 단일 메인 스크롤 컨테이너 -->
-  <main id="mainScrollContainer">
-    <!-- 1. 홈 화면 -->
-    <section id="view-home" class="tab-view active">
-      
-      <!-- [D-DAY C안: 세련된 카드 레이아웃] -->
-      <div class="dday-c-card" id="ddayCarouselCard">
-        <button class="dday-nav-arrow left" onclick="prevDday(event)" aria-label="이전 기념일">
-          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-        </button>
-        <button class="dday-nav-arrow right" onclick="nextDday(event)" aria-label="다음 기념일">
-          <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-        </button>
 
-        <div class="dday-carousel-track" id="ddayTrack">
-          <!-- 스크립트에서 자동 렌더링 -->
+<!-- =====================================================
+     TODAY SCHEDULE
+     ===================================================== -->
+
+<div class="todo-section">
+
+    <div class="todo-box">
+
+        <div class="todo-header">
+            📅 오늘의 일정
         </div>
-      </div>
 
-      <!-- D-DAY 페이지 인디케이터 -->
-      <div class="dday-dots-wrap" id="ddayDots"></div>
+        <div id="today-schedule">오늘 일정을 확인하는 중입니다...</div>
 
-      <!-- [MV SWIPER: 원본 4개 영상 연동] -->
-      <div class="mv-swiper-container">
-        <div class="swiper mvSwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <iframe loading="lazy" src="https://www.youtube.com/embed/lu9GinsuyUQ" title="Next Chapter" allowfullscreen></iframe>
-            </div>
-            <div class="swiper-slide">
-              <iframe loading="lazy" src="https://www.youtube.com/embed/gNUMxMuxH20" title="Moonride" allowfullscreen></iframe>
-            </div>
-            <div class="swiper-slide">
-              <iframe loading="lazy" src="https://www.youtube.com/embed/chl0R8C4NJ8" title="ICONIC HEART" allowfullscreen></iframe>
-            </div>
-            <div class="swiper-slide">
-              <iframe loading="lazy" src="https://www.youtube.com/embed/1VqxWNwgf5Q" title="Lemon Tang" allowfullscreen></iframe>
-            </div>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-      </div>
-
-      <!-- [TODAY SCHEDULE: 원본 schedule-yyyy.json 연동] -->
-      <div class="card">
-        <div class="card-header">📅 오늘의 일정</div>
-        <div id="today-schedule">일정을 불러오는 중입니다...</div>
-      </div>
-
-      <!-- [MISSION: 원본 날짜 판별 로직 연동] -->
-      <div class="card">
-        <div class="card-header">📍 오늘의 미션</div>
-        <div id="mission-list">미션을 확인하는 중입니다...</div>
-      </div>
-
-      <!-- [ICONIC HEART COUNTER: 원본 실시간 누적 계산 연동] -->
-      <div class="card streaming-status-card">
-        <div class="card-header" style="border:none; margin-bottom:0; padding-bottom:0;">
-          스밍이 끊기지 않았다면
-        </div>
-        <div class="streaming-counter">
-          💜 ICONIC HEART (Korean.ver) 누적 <span id="iconic-heart-count">0</span>회
-        </div>
-        <div style="font-size:12px; color:var(--text-sub); margin-top:8px;">
-          실시간 재생 현황은 하단 고정 미니 플레이어에서 바로 확인하실 수 있습니다.
-        </div>
-      </div>
-
-      <!-- [공식 SNS & 카피라이트: 원본 연동] -->
-      <div class="sns-section">
-        <div style="font-size:13px; font-weight:700; color:var(--text-sub);">OFFICIAL ACCOUNTS</div>
-        <div class="sns-icons">
-          <a href="https://www.instagram.com/hearts2hearts" target="_blank"><img src="instargram-logo.svg" alt="Instagram" onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg'"></a>
-          <a href="https://x.com/Hearts2Hearts" target="_blank"><img src="x-logo.svg" alt="X" onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg'"></a>
-          <a href="https://youtube.com/@hearts2hearts.official" target="_blank"><img src="youtube-logo.svg" alt="YouTube" onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg'"></a>
-          <a href="https://weverse.io/hearts2hearts/highlight" target="_blank"><img src="weverse-logo.svg" alt="Weverse" onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/weverse.svg'"></a>
-        </div>
-        <p class="copyright">
-          본 페이지는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
-          직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은 소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
-        </p>
-      </div>
-
-    </section>
-
-    <!-- 기타 메뉴 탭 화면 -->
-    <section id="view-stream" class="tab-view">
-      <div class="page-title">🎧 스밍 리스트</div>
-      <div class="card"><div style="font-weight:700;">총 재생 시간: 58분 25초 (19곡)</div></div>
-    </section>
-    <section id="view-schedule" class="tab-view">
-      <div class="page-title">📅 일정 아카이브</div>
-      <div class="card">등록된 일정이 표시됩니다.</div>
-    </section>
-    <section id="view-music" class="tab-view">
-      <div class="page-title">📺 음악방송 아카이브</div>
-      <div class="card">음악방송 내역이 표시됩니다.</div>
-    </section>
-    <section id="view-self" class="tab-view">
-      <div class="page-title">🎬 자체 콘텐츠</div>
-      <div class="card">자체 콘텐츠 영상이 표시됩니다.</div>
-    </section>
-  </main>
-
-  <!-- [하단 고정 미니 플레이어 (A안): 원본 KST SYNC 연동] -->
-  <div class="bottom-fixed-mini-player" onclick="switchTab('stream')" title="스밍 화면으로 이동">
-    <div class="mini-player-top-row">
-      <div class="mini-player-left">
-        <span class="mini-player-status-dot"></span>
-        <span class="mini-player-title" id="kst-player-title">-</span>
-      </div>
-      <div class="mini-player-right">
-        <span class="mini-player-track" id="kst-player-number">17 / 19</span>
-        <span class="mini-player-time" id="kst-player-time">0:00 / 3:09</span>
-      </div>
     </div>
-    <div class="mini-player-progress-track">
-      <div class="mini-player-progress-fill" id="kst-player-progress-bar"></div>
-    </div>
-  </div>
 
-  <!-- 하단 고정 내비게이션 -->
-  <nav class="bottom-nav">
-    <button class="nav-btn" id="nav-stream" onclick="switchTab('stream')">
-      <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-      <span>스밍</span>
-    </button>
-    <button class="nav-btn" id="nav-schedule" onclick="switchTab('schedule')">
-      <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-      <span>일정</span>
-    </button>
-    <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>홈</span>
-    </button>
-    <button class="nav-btn" id="nav-music" onclick="switchTab('music')">
-      <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7v-3l4 2.5-4 2.5z"/></svg>
-      <span>음방</span>
-    </button>
-    <button class="nav-btn" id="nav-self" onclick="switchTab('self')">
-      <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
-      <span>자컨</span>
-    </button>
-  </nav>
+</div>
 
-  <!-- Swiper JS CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-  <script>
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       1. 탭 전환 & 전체화면 메뉴 토글
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+<!-- =====================================================
+     MISSION
+     ===================================================== -->
 
-      const targetView = document.getElementById(`view-${tabId}`);
-      const targetBtn = document.getElementById(`nav-${tabId}`);
+<div class="todo-section">
 
-      if (targetView) targetView.classList.add('active');
-      if (targetBtn) targetBtn.classList.add('active');
-    }
+    <div class="todo-box">
 
-    function toggleFullscreenMenu(isOpen) {
-      const menu = document.getElementById('fullscreenMenu');
-      if (isOpen) menu.classList.add('open');
-      else menu.classList.remove('open');
-    }
-
-    function handleMenuAction(menuName) {
-      toggleFullscreenMenu(false);
-      if (menuName === 'MV') switchTab('home');
-      else if (menuName === '응원법') switchTab('stream');
-      else if (menuName === '아카이브') switchTab('music');
-      else if (menuName === '설정') alert('설정 화면으로 이동합니다.');
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       2. 모바일 스크롤 새로고침 방어
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const scrollBox = document.getElementById('mainScrollContainer');
-    let startTouchY = 0;
-
-    scrollBox.addEventListener('touchstart', (e) => {
-      startTouchY = e.touches[0].clientY;
-    }, { passive: true });
-
-    scrollBox.addEventListener('touchmove', (e) => {
-      const currentTouchY = e.touches[0].clientY;
-      const isDraggingDown = currentTouchY > startTouchY;
-      if (scrollBox.scrollTop <= 0 && isDraggingDown) {
-        if (e.cancelable) e.preventDefault();
-      }
-    }, { passive: false });
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       3. D-DAY 계산 및 슬라이드 (C안)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const ddayList = [
-      { name: "주은 생일", label: "MEMBERS BIRTHDAY", icon: "👾", date: "2026-12-03T00:00:00+09:00", type: "dday" },
-      { name: "에이나 생일", label: "MEMBERS BIRTHDAY", icon: "🌻", date: "2026-12-20T00:00:00+09:00", type: "dday" },
-      { name: "데뷔일", label: "ANNIVERSARY", icon: "🎉", date: "2025-02-24T00:00:00+09:00", type: "debut" }
-    ];
-
-    let ddayIndex = 0;
-    let ddayInterval = null;
-
-    function calculateDdayValue(item) {
-      const now = new Date();
-      if (item.type === "debut") {
-        const start = new Date(2025, 1, 24);
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diffDays = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
-        return `D+${diffDays}`;
-      }
-      const target = new Date(item.date);
-      const diff = target - now;
-      const day = Math.ceil(diff / (1000 * 60 * 60 * 24));
-      return diff > 0 ? `D-${day}` : "D-DAY";
-    }
-
-    function initDdayCarousel() {
-      const track = document.getElementById('ddayTrack');
-      const dotsWrap = document.getElementById('ddayDots');
-
-      track.innerHTML = ddayList.map(item => `
-        <div class="dday-c-slide">
-          <div class="dday-left-content">
-            <div class="dday-icon-circle">${item.icon}</div>
-            <div class="dday-text-box">
-              <span class="dday-event-label">${item.label}</span>
-              <span class="dday-event-name">${item.name}</span>
-            </div>
-          </div>
-          <div class="dday-right-badge">
-            <span class="dday-number-large">${calculateDdayValue(item)}</span>
-          </div>
+        <div class="todo-header">
+            📍 오늘의 미션
         </div>
-      `).join('');
 
-      dotsWrap.innerHTML = ddayList.map((_, idx) => `
-        <span class="dday-dot-item ${idx === 0 ? 'active' : ''}" onclick="goDday(${idx})"></span>
-      `).join('');
+        <div id="mission-list"></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     GRID
+     ===================================================== -->
+
+<div class="grid">
+
+    <button
+        class="card"
+        onclick="location.href='stream.html'"
+    >
+        스밍리스트
+    </button>
+
+    <button
+        class="card"
+        onclick="location.href='content.html'"
+    >
+        콘텐츠
+    </button>
+
+    <button
+        class="card"
+        onclick="location.href='mv.html'"
+    >
+        MV
+    </button>
+
+    <button
+        class="card"
+        onclick="location.href='cheer.html'"
+    >
+        응원법
+    </button>
+
+    <button
+        class="card"
+        onclick="location.href='schedule.html'"
+    >
+        일정
+    </button>
+
+    <button
+        class="card"
+        onclick="location.href='archive.html'"
+    >
+        아카이브
+    </button>
+
+</div>
+
+
+<!-- =====================================================
+     ICONIC HEART COUNTER
+     ===================================================== -->
+
+<div class="todo-section">
+
+    <div class="todo-box">
+
+        <div class="todo-header">
+            스밍이 끊기지 않았다면
+        </div>
+
+        <div style="font-weight:700;">
+
+            💜 ICONIC HEART (Korean.ver) 누적
+            <span id="iconic-heart-count">0</span>회
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     OFFICIAL ACCOUNTS
+     ===================================================== -->
+
+<div class="sns-section">
+
+    <div class="todo-header" style="border:none; margin-bottom:0;">
+        OFFICIAL ACCOUNTS
+    </div>
+
+    <div class="sns-icons">
+
+        <a
+            href="https://www.instagram.com/hearts2hearts"
+            target="_blank"
+        >
+            <img
+                src="instargram-logo.svg"
+                alt="Instagram"
+                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg'"
+            >
+        </a>
+
+        <a
+            href="https://x.com/Hearts2Hearts"
+            target="_blank"
+        >
+            <img
+                src="x-logo.svg"
+                alt="X"
+                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg'"
+            >
+        </a>
+
+        <a
+            href="https://youtube.com/@hearts2hearts.official"
+            target="_blank"
+        >
+            <img
+                src="youtube-logo.svg"
+                alt="YouTube"
+                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg'"
+            >
+        </a>
+
+        <a
+            href="https://weverse.io/hearts2hearts/highlight"
+            target="_blank"
+        >
+            <img
+                src="weverse-logo.svg"
+                alt="Weverse"
+                onerror="this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/weverse.svg'"
+            >
+        </a>
+
+    </div>
+
+    <p class="copyright">
+        본 페이지는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
+        직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은
+        소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
+    </p>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     KST SYNC MINI PLAYER
+     ===================================================== -->
+
+<div
+    class="kst-player"
+    id="kst-player"
+>
+
+    <div class="kst-player-info">
+
+        <div class="kst-player-song">
+
+            <div
+                id="kst-player-title"
+                class="kst-player-title"
+            >
+                -
+            </div>
+
+            <div
+                id="kst-player-number"
+                class="kst-player-number"
+            >
+                17 / 19
+            </div>
+
+        </div>
+
+        <div
+            id="kst-player-time"
+            class="kst-player-time"
+        >
+            0:00 / 3:09
+        </div>
+
+        <div class="kst-player-progress">
+
+            <div
+                id="kst-player-progress-bar"
+                class="kst-player-progress-bar"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Swiper JS CDN -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- =====================================================
+     MAIN SCRIPT
+     ===================================================== -->
+
+<script>
+
+/* =========================================================
+   MISSION
+   ========================================================= */
+
+function toKSTDate(str){
+    return new Date(str + "T00:00:00+09:00");
+}
+
+const mission = document.getElementById("mission-list");
+
+const schedules = [
+    {
+        start:"2026-10-06",
+        end:"2026-10-19",
+        items:[
+            {
+                text:"🗳KGMA Berriz Global Fans' Choice 투표하기",
+                link:"https://link.berriz.in/ko/web/main/vote/2026kgma"
+            }
+        ]
+    },
+    {
+        start:"2026-10-12",
+        end:"2026-10-22",
+        items:[
+            {
+                text:"🗳MAMA FANS' CHOICE 1차 투표하기",
+                link:"https://mnetplus.world/event/2026-mama?deeplink=mnetplus%3A%2F%2Fvote%2Ftemplates%2Fmama-fans-choice-vote-r1%2F6ab09532c314bb17315adc4e%3Furl_fallback_type%3Dupdate&missionType=MAMA_2026_FANS_CHOICE_VOTE_1ST_SHARE&refererCode=69Z57YA7"
+            }
+        ]
+    },
+    {
+        start:"2026-10-15",
+        end:"2026-10-29",
+        items:[
+            {
+                text:"🗳MMA TOP10 투표하기",
+                link:"https://m2.melon.com/mma/2026/vote/top10/"
+            }
+        ]
+    },
+    {
+        start:"2026-10-08",
+        end:"2026-11-04",
+        items:[
+            {
+                text:"🗳AAA 인기상 여자그룹 투표하기",
+                link:"https://promo-web.idolchamp.com/app_proxy.html?deeplink=https%3A%2F%2Fapp.idolchamp.com%2Fopen%2Fvote%2F01M4784X9DKK87B0J1GB669P3R"
+            }
+        ]
     }
+];
 
-    function updateDdayDisplay() {
-      const track = document.getElementById('ddayTrack');
-      if (track) track.style.transform = `translateX(-${ddayIndex * 100}%)`;
-      document.querySelectorAll('.dday-dot-item').forEach((dot, idx) => {
-        dot.classList.toggle('active', idx === ddayIndex);
-      });
-    }
+const now = new Date();
+let currentMission = [];
 
-    function nextDday(e) {
-      if (e) e.stopPropagation();
-      ddayIndex = (ddayIndex + 1) % ddayList.length;
-      updateDdayDisplay();
-      restartDdayTimer();
-    }
+for(const s of schedules){
+    const start = toKSTDate(s.start);
+    const end = toKSTDate(s.end);
+    end.setHours(23, 59, 59, 999);
 
-    function prevDday(e) {
-      if (e) e.stopPropagation();
-      ddayIndex = (ddayIndex - 1 + ddayList.length) % ddayList.length;
-      updateDdayDisplay();
-      restartDdayTimer();
-    }
-
-    function goDday(idx) {
-      ddayIndex = idx;
-      updateDdayDisplay();
-      restartDdayTimer();
-    }
-
-    function startDdayTimer() {
-      stopDdayTimer();
-      ddayInterval = setInterval(() => {
-        ddayIndex = (ddayIndex + 1) % ddayList.length;
-        updateDdayDisplay();
-      }, 4000);
-    }
-
-    function stopDdayTimer() {
-      if (ddayInterval) clearInterval(ddayInterval);
-    }
-
-    function restartDdayTimer() {
-      stopDdayTimer();
-      startDdayTimer();
-    }
-
-    // 터치 스와이프
-    const carouselCard = document.getElementById('ddayCarouselCard');
-    let touchStartX = 0;
-    if (carouselCard) {
-      carouselCard.addEventListener('touchstart', (e) => {
-        touchStartX = e.touches[0].clientX;
-        stopDdayTimer();
-      }, { passive: true });
-      carouselCard.addEventListener('touchend', (e) => {
-        const diffX = touchStartX - e.changedTouches[0].clientX;
-        if (Math.abs(diffX) > 35) {
-          if (diffX > 0) nextDday();
-          else prevDday();
-        } else {
-          startDdayTimer();
-        }
-      }, { passive: true });
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       4. 오늘의 일정 (schedule-yyyy.json 원본 로직)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const todaySchedule = document.getElementById("today-schedule");
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    const todayKey = `${yyyy}-${mm}-${dd}`;
-    const scheduleFile = `./schedule-${yyyy}.json`;
-
-    fetch(scheduleFile)
-      .then(res => {
-        if (!res.ok) throw new Error(`${scheduleFile} 로드 실패`);
-        return res.json();
-      })
-      .then(scheduleData => {
-        if (scheduleData && scheduleData[todayKey]) {
-          todaySchedule.innerHTML = scheduleData[todayKey].replace(/\n/g, "<br>");
-        } else {
-          todaySchedule.innerHTML = "오늘 일정이 없습니다.";
-        }
-      })
-      .catch(() => {
-        todaySchedule.innerHTML = "오늘 일정이 없습니다.";
-      });
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       5. 오늘의 미션 (원본 투표 기간 판별 로직)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    function toKSTDate(str) {
-      return new Date(str + "T00:00:00+09:00");
-    }
-
-    const missionEl = document.getElementById("mission-list");
-    const missionSchedules = [
-      { start: "2026-10-06", end: "2026-10-19", items: [{ text: "🗳KGMA Berriz Global Fans' Choice 투표하기", link: "https://link.berriz.in/ko/web/main/vote/2026kgma" }] },
-      { start: "2026-10-12", end: "2026-10-22", items: [{ text: "🗳MAMA FANS' CHOICE 1차 투표하기", link: "https://mnetplus.world/event/2026-mama?deeplink=mnetplus%3A%2F%2Fvote%2Ftemplates%2Fmama-fans-choice-vote-r1%2F6ab09532c314bb17315adc4e%3Furl_fallback_type%3Dupdate&missionType=MAMA_2026_FANS_CHOICE_VOTE_1ST_SHARE&refererCode=69Z57YA7" }] },
-      { start: "2026-10-15", end: "2026-10-29", items: [{ text: "🗳MMA TOP10 투표하기", link: "https://m2.melon.com/mma/2026/vote/top10/" }] },
-      { start: "2026-10-08", end: "2026-11-04", items: [{ text: "🗳AAA 인기상 여자그룹 투표하기", link: "https://promo-web.idolchamp.com/app_proxy.html?deeplink=https%3A%2F%2Fapp.idolchamp.com%2Fopen%2Fvote%2F01M4784X9DKK87B0J1GB669P3R" }] }
-    ];
-
-    const nowDate = new Date();
-    let currentMission = [];
-
-    for (const s of missionSchedules) {
-      const start = toKSTDate(s.start);
-      const end = toKSTDate(s.end);
-      end.setHours(23, 59, 59, 999);
-      if (nowDate >= start && nowDate <= end) {
+    if(now >= start && now <= end){
         currentMission.push(...s.items);
-      }
+    }
+}
+
+mission.innerHTML = currentMission.length
+    ? currentMission.map(item => {
+        if(typeof item === "string"){
+            return `<div>✅ ${item}</div>`;
+        }
+        return `
+            <div class="mission-row">
+                <span>✅ ${item.text}</span>
+                <a class="mission-btn" href="${item.link}" target="_blank">바로가기</a>
+            </div>
+        `;
+    }).join("")
+    : "진행 중인 미션이 없습니다.";
+
+
+/* =========================================================
+   DDAY
+   ========================================================= */
+
+const ddayList = [
+    {
+        name:"👾 주은 생일",
+        date:"2026-12-03T00:00:00+09:00",
+        type:"dday"
+    },
+    {
+        name:"🌻 에이나 생일",
+        date:"2026-12-20T00:00:00+09:00",
+        type:"dday"
+    },
+    {
+        name:"🎉 데뷔",
+        date:"2025-02-24T00:00:00+09:00",
+        type:"debut"
+    }
+];
+
+let ddayIndex = 0;
+const ddayBox = document.getElementById("dday-box");
+const ddayText = document.getElementById("dday-text");
+const ddayLabel = document.getElementById("dday-label");
+const ddayIndicator = document.getElementById("dday-indicator");
+
+ddayIndicator.innerHTML = ddayList.map((item,index) => `
+    <span class="dday-dot ${index === 0 ? "active" : ""}" data-index="${index}">●</span>
+`).join("");
+
+function updateDdayIndicator(){
+    const dots = ddayIndicator.querySelectorAll(".dday-dot");
+    dots.forEach((dot,index) => {
+        dot.classList.toggle("active", index === ddayIndex);
+    });
+}
+
+function updateDday(){
+    const item = ddayList[ddayIndex];
+    const nowDate = new Date();
+    const target = new Date(item.date);
+
+    ddayText.textContent = item.name;
+
+    const diff = target - nowDate;
+    const day = Math.ceil(diff / (1000 * 60 * 60 * 24));
+
+    if(item.type === "debut"){
+        const start = new Date(2025, 1, 24);
+        const todayDate = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate());
+        const diffDays = Math.floor((todayDate - start) / (1000 * 60 * 60 * 24)) + 1;
+        ddayLabel.textContent = `D+${diffDays}`;
+        updateDdayIndicator();
+        return;
     }
 
-    missionEl.innerHTML = currentMission.length
-      ? currentMission.map(item => `
-          <div class="mission-row">
-            <span class="mission-text">${item.text}</span>
-            <a class="mission-btn" href="${item.link}" target="_blank">바로가기</a>
-          </div>
-        `).join("")
-      : "진행 중인 미션이 없습니다.";
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       6. KST SYNC 19곡 플레이리스트 & 미니플레이어 연동 (원본 로직)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const kstStartTime = new Date("2026-10-05T18:30:00+09:00");
-    const kstStartIndex = 16; // 17번 곡 = index 16
-    const kstPlaylist = [
-      { title: "Lemon Tang", duration: 163 },
-      { title: "ICONIC HEART (Korean.ver)", duration: 189 },
-      { title: "RUDE!", duration: 200 },
-      { title: "FOCUS", duration: 178 },
-      { title: "Moonride", duration: 177 },
-      { title: "Lemon Tang", duration: 163 },
-      { title: "ICONIC HEART (Japanese.ver)", duration: 189 },
-      { title: "RUDE!", duration: 200 },
-      { title: "STYLE", duration: 210 },
-      { title: "15-LOVE", duration: 155 },
-      { title: "Lemon Tang", duration: 163 },
-      { title: "ICONIC HEART (Korean.ver)", duration: 189 },
-      { title: "RUDE!", duration: 200 },
-      { title: "FOCUS", duration: 178 },
-      { title: "ICONIC HEART (Japanese.ver)", duration: 189 },
-      { title: "Lemon Tang", duration: 163 },
-      { title: "ICONIC HEART (Korean.ver)", duration: 189 },
-      { title: "RUDE!", duration: 200 },
-      { title: "STYLE", duration: 210 }
-    ];
-
-    const kstTotalDuration = kstPlaylist.reduce((total, song) => total + song.duration, 0); // 3505초
-    const kstStartOffset = kstPlaylist.slice(0, kstStartIndex).reduce((total, song) => total + song.duration, 0);
-
-    const kstPlayerTitle = document.getElementById("kst-player-title");
-    const kstPlayerNumber = document.getElementById("kst-player-number");
-    const kstPlayerTime = document.getElementById("kst-player-time");
-    const kstPlayerProgress = document.getElementById("kst-player-progress-bar");
-
-    function formatKstTime(seconds) {
-      seconds = Math.max(0, Math.floor(seconds));
-      const m = Math.floor(seconds / 60);
-      const s = seconds % 60;
-      return `${m}:${String(s).padStart(2, "0")}`;
+    if(diff > 0){
+        ddayLabel.textContent = `D-${day}`;
+    }else{
+        ddayLabel.textContent = "D-DAY";
     }
 
-    function getKstPlayerPosition() {
-      const now = Date.now();
-      const start = kstStartTime.getTime();
-      if (now < start) return { index: kstStartIndex, position: 0 };
+    updateDdayIndicator();
+}
 
-      const elapsed = Math.floor((now - start) / 1000);
-      const cyclePosition = (kstStartOffset + elapsed) % kstTotalDuration;
 
-      let accumulated = 0;
-      for (let i = 0; i < kstPlaylist.length; i++) {
-        const songEnd = accumulated + kstPlaylist[i].duration;
-        if (cyclePosition < songEnd) {
-          return { index: i, position: cyclePosition - accumulated };
+/* =========================================================
+   DDAY SLIDE
+   ========================================================= */
+
+let ddayAnimating = false;
+let ddayTimer;
+
+function resetDdayTimer(){
+    clearTimeout(ddayTimer);
+    ddayTimer = setTimeout(function(){
+        moveDday(1);
+    }, 10000);
+}
+
+function moveDday(dir = 1){
+    if(ddayAnimating) return;
+
+    ddayAnimating = true;
+    clearTimeout(ddayTimer);
+
+    ddayBox.classList.remove("slide-in-left", "slide-in-right", "slide-out-left", "slide-out-right");
+
+    if(dir > 0){
+        ddayBox.classList.add("slide-out-left");
+    }else{
+        ddayBox.classList.add("slide-out-right");
+    }
+
+    setTimeout(function(){
+        ddayIndex += dir;
+
+        if(ddayIndex < 0){
+            ddayIndex = ddayList.length - 1;
+        }
+        if(ddayIndex >= ddayList.length){
+            ddayIndex = 0;
+        }
+
+        updateDday();
+
+        ddayBox.classList.remove("slide-out-left", "slide-out-right");
+
+        if(dir > 0){
+            ddayBox.classList.add("slide-in-left");
+        }else{
+            ddayBox.classList.add("slide-in-right");
+        }
+
+        setTimeout(function(){
+            ddayBox.classList.remove("slide-in-left", "slide-in-right");
+            ddayAnimating = false;
+            resetDdayTimer();
+        }, 400);
+
+    }, 400);
+}
+
+updateDday();
+resetDdayTimer();
+
+
+/* =========================================================
+   DDAY SWIPE
+   ========================================================= */
+
+let ddayTouchStartX = 0;
+let ddayTouchStartY = 0;
+
+ddayBox.addEventListener("touchstart", function(e){
+    ddayTouchStartX = e.touches[0].clientX;
+    ddayTouchStartY = e.touches[0].clientY;
+}, { passive:true });
+
+ddayBox.addEventListener("touchend", function(e){
+    const ddayTouchEndX = e.changedTouches[0].clientX;
+    const ddayTouchEndY = e.changedTouches[0].clientY;
+
+    const swipeDistanceX = ddayTouchEndX - ddayTouchStartX;
+    const swipeDistanceY = ddayTouchEndY - ddayTouchStartY;
+
+    if(Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)){
+        if(swipeDistanceX > 50){
+            moveDday(-1);
+        } else if(swipeDistanceX < -50){
+            moveDday(1);
+        }
+    }
+}, { passive:true });
+
+
+/* =========================================================
+   KST SYNC PLAYLIST
+   ========================================================= */
+
+const kstStartTime = new Date("2026-10-05T18:30:00+09:00");
+const kstStartIndex = 16; // 17번 곡 = index 16
+
+const kstPlaylist = [
+    { title:"Lemon Tang", duration:163 },
+    { title:"ICONIC HEART (Korean.ver)", duration:189 },
+    { title:"RUDE!", duration:200 },
+    { title:"FOCUS", duration:178 },
+    { title:"Moonride", duration:177 },
+    { title:"Lemon Tang", duration:163 },
+    { title:"ICONIC HEART (Japanese.ver)", duration:189 },
+    { title:"RUDE!", duration:200 },
+    { title:"STYLE", duration:210 },
+    { title:"15-LOVE", duration:155 },
+    { title:"Lemon Tang", duration:163 },
+    { title:"ICONIC HEART (Korean.ver)", duration:189 },
+    { title:"RUDE!", duration:200 },
+    { title:"FOCUS", duration:178 },
+    { title:"ICONIC HEART (Japanese.ver)", duration:189 },
+    { title:"Lemon Tang", duration:163 },
+    { title:"ICONIC HEART (Korean.ver)", duration:189 },
+    { title:"RUDE!", duration:200 },
+    { title:"STYLE", duration:210 }
+];
+
+const kstTotalDuration = kstPlaylist.reduce((total,song) => total + song.duration, 0);
+const kstStartOffset = kstPlaylist.slice(0, kstStartIndex).reduce((total, song) => total + song.duration, 0);
+
+const kstPlayerTitle = document.getElementById("kst-player-title");
+const kstPlayerNumber = document.getElementById("kst-player-number");
+const kstPlayerTime = document.getElementById("kst-player-time");
+const kstPlayerProgress = document.getElementById("kst-player-progress-bar");
+
+function formatKstTime(seconds){
+    seconds = Math.max(0, Math.floor(seconds));
+    const minutes = Math.floor(seconds / 60);
+    const remaining = seconds % 60;
+    return minutes + ":" + String(remaining).padStart(2, "0");
+}
+
+function getKstPlayerPosition(){
+    const nowMs = Date.now();
+    const startMs = kstStartTime.getTime();
+
+    if(nowMs < startMs){
+        return { index:kstStartIndex, position:0 };
+    }
+
+    const elapsed = Math.floor((nowMs - startMs) / 1000);
+    const cyclePosition = (kstStartOffset + elapsed) % kstTotalDuration;
+
+    let accumulated = 0;
+    for(let i = 0; i < kstPlaylist.length; i++){
+        const song = kstPlaylist[i];
+        const songEnd = accumulated + song.duration;
+        if(cyclePosition < songEnd){
+            return { index:i, position:cyclePosition - accumulated };
         }
         accumulated = songEnd;
-      }
-      return { index: kstStartIndex, position: 0 };
     }
+    return { index:kstStartIndex, position:0 };
+}
 
-    function updateKstPlayer() {
-      const current = getKstPlayerPosition();
-      const song = kstPlaylist[current.index];
-      const pos = current.position;
+function updateKstPlayer(){
+    const current = getKstPlayerPosition();
+    const song = kstPlaylist[current.index];
+    const position = current.position;
 
-      kstPlayerTitle.textContent = song.title;
-      kstPlayerNumber.textContent = `${current.index + 1} / ${kstPlaylist.length}`;
-      kstPlayerTime.textContent = `${formatKstTime(pos)} / ${formatKstTime(song.duration)}`;
-      
-      const progress = (pos / song.duration) * 100;
-      kstPlayerProgress.style.width = `${Math.min(100, Math.max(0, progress))}%`;
-    }
+    kstPlayerTitle.textContent = song.title;
+    kstPlayerNumber.textContent = `${current.index + 1} / ${kstPlaylist.length}`;
+    kstPlayerTime.textContent = formatKstTime(position) + " / " + formatKstTime(song.duration);
 
-    setInterval(updateKstPlayer, 1000);
-    updateKstPlayer();
+    const progress = (position / song.duration) * 100;
+    kstPlayerProgress.style.width = Math.min(100, Math.max(0, progress)) + "%";
+}
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       7. ICONIC HEART 실시간 누적 카운터 (원본 로직)
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    const iconicHeartCompletionOffsets = [189, 951, 2775];
+setInterval(updateKstPlayer, 1000);
+updateKstPlayer();
 
-    function getIconicHeartCount() {
-      const now = Date.now();
-      const start = kstStartTime.getTime();
-      if (now < start) return 0;
 
-      const elapsed = Math.floor((now - start) / 1000);
-      const completedCycles = Math.floor(elapsed / kstTotalDuration);
-      const currentCyclePosition = elapsed % kstTotalDuration;
+/* =========================================================
+   ICONIC HEART COUNTER
+   ========================================================= */
 
-      let count = completedCycles * 3;
-      for (const offset of iconicHeartCompletionOffsets) {
-        if (currentCyclePosition >= offset) count++;
-      }
-      return count;
-    }
+const iconicHeartCompletionOffsets = [189, 951, 2775];
 
-    function updateIconicHeartCount() {
-      const el = document.getElementById("iconic-heart-count");
-      if (el) el.textContent = getIconicHeartCount();
-    }
+function getIconicHeartCount(){
+    const nowMs = Date.now();
+    const startMs = kstStartTime.getTime();
 
-    setInterval(updateIconicHeartCount, 1000);
-    updateIconicHeartCount();
+    if(nowMs < startMs) return 0;
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       8. 초기화
-       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    window.addEventListener('DOMContentLoaded', () => {
-      initDdayCarousel();
-      startDdayTimer();
+    const elapsed = Math.floor((nowMs - startMs) / 1000);
+    const completedCycles = Math.floor(elapsed / kstTotalDuration);
+    const currentCyclePosition = elapsed % kstTotalDuration;
 
-      // Swiper 4개 영상 초기화
-      new Swiper(".mvSwiper", {
-        loop: true,
-        spaceBetween: 10,
-        centeredSlides: true,
-        pagination: {
-          el: ".swiper-pagination",
-          clickable: true
+    let count = completedCycles * 3;
+    for(const offset of iconicHeartCompletionOffsets){
+        if(currentCyclePosition >= offset){
+            count++;
         }
-      });
+    }
+    return count;
+}
+
+function updateIconicHeartCount(){
+    const el = document.getElementById("iconic-heart-count");
+    if(el) el.textContent = getIconicHeartCount();
+}
+
+setInterval(updateIconicHeartCount, 1000);
+updateIconicHeartCount();
+
+
+/* =========================================================
+   TODAY SCHEDULE
+   ========================================================= */
+
+const todaySchedule = document.getElementById("today-schedule");
+const todayObj = new Date();
+const yyyy = todayObj.getFullYear();
+const mm = String(todayObj.getMonth() + 1).padStart(2, "0");
+const dd = String(todayObj.getDate()).padStart(2, "0");
+const todayKey = `${yyyy}-${mm}-${dd}`;
+const scheduleFile = `./schedule-${yyyy}.json`;
+
+fetch(scheduleFile)
+    .then(res => {
+        if(!res.ok) throw new Error(`${scheduleFile} 로드 실패`);
+        return res.json();
+    })
+    .then(scheduleData => {
+        if(scheduleData && scheduleData[todayKey]){
+            todaySchedule.innerHTML = scheduleData[todayKey].replace(/\n/g, "<br>");
+        }else{
+            todaySchedule.innerHTML = "오늘 일정이 없습니다.";
+        }
+    })
+    .catch(() => {
+        todaySchedule.innerHTML = "오늘 일정이 없습니다.";
     });
-  </script>
+
+
+/* =========================================================
+   SWIPER
+   ========================================================= */
+
+new Swiper(".mvSwiper", {
+    loop:true,
+    spaceBetween:10,
+    centeredSlides:true,
+    pagination:{
+        el:".swiper-pagination",
+        clickable:true
+    }
+});
+
+
+/* =========================================================
+   SCROLL FADE
+   ========================================================= */
+
+const kstPlayer = document.getElementById("kst-player");
+let kstScrollTimer;
+
+window.addEventListener("scroll", function(){
+    kstPlayer.classList.add("scrolling");
+    clearTimeout(kstScrollTimer);
+    kstScrollTimer = setTimeout(function(){
+        kstPlayer.classList.remove("scrolling");
+    }, 500);
+}, { passive:true });
+
+</script>
+
 </body>
 </html>
