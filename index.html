@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#89CFF0" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <style>
     :root {
       --bg-color: #F5F6F8;
@@ -22,384 +21,67 @@
       --radius-card: 18px;
       --radius-btn: 12px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      max-width: 100%;
-    }
-
-    /* 상단 헤더 */
-    header {
-      background: #FFFFFF;
-      padding: 16px 20px 12px;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      z-index: 10;
-    }
-    .header-title {
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .header-title span.badge {
-      background: var(--point-light);
-      color: var(--point-dark);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-weight: 600;
-    }
-
-    /* 메인 뷰 컨테이너 */
-    main {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding: 16px;
-      padding-bottom: 84px; /* 하단 탭 공간 */
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* 하단 네비게이션 바 */
-    nav.bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 64px;
-      background: #FFFFFF;
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 50;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    .nav-btn {
-      background: none;
-      border: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 3px;
-      color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 500;
-      width: 20%;
-      height: 100%;
-      cursor: pointer;
-    }
-    .nav-btn svg {
-      width: 22px;
-      height: 22px;
-      fill: currentColor;
-    }
-    .nav-btn.active {
-      color: var(--point-dark);
-      font-weight: 700;
-    }
-
-    /* 공통 카드 스타일 */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-card);
-      padding: 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-      border: 1px solid rgba(229, 231, 235, 0.7);
-    }
-    .card-title {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* 버튼 스타일 */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 16px;
-      min-height: 44px;
-      font-size: 14px;
-      font-weight: 600;
-      border-radius: var(--radius-btn);
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: opacity 0.15s;
-    }
-    .btn:active {
-      opacity: 0.8;
-    }
-    .btn-point {
-      background-color: var(--point-color);
-      color: #FFFFFF;
-    }
-    .btn-secondary {
-      background-color: #E5E7EB;
-      color: var(--text-main);
-    }
-    .btn-danger {
-      background-color: #FEE2E2;
-      color: var(--danger-color);
-    }
-    .btn-sm {
-      min-height: 32px;
-      padding: 6px 12px;
-      font-size: 12px;
-    }
-
-    /* 검색 및 필터 박스 */
-    .search-box {
-      margin-bottom: 14px;
-      display: flex;
-      gap: 8px;
-    }
-    .search-input {
-      flex: 1;
-      height: 44px;
-      padding: 0 14px;
-      border-radius: var(--radius-btn);
-      border: 1px solid var(--border-color);
-      font-size: 14px;
-      background: #FFFFFF;
-      outline: none;
-    }
-    .search-input:focus {
-      border-color: var(--point-color);
-    }
-    .filter-chips {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .chip {
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 500;
-      border-radius: 20px;
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .chip.active {
-      background: var(--point-color);
-      color: #FFFFFF;
-      border-color: var(--point-color);
-      font-weight: 600;
-    }
-
-    /* 리스트 및 아이템 */
-    .archive-item {
-      padding: 14px;
-      background: #FFFFFF;
-      border-radius: var(--radius-card);
-      margin-bottom: 10px;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    }
-    .item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 6px;
-    }
-    .item-date {
-      font-size: 12px;
-      color: var(--text-sub);
-    }
-    .item-tag {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--point-dark);
-      background: var(--point-light);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    .item-title {
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-    .item-info {
-      font-size: 12px;
-      color: var(--text-sub);
-      margin-bottom: 10px;
-      word-break: break-all;
-    }
-
-    /* 일정 전용 스타일 */
-    .schedule-badge {
-      display: inline-block;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      background: #E0F2FE;
-      color: #0369A1;
-    }
-    .schedule-time {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--point-dark);
-    }
-    .schedule-actions {
-      display: flex;
-      gap: 6px;
-      margin-top: 10px;
-      justify-content: flex-end;
-    }
-
-    /* 모달 팝업 */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      align-items: flex-end;
-      z-index: 100;
-    }
-    .modal-overlay.open {
-      display: flex;
-    }
-    .modal-sheet {
-      background: #FFFFFF;
-      width: 100%;
-      border-radius: 24px 24px 0 0;
-      padding: 20px;
-      max-height: 85vh;
-      overflow-y: auto;
-      animation: slideUp 0.25s ease-out;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-    .form-group {
-      margin-bottom: 14px;
-    }
-    .form-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
-    }
-    .form-input, .form-select, .form-textarea {
-      width: 100%;
-      min-height: 44px;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-btn);
-      padding: 10px 12px;
-      font-size: 14px;
-      outline: none;
-      background: #FFFFFF;
-    }
-    .form-textarea {
-      min-height: 70px;
-      resize: vertical;
-    }
-    .switch-label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 44px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .switch-input {
-      width: 44px;
-      height: 24px;
-      accent-color: var(--point-color);
-    }
-
-    /* 안내 메시지 및 에러 */
-    .empty-state {
-      text-align: center;
-      padding: 30px 16px;
-      color: var(--text-sub);
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .error-card {
-      background: #FFF1F2;
-      border: 1px solid #FECDD3;
-      border-radius: var(--radius-card);
-      padding: 16px;
-      margin-bottom: 14px;
-      font-size: 13px;
-      color: #9F1239;
-    }
-
-    /* 화면 전환 숨김 */
-    .tab-view {
-      display: none;
-    }
-    .tab-view.active {
-      display: block;
-    }
-
-    /* 유튜브 임베드 컨테이너 */
-    .video-container {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      background: #000;
-    }
-    .video-container iframe {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; width: 100vw; overflow: hidden; }
+    header { background: #FFFFFF; padding: 16px 20px 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; z-index: 10; }
+    .header-title { font-size: 19px; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
+    .header-title span.badge { background: var(--point-light); color: var(--point-dark); font-size: 11px; padding: 3px 8px; border-radius: 12px; font-weight: 600; }
+    main { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 16px; padding-bottom: 84px; -webkit-overflow-scrolling: touch; }
+    nav.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 64px; background: #FFFFFF; border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 50; padding-bottom: env(safe-area-inset-bottom); }
+    .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: var(--text-sub); font-size: 11px; font-weight: 500; width: 20%; height: 100%; cursor: pointer; }
+    .nav-btn svg { width: 22px; height: 22px; fill: currentColor; }
+    .nav-btn.active { color: var(--point-dark); font-weight: 700; }
+    .card { background: var(--card-bg); border-radius: var(--radius-card); padding: 18px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); border: 1px solid rgba(229, 231, 235, 0.7); }
+    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 16px; min-height: 44px; font-size: 14px; font-weight: 600; border-radius: var(--radius-btn); border: none; cursor: pointer; text-decoration: none; }
+    .btn:active { opacity: 0.8; }
+    .btn-point { background-color: var(--point-color); color: #FFFFFF; }
+    .btn-secondary { background-color: #E5E7EB; color: var(--text-main); }
+    .btn-danger { background-color: #FEE2E2; color: var(--danger-color); }
+    .btn-sm { min-height: 36px; padding: 6px 14px; font-size: 13px; }
+    .search-box { margin-bottom: 14px; display: flex; gap: 8px; }
+    .search-input { flex: 1; height: 44px; padding: 0 14px; border-radius: var(--radius-btn); border: 1px solid var(--border-color); font-size: 14px; background: #FFFFFF; outline: none; }
+    .search-input:focus { border-color: var(--point-color); }
+    .filter-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 10px; -webkit-overflow-scrolling: touch; }
+    .chip { padding: 6px 14px; font-size: 12px; font-weight: 500; border-radius: 20px; background: #FFFFFF; border: 1px solid var(--border-color); color: var(--text-sub); white-space: nowrap; cursor: pointer; }
+    .chip.active { background: var(--point-color); color: #FFFFFF; border-color: var(--point-color); font-weight: 600; }
+    .archive-card { background: #FFFFFF; border-radius: var(--radius-card); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border-color); box-shadow: 0 2px 4px rgba(0,0,0,0.02); cursor: pointer; }
+    .archive-card:active { background-color: #FAFAFA; transform: scale(0.99); }
+    .card-meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .card-tag { font-size: 11px; font-weight: 700; color: var(--point-dark); background: var(--point-light); padding: 3px 8px; border-radius: 6px; }
+    .card-date { font-size: 12px; color: var(--text-sub); font-weight: 500; }
+    .card-title-text { font-size: 15px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; color: var(--text-main); word-break: keep-all; }
+    .card-desc-text { font-size: 12px; color: var(--text-sub); line-height: 1.4; margin-bottom: 10px; word-break: break-all; }
+    .card-action-bar { display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid #F3F4F6; padding-top: 10px; margin-top: 4px; }
+    .yt-link-btn { display: inline-flex; align-items: center; gap: 5px; color: #DC2626; font-size: 12px; font-weight: 700; }
+    .yt-link-btn svg { width: 16px; height: 16px; fill: currentColor; }
+    .loading-box { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 45px 16px; gap: 12px; color: var(--text-sub); font-size: 14px; }
+    .spinner { width: 32px; height: 32px; border: 3px solid var(--border-color); border-top-color: var(--point-color); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .error-card { background: #FFF1F2; border: 1px solid #FECDD3; border-radius: var(--radius-card); padding: 18px; margin-bottom: 14px; text-align: center; }
+    .error-title { font-size: 14px; font-weight: 700; color: #9F1239; margin-bottom: 6px; }
+    .error-msg { font-size: 12px; color: #BE123C; margin-bottom: 12px; line-height: 1.5; }
+    .empty-state { text-align: center; padding: 40px 16px; color: var(--text-sub); font-size: 14px; line-height: 1.6; }
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: flex-end; z-index: 100; }
+    .modal-overlay.open { display: flex; }
+    .modal-sheet { background: #FFFFFF; width: 100%; border-radius: 24px 24px 0 0; padding: 20px; max-height: 85vh; overflow-y: auto; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-main); }
+    .form-input, .form-select, .form-textarea { width: 100%; min-height: 44px; border: 1px solid var(--border-color); border-radius: var(--radius-btn); padding: 10px 12px; font-size: 14px; outline: none; background: #FFFFFF; }
+    .form-textarea { min-height: 70px; resize: vertical; }
+    .switch-label { display: flex; align-items: center; justify-content: space-between; min-height: 44px; font-size: 14px; font-weight: 600; cursor: pointer; }
+    .switch-input { width: 44px; height: 24px; accent-color: var(--point-color); }
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
   </style>
 </head>
 <body>
 
-  <!-- 헤더 -->
   <header>
-    <div class="header-title">
-      Hearts2Hearts <span class="badge">H2H</span>
-    </div>
-    <div id="connectionStatus" style="font-size: 11px; color: var(--text-sub);">온라인</div>
+    <div class="header-title">Hearts2Hearts <span class="badge">H2H</span></div>
+    <div id="connectionStatus" style="font-size: 12px; color: var(--text-sub);">온라인</div>
   </header>
 
-  <!-- 메인 스크롤 뷰 -->
   <main>
     <!-- 1. 홈 탭 -->
     <section id="view-home" class="tab-view active">
@@ -413,9 +95,7 @@
           <span>오늘의 일정</span>
           <button class="btn btn-point btn-sm" onclick="switchTab('schedule')">전체보기</button>
         </div>
-        <div id="homeTodaySchedules">
-          <!-- 스크립트로 렌더링 -->
-        </div>
+        <div id="homeTodaySchedules"></div>
       </div>
 
       <div class="card">
@@ -423,9 +103,7 @@
           <span>최신 음악방송</span>
           <button class="btn btn-secondary btn-sm" onclick="switchTab('music')">더보기</button>
         </div>
-        <div id="homeRecentMusic">
-          <div class="empty-state">음악방송 데이터를 불러오는 중...</div>
-        </div>
+        <div id="homeRecentMusic"></div>
       </div>
 
       <div class="card">
@@ -433,35 +111,27 @@
           <span>최신 자체 콘텐츠</span>
           <button class="btn btn-secondary btn-sm" onclick="switchTab('self')">더보기</button>
         </div>
-        <div id="homeRecentSelf">
-          <div class="empty-state">자체 콘텐츠를 불러오는 중...</div>
-        </div>
+        <div id="homeRecentSelf"></div>
       </div>
     </section>
 
     <!-- 2. 음악방송 탭 -->
     <section id="view-music" class="tab-view">
       <div class="search-box">
-        <input type="text" id="musicSearchInput" class="search-input" placeholder="제목, 프로그램명, 날짜 검색" oninput="filterMusicList()" />
+        <input type="text" id="musicSearchInput" class="search-input" placeholder="제목, 프로그램명, 방송일 검색" oninput="filterMusicList()" />
       </div>
-      <div id="musicErrorBox"></div>
-      <div id="musicListContainer">
-        <div class="empty-state">데이터를 동기화하고 있습니다...</div>
-      </div>
+      <div id="musicContentArea"></div>
     </section>
 
     <!-- 3. 자체 콘텐츠 탭 -->
     <section id="view-self" class="tab-view">
       <div class="search-box">
-        <input type="text" id="selfSearchInput" class="search-input" placeholder="자체 콘텐츠 제목 검색" oninput="filterSelfList()" />
+        <input type="text" id="selfSearchInput" class="search-input" placeholder="콘텐츠 제목, 날짜 검색" oninput="filterSelfList()" />
       </div>
       <div class="filter-chips" id="selfCategoryChips">
         <div class="chip active" onclick="setSelfCategory('ALL')">전체</div>
       </div>
-      <div id="selfErrorBox"></div>
-      <div id="selfListContainer">
-        <div class="empty-state">데이터를 동기화하고 있습니다...</div>
-      </div>
+      <div id="selfContentArea"></div>
     </section>
 
     <!-- 4. 일정 관리 탭 -->
@@ -475,10 +145,7 @@
         </div>
         <button class="btn btn-point btn-sm" onclick="openScheduleModal()">+ 등록</button>
       </div>
-
-      <div id="scheduleListContainer">
-        <!-- 동적 렌더링 -->
-      </div>
+      <div id="scheduleListContainer"></div>
     </section>
 
     <!-- 5. 설정 탭 -->
@@ -489,9 +156,8 @@
           현재 권한 상태: <strong id="notifPermissionStatus">확인 중</strong>
         </div>
         <button id="btnReqNotif" class="btn btn-point" style="width: 100%; margin-bottom: 16px;" onclick="requestNotificationPermission()">
-          알림 권한 요청 및 활성화
+          알림 권한 활성화
         </button>
-
         <label class="switch-label">
           <span>전체 알림 허용</span>
           <input type="checkbox" id="settingMasterNotif" class="switch-input" onchange="saveNotificationSettings()" />
@@ -511,30 +177,18 @@
           <input type="checkbox" id="setting5MinNotif" class="switch-input" onchange="saveNotificationSettings()" />
         </label>
       </div>
-
+      <div class="card">
+        <div class="card-title">데이터 새로고침</div>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">최신 음악방송 및 자체 콘텐츠를 서버에서 다시 가져옵니다.</p>
+        <button class="btn btn-secondary" style="width: 100%;" onclick="loadAllContentData(true)">전체 콘텐츠 새로고침</button>
+      </div>
       <div class="card">
         <div class="card-title">알림 즉시 테스트</div>
-        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 12px;">
-          스마트폰 시스템 상단 알림 바에 정상적으로 알림이 표시되는지 테스트합니다.
-        </p>
-        <button class="btn btn-secondary" style="width: 100%;" onclick="sendTestNotification()">
-          테스트 알림 발송
-        </button>
-      </div>
-
-      <div class="card">
-        <div class="card-title">데이터 백업 및 초기화</div>
-        <button class="btn btn-secondary btn-sm" style="width: 100%; margin-bottom: 8px;" onclick="exportScheduleData()">
-          등록한 일정 데이터(JSON) 복사
-        </button>
-        <button class="btn btn-danger btn-sm" style="width: 100%;" onclick="clearAllData()">
-          앱 데이터 전체 초기화
-        </button>
+        <button class="btn btn-secondary" style="width: 100%;" onclick="sendTestNotification()">테스트 알림 발송</button>
       </div>
     </section>
   </main>
 
-  <!-- 하단 탭 바 -->
   <nav class="bottom-nav">
     <button class="nav-btn active" id="tabBtn-home" onclick="switchTab('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -592,323 +246,276 @@
       </div>
       <div class="form-group">
         <label class="form-label">메모 (선택사항)</label>
-        <textarea id="schInputMemo" class="form-textarea" placeholder="위치, 준비물, 링크 등"></textarea>
+        <textarea id="schInputMemo" class="form-textarea" placeholder="위치, 링크, 준비물 등"></textarea>
       </div>
       <label class="switch-label" style="margin-bottom: 16px;">
-        <span>이 일정 알림 받기 (5분 전 및 자정 요약)</span>
+        <span>이 일정 알림 받기</span>
         <input type="checkbox" id="schInputNotify" class="switch-input" checked />
       </label>
       <button class="btn btn-point" style="width: 100%;" onclick="saveScheduleItem()">일정 저장하기</button>
     </div>
   </div>
 
-  <!-- 유튜브 재생 뷰어 모달 -->
-  <div class="modal-overlay" id="videoModal">
-    <div class="modal-sheet" style="padding-bottom: 24px;">
-      <div class="card-title">
-        <span id="videoModalTitle" style="font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80%;">영상 감상</span>
-        <button class="btn btn-secondary btn-sm" onclick="closeVideoModal()">닫기</button>
-      </div>
-      <div class="video-container" id="videoContainer"></div>
-      <a id="videoExternalLink" href="#" target="_blank" class="btn btn-point btn-sm" style="width: 100%; text-align: center;">
-        YouTube 앱에서 바로 열기
-      </a>
-    </div>
-  </div>
-
   <script>
-    /* ==========================================================================
-       [1] 전역 상태 및 데이터 저장소 (LocalStorage)
-       ========================================================================== */
     const VIDEO_JSON_URL = 'https://raw.githubusercontent.com/H2HCHIVE/H2HCHIVE/main/video.json';
     const SELF_JSON_URL = 'https://raw.githubusercontent.com/H2HCHIVE/H2HCHIVE/main/selfcontent.json';
 
     let state = {
-      musicData: [],
-      selfData: [],
+      music: { loading: false, error: null, data: [] },
+      self: { loading: false, error: null, data: [], selectedCategory: 'ALL' },
       schedules: [],
       currentTab: 'home',
       scheduleFilter: 'today',
-      selectedSelfCategory: 'ALL',
-      settings: {
-        masterNotif: true,
-        midnightNotif: true,
-        notifyEmptyMidnight: false,
-        before5MinNotif: true
-      }
+      settings: { masterNotif: true, midnightNotif: true, notifyEmptyMidnight: false, before5MinNotif: true }
     };
 
-    // 로컬 스토리지 초기 로드
-    function loadSavedData() {
+    function parseContentItem(raw, defaultType) {
+      if (!raw || typeof raw !== 'object') return null;
+      const date = raw.date || raw.broadcastDate || raw.broadcast_date || raw.day || raw.날짜 || '';
+      const title = raw.title || raw.name || raw.subject || raw.제목 || '제목 없음';
+      const program = raw.program || raw.show || raw.broadcaster || raw.프로그램명 || raw.방송명 || '';
+      const category = raw.category || raw.type || raw.카테고리 || (program ? program : defaultType);
+      const info = raw.info || raw.desc || raw.description || raw.details || raw.content || raw.관련정보 || raw.내용 || '';
+      let rawUrl = raw.url || raw.link || raw.youtube || raw.youtubeUrl || raw.youtube_url || raw.videoUrl || '';
+      const videoId = raw.videoId || raw.video_id || raw.id || '';
+      if (!rawUrl && videoId && typeof videoId === 'string' && videoId.length === 11) rawUrl = `https://www.youtube.com/watch?v=${videoId}`;
+      else if (rawUrl && !rawUrl.startsWith('http')) rawUrl = `https://www.youtube.com/watch?v=${rawUrl}`;
+      return { date, title, program, category, info, url: rawUrl };
+    }
+
+    function navigateToYoutube(url, title) {
+      if (!url) { alert(`'${title}' 영상의 연결 주소가 없습니다.`); return; }
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    async function loadMusicData(forceRefresh = false) {
+      state.music.loading = true;
+      state.music.error = null;
+      renderMusicLoading();
       try {
-        const savedSch = localStorage.getItem('h2h_schedules');
-        if (savedSch) state.schedules = JSON.parse(savedSch);
-
-        const savedSettings = localStorage.getItem('h2h_settings');
-        if (savedSettings) state.settings = { ...state.settings, ...JSON.parse(savedSettings) };
-      } catch (e) {
-        console.error('데이터 로드 오류:', e);
-      }
-    }
-
-    function saveSchedules() {
-      localStorage.setItem('h2h_schedules', JSON.stringify(state.schedules));
-      renderSchedules();
-      renderHomeToday();
-    }
-
-    function saveSettings() {
-      localStorage.setItem('h2h_settings', JSON.stringify(state.settings));
-    }
-
-    /* ==========================================================================
-       [2] 탭 네비게이션
-       ========================================================================== */
-    function switchTab(tabId) {
-      state.currentTab = tabId;
-      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-
-      const targetView = document.getElementById(`view-${tabId}`);
-      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
-      if (targetView) targetView.classList.add('active');
-      if (targetBtn) targetBtn.classList.add('active');
-
-      if (tabId === 'home') renderHomeToday();
-      if (tabId === 'schedule') renderSchedules();
-    }
-
-    /* ==========================================================================
-       [3] 유연한 JSON 데이터 파서 (Fallback Universal Mapper)
-       ========================================================================== */
-    function normalizeItem(raw) {
-      // API 필드명이 제각각이어도 안전하게 매핑
-      const date = raw.date || raw.broadcastDate || raw.day || raw.날짜 || '';
-      const title = raw.title || raw.name || raw.제목 || '제목 없음';
-      const program = raw.program || raw.show || raw.프로그램명 || raw.category || 'Hearts2Hearts';
-      const info = raw.info || raw.desc || raw.content || raw.내용 || raw.관련정보 || '';
-      const url = raw.url || raw.link || raw.youtube || raw.videoUrl || '';
-      const category = raw.category || raw.type || '기타';
-
-      // 유튜브 ID 추출
-      let ytId = '';
-      if (url) {
-        const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-        if (match) ytId = match[1];
-      }
-
-      return { ...raw, date, title, program, info, url, category, ytId };
-    }
-
-    async function fetchArchiveData() {
-      // 1. 음악방송 데이터 불러오기
-      try {
-        const res = await fetch(VIDEO_JSON_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data.videos || data.list || []);
-        state.musicData = list.map(normalizeItem);
-        renderMusicList(state.musicData);
+        const fetchUrl = forceRefresh ? `${VIDEO_JSON_URL}?_t=${Date.now()}` : VIDEO_JSON_URL;
+        const res = await fetch(fetchUrl);
+        if (!res.ok) throw new Error(`데이터를 불러오지 못했습니다. (HTTP ${res.status})`);
+        const json = await res.json();
+        const rawList = Array.isArray(json) ? json : (json.videos || json.video || json.list || json.items || []);
+        state.music.data = rawList.map(item => parseContentItem(item, '음악방송')).filter(Boolean);
+        state.music.loading = false;
+        renderMusicList();
         renderHomeRecentMusic();
       } catch (err) {
-        console.warn('음악방송 fetch 실패:', err);
-        renderMusicError('음악방송 데이터를 불러올 수 없습니다. 네트워크 연결을 확인해주세요.');
-        document.getElementById('homeRecentMusic').innerHTML =
-          `<div class="empty-state">콘텐츠를 불러오지 못했습니다.</div>`;
+        state.music.loading = false;
+        state.music.error = err.message || '네트워크 연결 상태를 확인해주세요.';
+        renderMusicError();
+        renderHomeRecentMusic();
       }
+    }
 
-      // 2. 자체 콘텐츠 데이터 불러오기
+    async function loadSelfData(forceRefresh = false) {
+      state.self.loading = true;
+      state.self.error = null;
+      renderSelfLoading();
       try {
-        const res = await fetch(SELF_JSON_URL);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data.contents || data.list || []);
-        state.selfData = list.map(normalizeItem);
-        setupSelfCategories(state.selfData);
-        renderSelfList(state.selfData);
+        const fetchUrl = forceRefresh ? `${SELF_JSON_URL}?_t=${Date.now()}` : SELF_JSON_URL;
+        const res = await fetch(fetchUrl);
+        if (!res.ok) throw new Error(`자체 콘텐츠를 불러오지 못했습니다. (HTTP ${res.status})`);
+        const json = await res.json();
+        const rawList = Array.isArray(json) ? json : (json.selfcontent || json.contents || json.list || json.items || []);
+        state.self.data = rawList.map(item => parseContentItem(item, '자체콘텐츠')).filter(Boolean);
+        state.self.loading = false;
+        setupSelfCategoryChips();
+        renderSelfList();
         renderHomeRecentSelf();
       } catch (err) {
-        console.warn('자체콘텐츠 fetch 실패:', err);
-        renderSelfError('자체 콘텐츠 데이터를 불러올 수 없습니다. 네트워크 연결을 확인해주세요.');
-        document.getElementById('homeRecentSelf').innerHTML =
-          `<div class="empty-state">콘텐츠를 불러오지 못했습니다.</div>`;
+        state.self.loading = false;
+        state.self.error = err.message || '네트워크 연결 상태를 확인해주세요.';
+        renderSelfError();
+        renderHomeRecentSelf();
       }
     }
 
-    /* ==========================================================================
-       [4] 음악방송 렌더링 및 검색
-       ========================================================================== */
-    function renderMusicError(msg) {
-      document.getElementById('musicErrorBox').innerHTML = `
-        <div class="error-card">
-          ⚠️ ${msg}
-          <div style="margin-top: 8px;">
-            <button class="btn btn-secondary btn-sm" onclick="fetchArchiveData()">다시 시도</button>
-          </div>
-        </div>
-      `;
+    function loadAllContentData(force = false) {
+      loadMusicData(force);
+      loadSelfData(force);
     }
 
-    function renderMusicList(list) {
-      const container = document.getElementById('musicListContainer');
-      document.getElementById('musicErrorBox').innerHTML = '';
+    function renderMusicLoading() {
+      document.getElementById('musicContentArea').innerHTML = `
+        <div class="loading-box"><div class="spinner"></div><span>음악방송 데이터를 불러오는 중...</span></div>`;
+    }
+
+    function renderMusicError() {
+      document.getElementById('musicContentArea').innerHTML = `
+        <div class="error-card">
+          <div class="error-title">음악방송 데이터를 불러올 수 없습니다</div>
+          <div class="error-msg">${escapeHtml(state.music.error)}</div>
+          <button class="btn btn-point btn-sm" onclick="loadMusicData(true)">다시 시도하기</button>
+        </div>`;
+    }
+
+    function renderMusicList(filteredList = null) {
+      const area = document.getElementById('musicContentArea');
+      const list = filteredList !== null ? filteredList : state.music.data;
+      if (state.music.loading) return;
+      if (state.music.error) { renderMusicError(); return; }
       if (!list || list.length === 0) {
-        container.innerHTML = `<div class="empty-state">등록된 음악방송 콘텐츠가 없습니다.</div>`;
+        area.innerHTML = `<div class="empty-state">등록된 음악방송 콘텐츠가 없습니다.</div>`;
         return;
       }
-
-      container.innerHTML = list.map(item => `
-        <div class="archive-item">
-          <div class="item-header">
-            <span class="item-date">${item.date || '날짜 미정'}</span>
-            <span class="item-tag">${escapeHtml(item.program)}</span>
+      area.innerHTML = list.map(item => `
+        <div class="archive-card" onclick="navigateToYoutube('${escapeAttr(item.url)}', '${escapeAttr(item.title)}')">
+          <div class="card-meta-row">
+            <span class="card-tag">${escapeHtml(item.program || '음악방송')}</span>
+            <span class="card-date">${escapeHtml(item.date || '날짜 미정')}</span>
           </div>
-          <div class="item-title">${escapeHtml(item.title)}</div>
-          ${item.info ? `<div class="item-info">${escapeHtml(item.info)}</div>` : ''}
-          ${item.url ? `
-            <button class="btn btn-point btn-sm" onclick="openVideoModal('${item.ytId}', '${escapeHtml(item.title)}', '${item.url}')">
-              영상 보기
-            </button>
-          ` : ''}
-        </div>
-      `).join('');
+          <div class="card-title-text">${escapeHtml(item.title)}</div>
+          ${item.info ? `<div class="card-desc-text">${escapeHtml(item.info)}</div>` : ''}
+          <div class="card-action-bar">
+            <span class="yt-link-btn">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              YouTube 영상 보기 &gt;
+            </span>
+          </div>
+        </div>`).join('');
     }
 
     function filterMusicList() {
       const q = document.getElementById('musicSearchInput').value.trim().toLowerCase();
-      if (!q) {
-        renderMusicList(state.musicData);
-        return;
-      }
-      const filtered = state.musicData.filter(i =>
+      if (!q) { renderMusicList(); return; }
+      renderMusicList(state.music.data.filter(i =>
         (i.title && i.title.toLowerCase().includes(q)) ||
         (i.program && i.program.toLowerCase().includes(q)) ||
         (i.date && i.date.includes(q))
-      );
-      renderMusicList(filtered);
+      ));
     }
 
-    /* ==========================================================================
-       [5] 자체 콘텐츠 렌더링, 필터, 검색
-       ========================================================================== */
-    function setupSelfCategories(list) {
+    function renderSelfLoading() {
+      document.getElementById('selfContentArea').innerHTML = `
+        <div class="loading-box"><div class="spinner"></div><span>자체 콘텐츠 데이터를 불러오는 중...</span></div>`;
+    }
+
+    function renderSelfError() {
+      document.getElementById('selfContentArea').innerHTML = `
+        <div class="error-card">
+          <div class="error-title">자체 콘텐츠를 불러올 수 없습니다</div>
+          <div class="error-msg">${escapeHtml(state.self.error)}</div>
+          <button class="btn btn-point btn-sm" onclick="loadSelfData(true)">다시 시도하기</button>
+        </div>`;
+    }
+
+    function setupSelfCategoryChips() {
       const cats = new Set();
-      list.forEach(i => { if (i.category) cats.add(i.category); });
-      const chipsEl = document.getElementById('selfCategoryChips');
-      let html = `<div class="chip ${state.selectedSelfCategory === 'ALL' ? 'active' : ''}" onclick="setSelfCategory('ALL')">전체</div>`;
+      state.self.data.forEach(item => { if (item.category && item.category !== '자체콘텐츠') cats.add(item.category); });
+      let html = `<div class="chip ${state.self.selectedCategory === 'ALL' ? 'active' : ''}" onclick="setSelfCategory('ALL')">전체</div>`;
       cats.forEach(c => {
-        html += `<div class="chip ${state.selectedSelfCategory === c ? 'active' : ''}" onclick="setSelfCategory('${escapeHtml(c)}')">${escapeHtml(c)}</div>`;
+        html += `<div class="chip ${state.self.selectedCategory === c ? 'active' : ''}" onclick="setSelfCategory('${escapeHtml(c)}')">${escapeHtml(c)}</div>`;
       });
-      chipsEl.innerHTML = html;
+      document.getElementById('selfCategoryChips').innerHTML = html;
     }
 
     function setSelfCategory(cat) {
-      state.selectedSelfCategory = cat;
-      setupSelfCategories(state.selfData);
+      state.self.selectedCategory = cat;
+      setupSelfCategoryChips();
       filterSelfList();
     }
 
-    function renderSelfError(msg) {
-      document.getElementById('selfErrorBox').innerHTML = `
-        <div class="error-card">
-          ⚠️ ${msg}
-          <div style="margin-top: 8px;">
-            <button class="btn btn-secondary btn-sm" onclick="fetchArchiveData()">다시 시도</button>
-          </div>
-        </div>
-      `;
+    function getCategoryFilteredSelfData() {
+      if (state.self.selectedCategory === 'ALL') return state.self.data;
+      return state.self.data.filter(i => i.category === state.self.selectedCategory);
     }
 
-    function renderSelfList(list) {
-      const container = document.getElementById('selfListContainer');
-      document.getElementById('selfErrorBox').innerHTML = '';
+    function renderSelfList(filteredList = null) {
+      const area = document.getElementById('selfContentArea');
+      const list = filteredList !== null ? filteredList : getCategoryFilteredSelfData();
+      if (state.self.loading) return;
+      if (state.self.error) { renderSelfError(); return; }
       if (!list || list.length === 0) {
-        container.innerHTML = `<div class="empty-state">해당하는 자체 콘텐츠가 없습니다.</div>`;
+        area.innerHTML = `<div class="empty-state">해당 조건의 자체 콘텐츠가 없습니다.</div>`;
         return;
       }
-
-      container.innerHTML = list.map(item => `
-        <div class="archive-item">
-          <div class="item-header">
-            <span class="item-date">${item.date || '날짜 미정'}</span>
-            <span class="item-tag">${escapeHtml(item.category)}</span>
+      area.innerHTML = list.map(item => `
+        <div class="archive-card" onclick="navigateToYoutube('${escapeAttr(item.url)}', '${escapeAttr(item.title)}')">
+          <div class="card-meta-row">
+            <span class="card-tag">${escapeHtml(item.category || '자체콘텐츠')}</span>
+            <span class="card-date">${escapeHtml(item.date || '날짜 미정')}</span>
           </div>
-          <div class="item-title">${escapeHtml(item.title)}</div>
-          ${item.info ? `<div class="item-info">${escapeHtml(item.info)}</div>` : ''}
-          ${item.url ? `
-            <button class="btn btn-point btn-sm" onclick="openVideoModal('${item.ytId}', '${escapeHtml(item.title)}', '${item.url}')">
-              재생하기
-            </button>
-          ` : ''}
-        </div>
-      `).join('');
+          <div class="card-title-text">${escapeHtml(item.title)}</div>
+          ${item.info ? `<div class="card-desc-text">${escapeHtml(item.info)}</div>` : ''}
+          <div class="card-action-bar">
+            <span class="yt-link-btn">
+              <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              YouTube 영상 재생하기 &gt;
+            </span>
+          </div>
+        </div>`).join('');
     }
 
     function filterSelfList() {
       const q = document.getElementById('selfSearchInput').value.trim().toLowerCase();
-      let filtered = state.selfData;
-
-      if (state.selectedSelfCategory !== 'ALL') {
-        filtered = filtered.filter(i => i.category === state.selectedSelfCategory);
-      }
+      let list = getCategoryFilteredSelfData();
       if (q) {
-        filtered = filtered.filter(i =>
+        list = list.filter(i =>
           (i.title && i.title.toLowerCase().includes(q)) ||
-          (i.date && i.date.includes(q))
+          (i.date && i.date.includes(q)) ||
+          (i.info && i.info.toLowerCase().includes(q))
         );
       }
-      renderSelfList(filtered);
+      renderSelfList(list);
     }
 
-    /* ==========================================================================
-       [6] 유튜브 모달 재생
-       ========================================================================== */
-    function openVideoModal(ytId, title, rawUrl) {
-      const modal = document.getElementById('videoModal');
-      const titleEl = document.getElementById('videoModalTitle');
-      const box = document.getElementById('videoContainer');
-      const extBtn = document.getElementById('videoExternalLink');
-
-      titleEl.textContent = title;
-      extBtn.href = rawUrl || (ytId ? `https://www.youtube.com/watch?v=${ytId}` : '#');
-
-      if (ytId) {
-        box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1" allowfullscreen allow="autoplay; encrypted-media"></iframe>`;
-      } else {
-        box.innerHTML = `<div style="color:#fff; text-align:center; padding: 40px 10px;">영상 임베드가 지원되지 않는 링크입니다.<br>아래 버튼을 눌러 YouTube 앱에서 시청하세요.</div>`;
-      }
-      modal.classList.add('open');
+    function renderHomeRecentMusic() {
+      const box = document.getElementById('homeRecentMusic');
+      if (state.music.loading) { box.innerHTML = `<div class="loading-box" style="padding:15px 0;"><div class="spinner"></div></div>`; return; }
+      if (state.music.error) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">데이터를 불러오지 못했습니다.</div>`; return; }
+      const recents = state.music.data.slice(0, 2);
+      if (recents.length === 0) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">음악방송 내역이 없습니다.</div>`; return; }
+      box.innerHTML = recents.map(m => `
+        <div style="padding: 10px 0; border-bottom: 1px solid #F3F4F6; cursor: pointer;" onclick="navigateToYoutube('${escapeAttr(m.url)}', '${escapeAttr(m.title)}')">
+          <div style="font-size: 11px; color: var(--text-sub);">${escapeHtml(m.date)} · <strong style="color:var(--point-dark);">${escapeHtml(m.program)}</strong></div>
+          <div style="font-size: 13px; font-weight: 700; margin-top: 3px;">${escapeHtml(m.title)}</div>
+        </div>`).join('');
     }
 
-    function closeVideoModal() {
-      document.getElementById('videoModal').classList.remove('open');
-      document.getElementById('videoContainer').innerHTML = ''; // 재생 중단
+    function renderHomeRecentSelf() {
+      const box = document.getElementById('homeRecentSelf');
+      if (state.self.loading) { box.innerHTML = `<div class="loading-box" style="padding:15px 0;"><div class="spinner"></div></div>`; return; }
+      if (state.self.error) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">데이터를 불러오지 못했습니다.</div>`; return; }
+      const recents = state.self.data.slice(0, 2);
+      if (recents.length === 0) { box.innerHTML = `<div class="empty-state" style="padding:15px 0;">자체 콘텐츠 내역이 없습니다.</div>`; return; }
+      box.innerHTML = recents.map(s => `
+        <div style="padding: 10px 0; border-bottom: 1px solid #F3F4F6; cursor: pointer;" onclick="navigateToYoutube('${escapeAttr(s.url)}', '${escapeAttr(s.title)}')">
+          <div style="font-size: 11px; color: var(--text-sub);">${escapeHtml(s.date)} · <strong style="color:var(--point-dark);">${escapeHtml(s.category)}</strong></div>
+          <div style="font-size: 13px; font-weight: 700; margin-top: 3px;">${escapeHtml(s.title)}</div>
+        </div>`).join('');
     }
 
-    /* ==========================================================================
-       [7] 일정 CRUD & 홈 렌더링 (날짜/시간 계산)
-       ========================================================================== */
+    function switchTab(tabId) {
+      state.currentTab = tabId;
+      document.querySelectorAll('.tab-view').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      const targetView = document.getElementById(`view-${tabId}`);
+      const targetBtn = document.getElementById(`tabBtn-${tabId}`);
+      if (targetView) targetView.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+      if (tabId === 'home') renderHomeToday();
+      if (tabId === 'schedule') renderSchedules();
+      if (tabId === 'music' && state.music.data.length === 0 && !state.music.loading) loadMusicData();
+      if (tabId === 'self' && state.self.data.length === 0 && !state.self.loading) loadSelfData();
+    }
+
     function getTodayString() {
       const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      const d = String(now.getDate()).padStart(2, '0');
-      return `${y}-${m}-${d}`;
+      return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
     }
 
     function sortSchedules(list) {
-      return [...list].sort((a, b) => {
-        const timeA = new Date(`${a.date}T${a.time || '00:00'}`).getTime();
-        const timeB = new Date(`${b.date}T${b.time || '00:00'}`).getTime();
-        return timeA - timeB;
-      });
+      return [...list].sort((a, b) => new Date(`${a.date}T${a.time||'00:00'}`) - new Date(`${b.date}T${b.time||'00:00'}`));
     }
 
-    function setScheduleFilter(filter) {
-      state.scheduleFilter = filter;
-      ['today', 'upcoming', 'past', 'all'].forEach(f => {
-        const chip = document.getElementById(`chip-sch-${f}`);
-        if (chip) chip.classList.toggle('active', f === filter);
+    function setScheduleFilter(f) {
+      state.scheduleFilter = f;
+      ['today', 'upcoming', 'past', 'all'].forEach(k => {
+        const c = document.getElementById(`chip-sch-${k}`);
+        if (c) c.classList.toggle('active', k === f);
       });
       renderSchedules();
     }
@@ -917,106 +524,55 @@
       const container = document.getElementById('scheduleListContainer');
       const today = getTodayString();
       const sorted = sortSchedules(state.schedules);
+      let list = sorted;
+      if (state.scheduleFilter === 'today') list = sorted.filter(s => s.date === today);
+      else if (state.scheduleFilter === 'upcoming') list = sorted.filter(s => s.date > today);
+      else if (state.scheduleFilter === 'past') list = sorted.filter(s => s.date < today);
 
-      let filtered = sorted;
-      if (state.scheduleFilter === 'today') {
-        filtered = sorted.filter(s => s.date === today);
-      } else if (state.scheduleFilter === 'upcoming') {
-        filtered = sorted.filter(s => s.date > today);
-      } else if (state.scheduleFilter === 'past') {
-        filtered = sorted.filter(s => s.date < today);
-      }
-
-      if (filtered.length === 0) {
-        const msg = state.scheduleFilter === 'today'
-          ? '오늘 예정된 일정이 없습니다.'
-          : '등록된 일정이 없습니다.';
-        container.innerHTML = `<div class="empty-state">${msg}</div>`;
+      if (list.length === 0) {
+        container.innerHTML = `<div class="empty-state">${state.scheduleFilter === 'today' ? '오늘 예정된 일정이 없습니다.' : '등록된 일정이 없습니다.'}</div>`;
         return;
       }
-
-      container.innerHTML = filtered.map(item => `
+      container.innerHTML = list.map(item => `
         <div class="card" style="margin-bottom: 10px;">
-          <div class="item-header">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
             <div>
-              <span class="schedule-badge">${escapeHtml(item.category || '일정')}</span>
+              <span class="card-tag">${escapeHtml(item.category || '일정')}</span>
               <span style="font-size: 13px; font-weight: 600; margin-left: 6px;">${item.date}</span>
             </div>
-            <span class="schedule-time">${item.time || '시간 미지정'}</span>
+            <span style="font-size: 13px; font-weight: 700; color: var(--point-dark);">${item.time || '시간 미지정'}</span>
           </div>
           <div style="font-size: 15px; font-weight: 700; margin: 6px 0;">${escapeHtml(item.title)}</div>
           ${item.memo ? `<div style="font-size: 13px; color: var(--text-sub); margin-bottom: 8px;">${escapeHtml(item.memo)}</div>` : ''}
           <div style="font-size: 11px; color: ${item.notify ? '#0284C7' : '#9CA3AF'};">
-            ${item.notify ? '🔔 알림 활성화됨' : '🔕 알림 꺼짐'}
+            ${item.notify ? '🔔 알림 켜짐' : '🔕 알림 꺼짐'}
           </div>
-          <div class="schedule-actions">
+          <div style="display: flex; gap: 6px; margin-top: 10px; justify-content: flex-end;">
             <button class="btn btn-secondary btn-sm" onclick="editScheduleItem('${item.id}')">수정</button>
             <button class="btn btn-danger btn-sm" onclick="deleteScheduleItem('${item.id}')">삭제</button>
           </div>
-        </div>
-      `).join('');
+        </div>`).join('');
     }
 
     function renderHomeToday() {
       const box = document.getElementById('homeTodaySchedules');
       const today = getTodayString();
       const todayList = sortSchedules(state.schedules.filter(s => s.date === today));
-
       if (todayList.length === 0) {
         box.innerHTML = `<div class="empty-state" style="padding: 16px 0;">오늘 예정된 일정이 없습니다.</div>`;
         return;
       }
-
       box.innerHTML = todayList.map(s => `
         <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #F3F4F6;">
-          <div>
-            <span class="schedule-badge" style="font-size: 10px;">${escapeHtml(s.category)}</span>
-            <strong style="font-size: 14px; margin-left: 4px;">${escapeHtml(s.title)}</strong>
-          </div>
+          <div><span class="card-tag" style="font-size: 10px;">${escapeHtml(s.category)}</span><strong style="font-size: 14px; margin-left: 4px;">${escapeHtml(s.title)}</strong></div>
           <span style="font-size: 13px; font-weight: 700; color: var(--point-dark);">${s.time}</span>
-        </div>
-      `).join('');
+        </div>`).join('');
     }
 
-    function renderHomeRecentMusic() {
-      const box = document.getElementById('homeRecentMusic');
-      const recents = state.musicData.slice(0, 2);
-      if (recents.length === 0) {
-        box.innerHTML = `<div class="empty-state">음악방송 내역이 없습니다.</div>`;
-        return;
-      }
-      box.innerHTML = recents.map(m => `
-        <div style="padding: 8px 0; border-bottom: 1px solid #F3F4F6;">
-          <div style="font-size: 11px; color: var(--text-sub);">${m.date} · ${escapeHtml(m.program)}</div>
-          <div style="font-size: 13px; font-weight: 600;">${escapeHtml(m.title)}</div>
-        </div>
-      `).join('');
-    }
-
-    function renderHomeRecentSelf() {
-      const box = document.getElementById('homeRecentSelf');
-      const recents = state.selfData.slice(0, 2);
-      if (recents.length === 0) {
-        box.innerHTML = `<div class="empty-state">자체 콘텐츠가 없습니다.</div>`;
-        return;
-      }
-      box.innerHTML = recents.map(s => `
-        <div style="padding: 8px 0; border-bottom: 1px solid #F3F4F6;">
-          <div style="font-size: 11px; color: var(--text-sub);">${s.date} · ${escapeHtml(s.category)}</div>
-          <div style="font-size: 13px; font-weight: 600;">${escapeHtml(s.title)}</div>
-        </div>
-      `).join('');
-    }
-
-    /* ==========================================================================
-       [8] 일정 모달 열기/닫기 및 저장
-       ========================================================================== */
     function openScheduleModal(editItem = null) {
       const modal = document.getElementById('scheduleModal');
-      const titleEl = document.getElementById('modalScheduleTitle');
-
       if (editItem) {
-        titleEl.textContent = '일정 수정';
+        document.getElementById('modalScheduleTitle').textContent = '일정 수정';
         document.getElementById('schEditId').value = editItem.id;
         document.getElementById('schInputTitle').value = editItem.title;
         document.getElementById('schInputDate').value = editItem.date;
@@ -1025,7 +581,7 @@
         document.getElementById('schInputMemo').value = editItem.memo || '';
         document.getElementById('schInputNotify').checked = editItem.notify !== false;
       } else {
-        titleEl.textContent = '새 일정 등록';
+        document.getElementById('modalScheduleTitle').textContent = '새 일정 등록';
         document.getElementById('schEditId').value = '';
         document.getElementById('schInputTitle').value = '';
         document.getElementById('schInputDate').value = getTodayString();
@@ -1056,22 +612,17 @@
       }
 
       if (editId) {
-        state.schedules = state.schedules.map(item => {
-          if (item.id === editId) {
-            return { ...item, title, date, time, category, memo, notify };
-          }
-          return item;
-        });
+        state.schedules = state.schedules.map(i => i.id === editId ? { ...i, title, date, time, category, memo, notify } : i);
       } else {
-        const newItem = {
+        state.schedules.push({
           id: 'sch_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-          title, date, time, category, memo, notify,
-          createdAt: new Date().toISOString()
-        };
-        state.schedules.push(newItem);
+          title, date, time, category, memo, notify
+        });
       }
 
-      saveSchedules();
+      localStorage.setItem('h2h_schedules', JSON.stringify(state.schedules));
+      renderSchedules();
+      renderHomeToday();
       closeScheduleModal();
     }
 
@@ -1083,31 +634,25 @@
     function deleteScheduleItem(id) {
       if (confirm('이 일정을 삭제하시겠습니까?')) {
         state.schedules = state.schedules.filter(s => s.id !== id);
-        saveSchedules();
+        localStorage.setItem('h2h_schedules', JSON.stringify(state.schedules));
+        renderSchedules();
+        renderHomeToday();
       }
     }
 
-    /* ==========================================================================
-       [9] 알림 엔진 (Notification Manager)
-       ========================================================================== */
     function checkNotificationPermissionUI() {
       const label = document.getElementById('notifPermissionStatus');
       const btn = document.getElementById('btnReqNotif');
-      if (!('Notification' in window)) {
-        label.textContent = '미지원 브라우저';
-        btn.disabled = true;
-        return;
-      }
+      if (!('Notification' in window)) { label.textContent = '미지원 기기'; btn.disabled = true; return; }
       if (Notification.permission === 'granted') {
-        label.textContent = '허용됨 (정상 수신 가능)';
+        label.textContent = '허용됨 (정상 수신)';
         label.style.color = '#10B981';
         btn.textContent = '알림 허용 완료';
         btn.disabled = true;
         btn.style.opacity = '0.6';
       } else if (Notification.permission === 'denied') {
-        label.textContent = '차단됨 (스마트폰 설정 > 앱 알림 허용 필요)';
+        label.textContent = '차단됨 (설정 앱에서 허용 필요)';
         label.style.color = '#EF4444';
-        btn.textContent = '설정에서 권한을 변경해야 합니다';
       } else {
         label.textContent = '권한 필요';
         label.style.color = '#F59E0B';
@@ -1115,15 +660,10 @@
     }
 
     async function requestNotificationPermission() {
-      if (!('Notification' in window)) {
-        alert('이 기기/브라우저는 웹 알림을 지원하지 않습니다.');
-        return;
-      }
+      if (!('Notification' in window)) { alert('이 기기는 웹 알림을 지원하지 않습니다.'); return; }
       const res = await Notification.requestPermission();
       checkNotificationPermissionUI();
-      if (res === 'granted') {
-        sendPushMessage('Hearts2Hearts 알림 활성화', '앞으로 일정 요약 및 시작 전 알림을 보내드립니다.');
-      }
+      if (res === 'granted') sendPushMessage('Hearts2Hearts 알림 활성화', '알림 설정이 완료되었습니다!');
     }
 
     function saveNotificationSettings() {
@@ -1131,7 +671,16 @@
       state.settings.midnightNotif = document.getElementById('settingMidnightNotif').checked;
       state.settings.notifyEmptyMidnight = document.getElementById('settingNotifyEmptyMidnight').checked;
       state.settings.before5MinNotif = document.getElementById('setting5MinNotif').checked;
-      saveSettings();
+      localStorage.setItem('h2h_settings', JSON.stringify(state.settings));
+    }
+
+    function loadSavedData() {
+      try {
+        const sch = localStorage.getItem('h2h_schedules');
+        if (sch) state.schedules = JSON.parse(sch);
+        const set = localStorage.getItem('h2h_settings');
+        if (set) state.settings = { ...state.settings, ...JSON.parse(set) };
+      } catch (e) { console.error(e); }
     }
 
     function loadSettingsUI() {
@@ -1141,70 +690,46 @@
       document.getElementById('setting5MinNotif').checked = state.settings.before5MinNotif;
     }
 
-    // 알림 발송 공통 함수
     async function sendPushMessage(title, body) {
-      if (!state.settings.masterNotif) return;
-      if (!('Notification' in window) || Notification.permission !== 'granted') return;
-
+      if (!state.settings.masterNotif || !('Notification' in window) || Notification.permission !== 'granted') return;
       try {
         if ('serviceWorker' in navigator) {
           const reg = await navigator.serviceWorker.ready;
-          reg.showNotification(title, {
-            body: body,
-            icon: 'icon-192.png',
-            badge: 'icon-192.png',
-            vibrate: [200, 100, 200]
-          });
+          reg.showNotification(title, { body, icon: 'icon-192.png', badge: 'icon-192.png', vibrate: [200, 100, 200] });
         } else {
           new Notification(title, { body });
         }
-      } catch (err) {
-        console.error('알림 발송 오류:', err);
-      }
+      } catch (e) { console.error(e); }
     }
 
-    // 1초 주기로 실행되는 알림 스케줄러 루프
     function runNotificationChecker() {
       const now = new Date();
       const todayStr = getTodayString();
-      const currentH = now.getHours();
-      const currentM = now.getMinutes();
-      const currentSec = now.getSeconds();
-
-      // [A] 매일 자정 알림 (00:00:00 ~ 00:00:10 사이 체크)
-      if (state.settings.midnightNotif && currentH === 0 && currentM === 0) {
-        const midnightKey = `h2h_notif_midnight_${todayStr}`;
-        if (!localStorage.getItem(midnightKey)) {
+      if (state.settings.midnightNotif && now.getHours() === 0 && now.getMinutes() === 0) {
+        const key = `h2h_midnight_${todayStr}`;
+        if (!localStorage.getItem(key)) {
           const todays = state.schedules.filter(s => s.date === todayStr && s.notify !== false);
           if (todays.length > 0) {
-            let bodyText = `오늘 예정된 일정이 ${todays.length}개 있습니다.\n`;
-            todays.forEach(s => {
-              bodyText += `${s.time} - ${s.title}\n`;
-            });
-            sendPushMessage('오늘의 H2H 일정', bodyText.trim());
-            localStorage.setItem(midnightKey, 'sent');
+            let msg = `오늘 예정된 일정 ${todays.length}개가 있습니다.\n`;
+            todays.forEach(s => msg += `${s.time} - ${s.title}\n`);
+            sendPushMessage('오늘의 H2H 일정', msg.trim());
           } else if (state.settings.notifyEmptyMidnight) {
             sendPushMessage('오늘의 H2H 일정', '오늘 예정된 일정이 없습니다.');
-            localStorage.setItem(midnightKey, 'sent');
           }
+          localStorage.setItem(key, 'sent');
         }
       }
-
-      // [B] 일정 시작 5분 전 알림
       if (state.settings.before5MinNotif) {
-        const nowTimeMs = now.getTime();
+        const nowMs = now.getTime();
         state.schedules.forEach(item => {
           if (!item.notify) return;
-          const targetTime = new Date(`${item.date}T${item.time}`).getTime();
-          const triggerTime = targetTime - (5 * 60 * 1000); // 5분 전
-
-          // 5분 전 시점부터 5분 10초 전 사이 1회 발송
-          const diff = nowTimeMs - triggerTime;
-          if (diff >= 0 && diff < 15000) { // 15초 윈도우
-            const notifKey = `h2h_notif_5min_${item.id}`;
-            if (!localStorage.getItem(notifKey)) {
+          const targetMs = new Date(`${item.date}T${item.time}`).getTime();
+          const diff = nowMs - (targetMs - 5 * 60 * 1000);
+          if (diff >= 0 && diff < 15000) {
+            const k = `h2h_5m_${item.id}`;
+            if (!localStorage.getItem(k)) {
               sendPushMessage(`[5분 전] ${item.title}`, `${item.time}에 일정이 시작됩니다.`);
-              localStorage.setItem(notifKey, 'sent');
+              localStorage.setItem(k, 'sent');
             }
           }
         });
@@ -1213,66 +738,34 @@
 
     function sendTestNotification() {
       if (!('Notification' in window) || Notification.permission !== 'granted') {
-        alert('먼저 상단의 [알림 권한 요청 및 활성화] 버튼을 눌러주세요.');
+        alert('먼저 상단의 [알림 권한 활성화] 버튼을 눌러주세요.');
         return;
       }
-      sendPushMessage('Hearts2Hearts 알림 테스트', '안드로이드 기기 알림이 정상적으로 수신되었습니다!');
+      sendPushMessage('Hearts2Hearts 알림 테스트', '안드로이드 기기 알림이 정상적으로 작동합니다!');
     }
 
-    /* ==========================================================================
-       [10] 유틸리티 및 데이터 관리
-       ========================================================================== */
     function escapeHtml(str) {
       if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+    function escapeAttr(str) {
+      if (!str) return '';
+      return String(str).replace(/"/g, '&quot;').replace(/'/g, "\\'");
     }
 
-    function exportScheduleData() {
-      navigator.clipboard.writeText(JSON.stringify(state.schedules, null, 2))
-        .then(() => alert('일정 데이터가 클립보드에 복사되었습니다! 메모장 등에 보관하세요.'))
-        .catch(() => alert('복사에 실패했습니다.'));
-    }
+    window.addEventListener('online', () => { document.getElementById('connectionStatus').textContent = '온라인'; loadAllContentData(); });
+    window.addEventListener('offline', () => { document.getElementById('connectionStatus').textContent = '오프라인'; });
 
-    function clearAllData() {
-      if (confirm('등록된 모든 일정과 설정이 삭제됩니다. 계속하시겠습니까?')) {
-        localStorage.clear();
-        location.reload();
-      }
-    }
-
-    // 온라인/오프라인 상태 모니터링
-    window.addEventListener('online', () => {
-      document.getElementById('connectionStatus').textContent = '온라인';
-      fetchArchiveData();
-    });
-    window.addEventListener('offline', () => {
-      document.getElementById('connectionStatus').textContent = '오프라인';
-    });
-
-    /* ==========================================================================
-       [11] 서비스 워커 등록 & 초기화
-       ========================================================================== */
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
       loadSettingsUI();
       checkNotificationPermissionUI();
       renderHomeToday();
       renderSchedules();
-      fetchArchiveData();
-
-      // 알림 체커 루프 시작 (10초 간격)
+      loadAllContentData();
       setInterval(runNotificationChecker, 10000);
-
-      // PWA 서비스 워커 등록
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('SW Registered:', reg.scope))
-          .catch(err => console.log('SW Registration Failed:', err));
+        navigator.serviceWorker.register('./sw.js').catch(e => console.log('SW 실패:', e));
       }
     });
   </script>
