@@ -19,6 +19,7 @@
       --border-color: #E5E7EB;
       --radius-card: 18px;
       --radius-btn: 12px;
+      --nav-height: 64px;
     }
 
     * {
@@ -39,13 +40,13 @@
       overflow: hidden;
     }
 
-    /* ━━━━━━━━━━━━━━━━━━━━
-       상단 헤더 & 펼침 메뉴
-       ━━━━━━━━━━━━━━━━━━━━ */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       1 & 2. 상단 헤더 & 세련된 펼침 메뉴
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     header {
       background: #FFFFFF;
       height: 56px;
-      padding: 0 18px;
+      padding: 0 20px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
@@ -55,23 +56,13 @@
       z-index: 100;
     }
 
+    /* FAN 문구 제거된 깔끔한 로고 */
     .header-logo {
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 800;
       letter-spacing: -0.5px;
       color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .header-logo span.badge {
-      background: var(--point-light);
-      color: var(--point-dark);
-      font-size: 11px;
-      padding: 2px 7px;
-      border-radius: 10px;
-      font-weight: 700;
+      user-select: none;
     }
 
     .header-menu-btn {
@@ -84,7 +75,8 @@
       justify-content: center;
       cursor: pointer;
       color: var(--text-main);
-      border-radius: 8px;
+      border-radius: 10px;
+      transition: background-color 0.15s ease;
     }
 
     .header-menu-btn:active {
@@ -97,43 +89,46 @@
       fill: currentColor;
     }
 
-    /* 상단 드롭다운 펼침 메뉴 */
+    /* 자연스럽고 세련된 플로팅 드롭다운 메뉴 */
     .top-dropdown-menu {
       position: absolute;
-      top: 56px;
-      right: 12px;
-      width: 170px;
+      top: 60px;
+      right: 14px;
+      width: 160px;
       background: #FFFFFF;
       border-radius: var(--radius-card);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-      border: 1px solid var(--border-color);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03);
+      border: 1px solid rgba(229, 231, 235, 0.8);
       padding: 6px;
-      display: none;
+      display: flex;
       flex-direction: column;
+      gap: 2px;
       z-index: 101;
-      animation: fadeInDown 0.18s ease-out forwards;
+      opacity: 0;
+      transform: translateY(-10px) scale(0.97);
+      pointer-events: none;
+      transform-origin: top right;
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .top-dropdown-menu.open {
-      display: flex;
-    }
-
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     .dropdown-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 12px 14px;
+      gap: 12px;
+      padding: 11px 14px;
       font-size: 14px;
       font-weight: 600;
       color: var(--text-main);
-      border-radius: 10px;
+      border-radius: 12px;
       text-decoration: none;
       cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .dropdown-item:active {
@@ -145,37 +140,40 @@
       width: 18px;
       height: 18px;
       fill: currentColor;
-      opacity: 0.8;
+      opacity: 0.75;
+      flex-shrink: 0;
     }
 
-    /* 드롭다운 외부 클릭 닫기용 백드롭 */
+    /* 부드러운 페이드 배경 백드롭 */
     .dropdown-backdrop {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: transparent;
+      background: rgba(0, 0, 0, 0.15);
       z-index: 99;
-      display: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
     }
 
     .dropdown-backdrop.open {
-      display: block;
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* ━━━━━━━━━━━━━━━━━━━━
-       메인 스크롤 뷰
-       ━━━━━━━━━━━━━━━━━━━━ */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       6. 메인 콘텐츠 및 하단 스크롤 개선
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     main {
       flex: 1;
       overflow-y: auto;
       overflow-x: hidden;
       padding: 14px 16px;
-      padding-bottom: 90px; /* 하단 네비게이션 가림 방지 여백 */
+      /* 하단 탭바 + 기기 하단 안전영역 + 여유 여백(30px)을 계산해 마지막 콘텐츠가 완전히 보이도록 설정 */
+      padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px) + 30px);
       -webkit-overflow-scrolling: touch;
     }
 
-    /* ━━━━━━━━━━━━━━━━━━━━
-       카드 공통 스타일
-       ━━━━━━━━━━━━━━━━━━━━ */
+    /* 공통 카드 */
     .card {
       background: var(--card-bg);
       border-radius: var(--radius-card);
@@ -201,22 +199,43 @@
       gap: 6px;
     }
 
-    /* 1. D-DAY 카드 */
-    .dday-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       3. D-DAY 슬라이더 (자동 + 스와이프/버튼)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .dday-carousel-wrapper {
+      position: relative;
       background: linear-gradient(135deg, #ffffff 0%, #f0f8fd 100%);
       border: 1px solid #dceef9;
       border-radius: var(--radius-card);
-      padding: 14px 18px;
-      margin-bottom: 12px;
+      overflow: hidden;
+      margin-bottom: 6px;
+      touch-action: pan-y;
+      user-select: none;
+    }
+
+    .dday-track {
+      display: flex;
+      transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+      width: 100%;
+    }
+
+    .dday-slide {
+      min-width: 100%;
+      padding: 14px 44px; /* 좌우 화살표 버튼 공간 확보 */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .dday-info {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+    }
+
+    .dday-icon {
+      font-size: 20px;
+      line-height: 1;
     }
 
     .dday-title {
@@ -233,14 +252,44 @@
       padding: 5px 12px;
       border-radius: 20px;
       box-shadow: 0 2px 4px rgba(137, 207, 240, 0.4);
+      white-space: nowrap;
     }
 
+    /* 좌우 이동 화살표 버튼 */
+    .dday-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      cursor: pointer;
+      z-index: 2;
+      border-radius: 50%;
+    }
+
+    .dday-arrow:active {
+      background-color: rgba(0, 0, 0, 0.05);
+      color: var(--point-dark);
+    }
+
+    .dday-arrow.left { left: 4px; }
+    .dday-arrow.right { right: 4px; }
+    .dday-arrow svg { width: 18px; height: 18px; fill: currentColor; }
+
+    /* 페이지 인디케이터 도트 */
     .dday-dots {
       display: flex;
       justify-content: center;
-      gap: 5px;
-      margin-top: -6px;
+      align-items: center;
+      gap: 6px;
       margin-bottom: 12px;
+      padding-top: 4px;
     }
 
     .dday-dot {
@@ -248,78 +297,70 @@
       height: 6px;
       border-radius: 50%;
       background: #D1D5DB;
+      cursor: pointer;
+      transition: all 0.25s ease;
     }
 
     .dday-dot.active {
       background: var(--point-color);
-      width: 14px;
+      width: 16px;
       border-radius: 6px;
     }
 
-    /* 2. 뮤직비디오 (MV) 카드 */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       4. 뮤직비디오 영역 단순화
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .mv-clean-card {
+      padding: 0;
+      overflow: hidden;
+      border: 1px solid rgba(229, 231, 235, 0.8);
+      border-radius: var(--radius-card);
+      background: #000000;
+    }
+
     .mv-frame {
       position: relative;
       width: 100%;
       aspect-ratio: 16 / 9;
-      background: #111827;
-      border-radius: 14px;
-      overflow: hidden;
+      background: #0F172A;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: #FFFFFF;
+      overflow: hidden;
+      cursor: pointer;
     }
 
     .mv-play-btn {
-      width: 48px;
-      height: 48px;
-      background: rgba(137, 207, 240, 0.9);
+      width: 52px;
+      height: 52px;
+      background: rgba(137, 207, 240, 0.95);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+      transition: transform 0.15s ease;
+    }
+
+    .mv-frame:active .mv-play-btn {
+      transform: scale(0.92);
     }
 
     .mv-play-btn svg {
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
       fill: #FFFFFF;
-      margin-left: 2px;
+      margin-left: 3px;
     }
 
-    .mv-caption {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .mv-sub {
-      font-size: 12px;
-      color: var(--text-sub);
-    }
-
-    /* 3. 오늘의 일정 카드 */
-    .schedule-empty {
-      color: var(--text-sub);
-      font-size: 14px;
-      padding: 10px 0;
-      text-align: center;
-    }
-
+    /* 3. 오늘의 일정 */
     .schedule-item-preview {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
+      padding: 11px 12px;
       background: var(--bg-color);
       border-radius: 12px;
-      margin-bottom: 6px;
     }
 
     .schedule-time-badge {
@@ -332,7 +373,13 @@
       border: 1px solid var(--border-color);
     }
 
-    /* 4. 오늘의 미션 카드 */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       5. 오늘의 미션 ('진행 중' 문구 제거 및 정리)
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .mission-header-clean {
+      margin-bottom: 10px;
+    }
+
     .mission-row {
       display: flex;
       justify-content: space-between;
@@ -342,6 +389,10 @@
       background: #FAFAFA;
       border: 1px solid var(--border-color);
       margin-bottom: 8px;
+    }
+
+    .mission-row:last-child {
+      margin-bottom: 0;
     }
 
     .mission-text {
@@ -361,13 +412,13 @@
       border: 1px solid #cce8f6;
       border-radius: 8px;
       padding: 5px 10px;
-      text-decoration: none;
     }
 
-    /* 5. 스밍 상태 카드 */
+    /* 6. 스밍 상태 */
     .streaming-card {
       border: 1px solid #E9D5FF;
       background: linear-gradient(180deg, #FFFFFF 0%, #FAF5FF 100%);
+      margin-bottom: 0; /* 마지막 카드 하단 마진 정리 */
     }
 
     .streaming-header {
@@ -429,61 +480,23 @@
       border-radius: 3px;
     }
 
-    /* ━━━━━━━━━━━━━━━━━━━━
-       각 메뉴별 화면 시안
-       ━━━━━━━━━━━━━━━━━━━━ */
-    .tab-view {
-      display: none;
-    }
+    /* 다른 메뉴 화면 시안 */
+    .tab-view { display: none; }
+    .tab-view.active { display: block; }
+    .page-title { font-size: 17px; font-weight: 800; margin-bottom: 14px; }
+    .chip-group { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 12px; }
+    .chip { padding: 6px 14px; font-size: 12px; font-weight: 600; border-radius: 20px; background: #FFFFFF; border: 1px solid var(--border-color); color: var(--text-sub); white-space: nowrap; }
+    .chip.active { background: var(--point-color); color: #FFFFFF; border-color: var(--point-color); }
 
-    .tab-view.active {
-      display: block;
-    }
-
-    .page-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .chip-group {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 10px;
-      margin-bottom: 12px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .chip {
-      padding: 6px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 20px;
-      background: #FFFFFF;
-      border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      white-space: nowrap;
-    }
-
-    .chip.active {
-      background: var(--point-color);
-      color: #FFFFFF;
-      border-color: var(--point-color);
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━
-       하단 고정 내비게이션 (5개 메뉴)
-       ━━━━━━━━━━━━━━━━━━━━ */
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       하단 고정 내비게이션
+       ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     nav.bottom-nav {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      height: 64px;
+      height: var(--nav-height);
       background: #FFFFFF;
       border-top: 1px solid var(--border-color);
       display: flex;
@@ -515,7 +528,6 @@
       fill: currentColor;
     }
 
-    /* 선택된 메뉴 (#89CFF0 포인트 색상) */
     .nav-btn.active {
       color: var(--point-dark);
       font-weight: 700;
@@ -531,19 +543,14 @@
   <!-- 외부 터치 시 메뉴 닫기 백드롭 -->
   <div class="dropdown-backdrop" id="dropdownBackdrop" onclick="toggleTopMenu(false)"></div>
 
-  <!-- ━━━━━━━━━━━━━━━━━━━━
-       상단 헤더
-       ━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 1. 상단 헤더 (FAN 문구 제거) -->
   <header>
-    <div class="header-logo">
-      H2HCHIVE <span class="badge">FAN</span>
-    </div>
-    <!-- 상단 펼침 메뉴 버튼 -->
+    <div class="header-logo">H2HCHIVE</div>
     <button class="header-menu-btn" onclick="toggleTopMenu()" aria-label="메뉴 열기">
       <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
     </button>
 
-    <!-- 4. 상단 펼침 메뉴 -->
+    <!-- 2. 부드러운 전환 효과의 펼침 메뉴 -->
     <div class="top-dropdown-menu" id="topDropdownMenu">
       <div class="dropdown-item" onclick="handleMenuClick('MV')">
         <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
@@ -564,52 +571,67 @@
     </div>
   </header>
 
-  <!-- ━━━━━━━━━━━━━━━━━━━━
-       메인 컨텐츠
-       ━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 메인 스크롤 뷰 -->
   <main>
-    <!-- [화면 1] 홈 화면 (중심 요소 5가지 정적 시안) -->
+    <!-- [홈 화면] -->
     <section id="view-home" class="tab-view active">
-      <!-- 1. D-DAY -->
-      <div class="dday-wrapper">
-        <div class="dday-info">
-          <span style="font-size: 18px;">👾</span>
-          <span class="dday-title">주은 생일</span>
+      
+      <!-- 3. D-DAY 슬라이더 (자동 롤링 + 터치 스와이프 + 좌우 화살표 버튼) -->
+      <div class="dday-carousel-wrapper" id="ddayCarousel">
+        <button class="dday-arrow left" onclick="prevDday(event)" aria-label="이전 디데이">
+          <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="dday-arrow right" onclick="nextDday(event)" aria-label="다음 디데이">
+          <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+
+        <div class="dday-track" id="ddayTrack">
+          <!-- 기존 실제 D-DAY 항목 구성 -->
+          <div class="dday-slide">
+            <div class="dday-info">
+              <span class="dday-icon">👾</span>
+              <span class="dday-title">주은 생일</span>
+            </div>
+            <div class="dday-badge">D-41</div>
+          </div>
+          <div class="dday-slide">
+            <div class="dday-info">
+              <span class="dday-icon">🌻</span>
+              <span class="dday-title">에이나 생일</span>
+            </div>
+            <div class="dday-badge">D-88</div>
+          </div>
+          <div class="dday-slide">
+            <div class="dday-info">
+              <span class="dday-icon">🎉</span>
+              <span class="dday-title">데뷔일</span>
+            </div>
+            <div class="dday-badge">D+128</div>
+          </div>
         </div>
-        <div class="dday-badge">D-41</div>
-      </div>
-      <div class="dday-dots">
-        <span class="dday-dot active"></span>
-        <span class="dday-dot"></span>
-        <span class="dday-dot"></span>
       </div>
 
-      <!-- 2. 뮤직비디오 (MV) -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">🎬 뮤직비디오</div>
-          <span style="font-size: 12px; color: var(--point-dark); font-weight: 600;">최신작</span>
-        </div>
+      <!-- D-DAY 페이지 인디케이터 도트 -->
+      <div class="dday-dots" id="ddayDots">
+        <span class="dday-dot active" onclick="goDday(0)"></span>
+        <span class="dday-dot" onclick="goDday(1)"></span>
+        <span class="dday-dot" onclick="goDday(2)"></span>
+      </div>
+
+      <!-- 4. 뮤직비디오 영역 (주변 텍스트·최신작·헤더 제거, 영상만 집중) -->
+      <div class="card mv-clean-card">
         <div class="mv-frame">
           <div class="mv-play-btn">
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </div>
-          <div style="font-size: 13px; font-weight: 700;">Hearts2Hearts - ICONIC HEART</div>
-          <div style="font-size: 11px; opacity: 0.8; margin-top: 2px;">Official Music Video</div>
-        </div>
-        <div class="mv-caption">
-          <span>ICONIC HEART (Korean.ver)</span>
-          <span class="mv-sub">2026.10</span>
         </div>
       </div>
 
-      <!-- 3. 오늘의 일정 -->
+      <!-- 오늘의 일정 -->
       <div class="card">
         <div class="card-header">
           <div class="card-title">📅 오늘의 일정</div>
-          <span style="font-size: 12px; color: var(--text-sub);">TODAY</span>
         </div>
-        <!-- 실제 팬페이지 구성 반영 예시 -->
         <div class="schedule-item-preview">
           <div>
             <strong style="font-size: 14px;">KBS2 뮤직뱅크 생방송</strong>
@@ -617,14 +639,12 @@
           </div>
           <span class="schedule-time-badge">17:05</span>
         </div>
-        <div class="schedule-empty" style="display: none;">오늘 일정이 없습니다.</div>
       </div>
 
-      <!-- 4. 오늘의 미션 -->
+      <!-- 5. 오늘의 미션 ('진행 중' 문구 제거) -->
       <div class="card">
-        <div class="card-header">
+        <div class="card-header mission-header-clean">
           <div class="card-title">📍 오늘의 미션</div>
-          <span style="font-size: 12px; color: var(--point-dark); font-weight: 600;">진행 중</span>
         </div>
         <div class="mission-row">
           <div class="mission-text">
@@ -642,7 +662,7 @@
         </div>
       </div>
 
-      <!-- 5. 스밍 상태 -->
+      <!-- 6. 스밍 상태 (하단 패딩 개선으로 완전히 노출됨) -->
       <div class="card streaming-card">
         <div class="streaming-header">스밍이 끊기지 않았다면</div>
         <div class="streaming-counter">💜 ICONIC HEART (Korean.ver) 누적 0회</div>
@@ -661,135 +681,46 @@
           </div>
         </div>
       </div>
+
     </section>
 
-    <!-- [화면 2] 스밍 화면 시안 -->
+    <!-- [다른 메뉴 탭들 - 기존 유지] -->
     <section id="view-stream" class="tab-view">
       <div class="page-title">🎧 스밍 리스트</div>
-      <div class="card">
-        <div class="card-title" style="margin-bottom: 8px;">총 재생 시간: 58분 25초 (19곡)</div>
-        <p style="font-size: 12px; color: var(--text-sub); line-height: 1.5;">
-          반복 재생 시 1시간 단위 정각 주기로 권장되는 공식 스밍 목록입니다.
-        </p>
-      </div>
-      <div class="card" style="padding: 10px 14px;">
-        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
-          01. Lemon Tang <span style="float: right; color: var(--text-sub); font-size: 12px;">2:43</span>
-        </div>
-        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color); color: var(--point-dark);">
-          02. ICONIC HEART (Korean.ver) ★ <span style="float: right; color: var(--text-sub); font-size: 12px;">3:09</span>
-        </div>
-        <div style="font-size: 13px; font-weight: 700; padding: 8px 0; border-bottom: 1px solid var(--border-color);">
-          03. RUDE! <span style="float: right; color: var(--text-sub); font-size: 12px;">3:20</span>
-        </div>
-        <div style="font-size: 13px; font-weight: 700; padding: 8px 0;">
-          04. FOCUS <span style="float: right; color: var(--text-sub); font-size: 12px;">2:58</span>
-        </div>
-      </div>
+      <div class="card"><div class="card-title">총 재생 시간: 58분 25초 (19곡)</div></div>
     </section>
-
-    <!-- [화면 3] 일정 화면 시안 -->
     <section id="view-schedule" class="tab-view">
       <div class="page-title">📅 일정 아카이브</div>
-      <div class="chip-group">
-        <div class="chip active">전체 일정</div>
-        <div class="chip">음방/방송</div>
-        <div class="chip">행사/팬미팅</div>
-        <div class="chip">기념일</div>
-      </div>
-      <div class="card">
-        <div style="font-size: 12px; color: var(--point-dark); font-weight: 700; margin-bottom: 4px;">2026.10.23 (금)</div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">KBS2 뮤직뱅크</div>
-        <div style="font-size: 13px; color: var(--text-sub);">오후 5시 5분 방송 예정</div>
-      </div>
-      <div class="card">
-        <div style="font-size: 12px; color: var(--text-sub); font-weight: 700; margin-bottom: 4px;">2026.10.25 (일)</div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">SBS 인기가요</div>
-        <div style="font-size: 13px; color: var(--text-sub);">오후 3시 20분 방송 예정</div>
-      </div>
+      <div class="chip-group"><div class="chip active">전체 일정</div></div>
     </section>
-
-    <!-- [화면 4] 음방(음악방송) 화면 시안 -->
     <section id="view-music" class="tab-view">
       <div class="page-title">📺 음악방송 아카이브</div>
-      <div class="chip-group">
-        <div class="chip active">전체</div>
-        <div class="chip">뮤직뱅크</div>
-        <div class="chip">쇼! 음악중심</div>
-        <div class="chip">인기가요</div>
-        <div class="chip">엠카운트다운</div>
-      </div>
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
-          <span>뮤직뱅크</span>
-          <span>2026.10.16</span>
-        </div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">ICONIC HEART - Hearts2Hearts 컴백 무대</div>
-        <div style="font-size: 12px; color: var(--point-dark); font-weight: 600;">무대 영상 · 직캠</div>
-      </div>
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
-          <span>엠카운트다운</span>
-          <span>2026.10.15</span>
-        </div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">최초 공개 ICONIC HEART 본방송</div>
-        <div style="font-size: 12px; color: var(--point-dark); font-weight: 600;">무대 영상</div>
-      </div>
+      <div class="chip-group"><div class="chip active">전체</div></div>
     </section>
-
-    <!-- [화면 5] 자컨(자체 콘텐츠) 화면 시안 -->
     <section id="view-self" class="tab-view">
       <div class="page-title">🎬 자체 콘텐츠</div>
-      <div class="chip-group">
-        <div class="chip active">전체</div>
-        <div class="chip">자체 예능</div>
-        <div class="chip">비하인드</div>
-        <div class="chip">쇼츠/릴스</div>
-      </div>
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
-          <span style="color: var(--point-dark); font-weight: 700;">자체 예능</span>
-          <span>2026.10.18</span>
-        </div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">[H2H] 하츠투하츠의 가을 소풍 EP.01</div>
-        <div style="font-size: 12px; color: var(--text-sub);">본격 힐링 소풍 리얼리티</div>
-      </div>
-      <div class="card">
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sub); margin-bottom: 6px;">
-          <span style="color: var(--point-dark); font-weight: 700;">비하인드</span>
-          <span>2026.10.12</span>
-        </div>
-        <div style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">ICONIC HEART 뮤직비디오 촬영 비하인드</div>
-        <div style="font-size: 12px; color: var(--text-sub);">MV 현장 메이킹 필름</div>
-      </div>
+      <div class="chip-group"><div class="chip active">전체</div></div>
     </section>
   </main>
 
-  <!-- ━━━━━━━━━━━━━━━━━━━━
-       3. 하단 고정 내비게이션 (5개 메뉴, 홈 가운데 배치)
-       ━━━━━━━━━━━━━━━━━━━━ -->
+  <!-- 하단 고정 내비게이션 -->
   <nav class="bottom-nav">
-    <!-- 1. 스밍 -->
     <button class="nav-btn" id="nav-stream" onclick="switchTab('stream')">
       <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
       <span>스밍</span>
     </button>
-    <!-- 2. 일정 -->
     <button class="nav-btn" id="nav-schedule" onclick="switchTab('schedule')">
       <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
       <span>일정</span>
     </button>
-    <!-- 3. 홈 (중앙 배치) -->
     <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       <span>홈</span>
     </button>
-    <!-- 4. 음방 -->
     <button class="nav-btn" id="nav-music" onclick="switchTab('music')">
       <svg viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7v-3l4 2.5-4 2.5z"/></svg>
       <span>음방</span>
     </button>
-    <!-- 5. 자컨 -->
     <button class="nav-btn" id="nav-self" onclick="switchTab('self')">
       <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
       <span>자컨</span>
@@ -798,7 +729,7 @@
 
   <script>
     /* ━━━━━━━━━━━━━━━━━━━━
-       화면 전환 로직 (디자인 확인용 정적 전환)
+       탭 전환
        ━━━━━━━━━━━━━━━━━━━━ */
     function switchTab(tabId) {
       document.querySelectorAll('.tab-view').forEach(view => view.classList.remove('active'));
@@ -814,12 +745,11 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━
-       상단 메뉴 펼침/닫힘 토글
+       2. 상단 메뉴 토글
        ━━━━━━━━━━━━━━━━━━━━ */
     function toggleTopMenu(forceState) {
       const menu = document.getElementById('topDropdownMenu');
       const backdrop = document.getElementById('dropdownBackdrop');
-
       const isOpen = forceState !== undefined ? forceState : !menu.classList.contains('open');
 
       if (isOpen) {
@@ -833,8 +763,92 @@
 
     function handleMenuClick(name) {
       toggleTopMenu(false);
-      alert(`[${name}] 디자인 메뉴가 선택되었습니다.`);
+      alert(`[${name}] 메뉴가 선택되었습니다.`);
     }
+
+    /* ━━━━━━━━━━━━━━━━━━━━
+       3. D-DAY 슬라이더 로직 (자동 전환 + 터치 스와이프 + 좌우 버튼)
+       ━━━━━━━━━━━━━━━━━━━━ */
+    let ddayCurrent = 0;
+    const ddayCount = 3;
+    let ddayTimer = null;
+
+    function updateDdaySlide() {
+      const track = document.getElementById('ddayTrack');
+      if (track) {
+        track.style.transform = `translateX(-${ddayCurrent * 100}%)`;
+      }
+      const dots = document.querySelectorAll('.dday-dot');
+      dots.forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === ddayCurrent);
+      });
+    }
+
+    function nextDday(e) {
+      if (e) e.stopPropagation();
+      ddayCurrent = (ddayCurrent + 1) % ddayCount;
+      updateDdaySlide();
+      restartDdayAutoSlide();
+    }
+
+    function prevDday(e) {
+      if (e) e.stopPropagation();
+      ddayCurrent = (ddayCurrent - 1 + ddayCount) % ddayCount;
+      updateDdaySlide();
+      restartDdayAutoSlide();
+    }
+
+    function goDday(idx) {
+      ddayCurrent = idx;
+      updateDdaySlide();
+      restartDdayAutoSlide();
+    }
+
+    function startDdayAutoSlide() {
+      stopDdayAutoSlide();
+      ddayTimer = setInterval(() => {
+        ddayCurrent = (ddayCurrent + 1) % ddayCount;
+        updateDdaySlide();
+      }, 3500); // 3.5초마다 부드럽게 자동 전환
+    }
+
+    function stopDdayAutoSlide() {
+      if (ddayTimer) {
+        clearInterval(ddayTimer);
+        ddayTimer = null;
+      }
+    }
+
+    function restartDdayAutoSlide() {
+      stopDdayAutoSlide();
+      startDdayAutoSlide();
+    }
+
+    // 모바일 터치 스와이프 지원
+    const carouselEl = document.getElementById('ddayCarousel');
+    let startX = 0;
+    let endX = 0;
+
+    if (carouselEl) {
+      carouselEl.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        stopDdayAutoSlide();
+      }, { passive: true });
+
+      carouselEl.addEventListener('touchend', (e) => {
+        endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        if (Math.abs(diff) > 40) { // 40px 이상 스와이프 시 전환
+          if (diff > 0) nextDday();
+          else prevDday();
+        } else {
+          startDdayAutoSlide();
+        }
+      }, { passive: true });
+    }
+
+    // 초기 시작
+    startDdayAutoSlide();
   </script>
 </body>
 </html>
