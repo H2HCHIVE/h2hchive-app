@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스케줄 | H2HCHIVE</title>
+
+<style>
+body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:#f5f6f8;
+    color:#222;
+    display:flex;
+    justify-content:center;
+}
+
+.container{
+    width:100%;
+    max-width:420px;
+    padding:14px 12px 30px;
+}
+
+/* 탭 */
+.tabs{
+    display:flex;
+    gap:6px;
+    margin-bottom:14px;
+}
+
+.tab{
+    flex:1;
+    text-align:center;
+    padding:9px 0;
+    background:white;
+    border-radius:10px;
+    font-size:0.85rem;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    transition:.2s;
+}
+
+.tab.active{
+    background:#89CFF0;
+    color:white;
+}
+
+/* 헤더 */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+}
+
+.month{
+    font-size:1.3rem;
+    font-weight:700;
+    cursor:pointer;
+    border:none;
+    background:none;
+    color:#222;
+    font-family:inherit;
+    padding:5px 8px;
+    border-radius:8px;
+}
+
+.month:active{
+    background:#e6f5fc;
+}
+
+.btn{
+    font-size:1.6rem;
+    border:none;
+    background:none;
+    cursor:pointer;
+}
+
+/* 연도·월 선택창 */
+.picker-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.35);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:1000;
+    box-sizing:border-box;
+}
+
+.picker-overlay.open{
+    display:flex;
+}
+
+.picker{
+    width:100%;
+    max-width:360px;
+    background:#f5f6f8;
+    border-radius:18px;
+    padding:20px;
+    box-sizing:border-box;
+    box-shadow:0 8px 30px rgba(0,0,0,0.18);
+}
+
+.picker-title{
+    font-size:1.1rem;
+    font-weight:700;
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.picker-year-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    margin-bottom:20px;
+}
+
+.picker-year-btn{
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:10px;
+    background:white;
+    font-size:1.2rem;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+}
+
+.picker-year{
+    font-size:1.15rem;
+    font-weight:700;
+    min-width:100px;
+    text-align:center;
+}
+
+.picker-months{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.picker-month{
+    border:none;
+    border-radius:10px;
+    background:white;
+    padding:13px 0;
+    font-size:0.9rem;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.05);
+    color:#222;
+}
+
+.picker-month.selected{
+    background:#89CFF0;
+    color:white;
+    font-weight:700;
+}
+
+.picker-month:active,
+.picker-year-btn:active{
+    opacity:0.7;
+}
+
+.picker-actions{
+    display:flex;
+    gap:8px;
+    margin-top:18px;
+}
+
+.picker-action{
+    flex:1;
+    border:none;
+    border-radius:10px;
+    padding:12px 0;
+    font-size:0.9rem;
+    cursor:pointer;
+}
+
+.picker-cancel{
+    background:white;
+    color:#555;
+}
+
+.picker-confirm{
+    background:#89CFF0;
+    color:white;
+    font-weight:700;
+}
+
+/* 월 이동 슬라이드 */
+#calendarView{
+    touch-action:pan-y;
+    overflow:hidden;
+}
+
+#calendarView.slide-left{
+    animation:slideLeft .25s ease forwards;
+}
+
+#calendarView.slide-right{
+    animation:slideRight .25s ease forwards;
+}
+
+#calendarView.slide-in-left{
+    animation:slideInLeft .25s ease forwards;
+}
+
+#calendarView.slide-in-right{
+    animation:slideInRight .25s ease forwards;
+}
+
+@keyframes slideLeft{
+    from{
+        opacity:1;
+        transform:translateX(0);
+    }
+    to{
+        opacity:0;
+        transform:translateX(-35px);
+    }
+}
+
+@keyframes slideRight{
+    from{
+        opacity:1;
+        transform:translateX(0);
+    }
+    to{
+        opacity:0;
+        transform:translateX(35px);
+    }
+}
+
+@keyframes slideInLeft{
+    from{
+        opacity:0;
+        transform:translateX(35px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+@keyframes slideInRight{
+    from{
+        opacity:0;
+        transform:translateX(-35px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* 필터 */
+.filters{
+    margin-bottom:12px;
+}
+
+.filter-group{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:7px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+.filter-group::-webkit-scrollbar{
+    display:none;
+}
+
+.filter-label{
+    flex-shrink:0;
+    font-size:0.72rem;
+    font-weight:600;
+    color:#999;
+    width:34px;
+}
+
+.filter-buttons{
+    display:flex;
+    gap:6px;
+    flex-shrink:0;
+}
+
+.filter-buttons button{
+    border:none;
+    background:white;
+    padding:6px 10px;
+    border-radius:8px;
+    font-size:0.8rem;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);
+    flex-shrink:0;
+}
+
+.filter-buttons button.active{
+    background:#222;
+    color:white;
+}
+
+/* 요일 */
+.weekdays{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    text-align:center;
+    font-size:0.85rem;
+    font-weight:600;
+    margin-bottom:6px;
+}
+
+.weekdays div:nth-child(1){ color:red; }
+.weekdays div:nth-child(7){ color:blue; }
+
+/* 캘린더 */
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+}
+
+.day{
+    background:white;
+    border-radius:12px;
+    padding:12px 0;
+    text-align:center;
+    font-size:0.95rem;
+    cursor:pointer;
+    position:relative;
+}
+
+.dim{
+    opacity:0.25;
+}
+
+.today{
+    border:2px solid red;
+    font-weight:700;
+}
+
+.dot{
+    width:6px;
+    height:6px;
+    background:#999;
+    border-radius:50%;
+    margin:4px auto 0;
+}
+
+.today-dot{
+    background:red;
+}
+
+/* 일정 박스 */
+.event-box{
+    margin-top:12px;
+    background:white;
+    border-radius:14px;
+    padding:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    min-height:50px;
+}
+
+/* 줄 강조 */
+.line{
+    display:block;
+    margin-bottom:6px;
+}
+
+.highlight{
+    font-weight:800;
+    background:#fff3b0;
+    padding:2px 4px;
+    border-radius:6px;
+}
+
+.dim-line{
+    opacity:0.25;
+}
+
+/* 리스트 / 하이라이트 카드 */
+.list{
+    background:white;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    white-space:pre-line;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- 탭 -->
+    <div class="tabs">
+        <div class="tab active" onclick="setTab('calendar', this)">📅 캘린더</div>
+        <div class="tab" onclick="setTab('list', this)">📋 전체 일정</div>
+        <div class="tab" onclick="setTab('highlight', this)">🔥 하이라이트</div>
+    </div>
+
+    <div id="calendarView">
+
+        <div class="header">
+            <button class="btn" onclick="prev()">←</button>
+
+            <!-- 날짜 클릭 시 연도·월 선택창 열기 -->
+            <button class="month" id="month" onclick="openPicker()"></button>
+
+            <button class="btn" onclick="next()">→</button>
+        </div>
+
+        <!-- 필터 -->
+        <div class="filters">
+
+            <!-- 일정 종류 -->
+            <div class="filter-group">
+                <div class="filter-label">종류</div>
+
+                <div class="filter-buttons">
+                    <button onclick="setTypeFilter('all', this)" class="active">전체</button>
+                    <button onclick="setTypeFilter('📺', this)">📺</button>
+                    <button onclick="setTypeFilter('📻', this)">📻</button>
+                    <button onclick="setTypeFilter('✒️', this)">✒️</button>
+                    <button onclick="setTypeFilter('🎤', this)">🎤</button>
+                    <button onclick="setTypeFilter('💿', this)">💿</button>
+                    <button onclick="setTypeFilter('▶️', this)">▶️</button>
+                    <button onclick="setTypeFilter('🗓', this)">🗓</button>
+                </div>
+            </div>
+
+            <!-- 멤버 -->
+            <div class="filter-group">
+                <div class="filter-label">멤버</div>
+
+                <div class="filter-buttons">
+                    <button onclick="setMemberFilter('all', this)" class="active">전체</button>
+                    <button onclick="setMemberFilter('🍓', this)">🍓</button>
+                    <button onclick="setMemberFilter('🌴', this)">🌴</button>
+                    <button onclick="setMemberFilter('🎀', this)">🎀</button>
+                    <button onclick="setMemberFilter('🧁', this)">🧁</button>
+                    <button onclick="setMemberFilter('👾', this)">👾</button>
+                    <button onclick="setMemberFilter('🌻', this)">🌻</button>
+                    <button onclick="setMemberFilter('🫛', this)">🫛</button>
+                    <button onclick="setMemberFilter('😊', this)">😊</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="weekdays">
+            <div>일</div>
+            <div>월</div>
+            <div>화</div>
+            <div>수</div>
+            <div>목</div>
+            <div>금</div>
+            <div>토</div>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+
+        <div class="event-box" id="eventBox">날짜를 클릭하세요</div>
+
+    </div>
+
+    <div id="listView" style="display:none;"></div>
+    <div id="highlightView" style="display:none;"></div>
+
+</div>
+
+<!-- 연도·월 선택창 -->
+<div
+    class="picker-overlay"
+    id="pickerOverlay"
+    onclick="handleOverlayClick(event)"
+>
+    <div class="picker" role="dialog" aria-modal="true" aria-label="날짜 이동">
+
+        <div class="picker-title">날짜 이동</div>
+
+        <div class="picker-year-row">
+            <button
+                class="picker-year-btn"
+                onclick="changePickerYear(-1)"
+                aria-label="이전 연도"
+            >‹</button>
+
+            <div class="picker-year" id="pickerYear"></div>
+
+            <button
+                class="picker-year-btn"
+                onclick="changePickerYear(1)"
+                aria-label="다음 연도"
+            >›</button>
+        </div>
+
+        <div class="picker-months" id="pickerMonths">
+            <button class="picker-month" data-month="0" onclick="selectPickerMonth(0)">1월</button>
+            <button class="picker-month" data-month="1" onclick="selectPickerMonth(1)">2월</button>
+            <button class="picker-month" data-month="2" onclick="selectPickerMonth(2)">3월</button>
+            <button class="picker-month" data-month="3" onclick="selectPickerMonth(3)">4월</button>
+            <button class="picker-month" data-month="4" onclick="selectPickerMonth(4)">5월</button>
+            <button class="picker-month" data-month="5" onclick="selectPickerMonth(5)">6월</button>
+            <button class="picker-month" data-month="6" onclick="selectPickerMonth(6)">7월</button>
+            <button class="picker-month" data-month="7" onclick="selectPickerMonth(7)">8월</button>
+            <button class="picker-month" data-month="8" onclick="selectPickerMonth(8)">9월</button>
+            <button class="picker-month" data-month="9" onclick="selectPickerMonth(9)">10월</button>
+            <button class="picker-month" data-month="10" onclick="selectPickerMonth(10)">11월</button>
+            <button class="picker-month" data-month="11" onclick="selectPickerMonth(11)">12월</button>
+        </div>
+
+        <div class="picker-actions">
+            <button
+                class="picker-action picker-cancel"
+                onclick="closePicker()"
+            >취소</button>
+
+            <button
+                class="picker-action picker-confirm"
+                onclick="confirmPicker()"
+            >이동</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+/* ==========================================
+   기본 상태
+========================================== */
+
+let date = new Date();
+
+let data = {};
+
+let loadedYears = {};
+
+let typeFilter = 'all';
+
+let memberFilter = 'all';
+
+/* 연도·월 선택창 상태 */
+let pickerYear = date.getFullYear();
+let pickerMonth = date.getMonth();
+
+
+/* ==========================================
+   연도별 JSON 불러오기
+========================================== */
+
+function loadYear(year){
+
+    if(loadedYears[year]){
+        data = loadedYears[year];
+        render();
+        return;
+    }
+
+    fetch(`./schedule-${year}.json`)
+        .then(res => {
+
+            if(!res.ok){
+                throw new Error(`schedule-${year}.json 로딩 실패`);
+            }
+
+            return res.json();
+        })
+        .then(json => {
+
+            loadedYears[year] = json;
+            data = json;
+
+            render();
+        })
+        .catch(err => {
+
+            console.error(err);
+
+            loadedYears[year] = {};
+            data = {};
+
+            render();
+        });
+}
+
+
+/* ==========================================
+   최초 실행
+========================================== */
+
+loadYear(date.getFullYear());
+
+
+/* ==========================================
+   연도·월 선택창
+========================================== */
+
+/* 선택창 열기 */
+function openPicker(){
+
+    pickerYear = date.getFullYear();
+    pickerMonth = date.getMonth();
+
+    updatePicker();
+
+    document
+        .getElementById('pickerOverlay')
+        .classList.add('open');
+}
+
+
+/* 선택창 닫기 */
+function closePicker(){
+
+    document
+        .getElementById('pickerOverlay')
+        .classList.remove('open');
+}
+
+
+/* 바깥 영역 클릭 시 닫기 */
+function handleOverlayClick(event){
+
+    if(event.target.id === 'pickerOverlay'){
+        closePicker();
+    }
+}
+
+
+/* 선택창 연도 변경 */
+function changePickerYear(direction){
+
+    pickerYear += direction;
+
+    updatePicker();
+}
+
+
+/* 월 선택 */
+function selectPickerMonth(month){
+
+    pickerMonth = month;
+
+    updatePicker();
+}
+
+
+/* 선택창 화면 갱신 */
+function updatePicker(){
+
+    document.getElementById('pickerYear').innerText =
+        `${pickerYear}년`;
+
+    document
+        .querySelectorAll('.picker-month')
+        .forEach(button => {
+
+            const month =
+                Number(button.dataset.month);
+
+            button.classList.toggle(
+                'selected',
+                month === pickerMonth
+            );
+
+        });
+}
+
+
+/* 선택한 연도·월로 이동 */
+function confirmPicker(){
+
+    const targetYear = pickerYear;
+    const targetMonth = pickerMonth;
+
+    const yearChanged =
+        targetYear !== date.getFullYear();
+
+    date = new Date(
+        targetYear,
+        targetMonth,
+        1
+    );
+
+    closePicker();
+
+    /*
+       다른 연도로 이동하면 해당 연도의 JSON을 불러온다.
+       같은 연도라면 현재 데이터를 그대로 사용한다.
+    */
+
+    if(yearChanged){
+
+        loadYear(targetYear);
+
+    }else{
+
+        data = loadedYears[targetYear] || data;
+
+        render();
+
+    }
+}
+
+
+/* ==========================================
+   탭
+========================================== */
+
+function setTab(t, el){
+
+    document.querySelectorAll('.tab')
+        .forEach(b => b.classList.remove('active'));
+
+    el.classList.add('active');
+
+    document.getElementById('calendarView').style.display =
+        (t === 'calendar') ? 'block' : 'none';
+
+    document.getElementById('listView').style.display =
+        (t === 'list') ? 'block' : 'none';
+
+    document.getElementById('highlightView').style.display =
+        (t === 'highlight') ? 'block' : 'none';
+
+    render();
+}
+
+
+/* ==========================================
+   일정 종류 필터
+========================================== */
+
+function setTypeFilter(f, btn){
+
+    typeFilter = f;
+
+    document.querySelectorAll(
+        '.filter-group:nth-child(1) .filter-buttons button'
+    ).forEach(b => {
+        b.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+
+    render();
+}
+
+
+/* ==========================================
+   멤버 필터
+========================================== */
+
+function setMemberFilter(f, btn){
+
+    memberFilter = f;
+
+    document.querySelectorAll(
+        '.filter-group:nth-child(2) .filter-buttons button'
+    ).forEach(b => {
+        b.classList.remove('active');
+    });
+
+    btn.classList.add('active');
+
+    render();
+}
+
+
+/* ==========================================
+   필터 매칭
+========================================== */
+
+function matchesFilter(text){
+
+    const typeMatch =
+        typeFilter === 'all' ||
+        text.includes(typeFilter);
+
+    const memberMatch =
+        memberFilter === 'all' ||
+        text.includes(memberFilter);
+
+    return typeMatch && memberMatch;
+}
+
+
+/* ==========================================
+   현재 필터가 적용되어 있는지
+========================================== */
+
+function hasActiveFilter(){
+
+    return typeFilter !== 'all' ||
+           memberFilter !== 'all';
+}
+
+
+/* ==========================================
+   캘린더 렌더링
+========================================== */
+
+function render(){
+
+    const y = date.getFullYear();
+    const m = date.getMonth();
+
+    document.getElementById('month').innerText =
+        `${y}년 ${m + 1}월`;
+
+    const cal =
+        document.getElementById('calendar');
+
+    cal.innerHTML = '';
+
+    const first =
+        new Date(y, m, 1).getDay();
+
+    const last =
+        new Date(y, m + 1, 0).getDate();
+
+
+    /* 오늘 날짜 */
+
+    const today = new Date();
+
+    const todayKey =
+        `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+
+    /* 첫 날짜 전 빈칸 */
+
+    for(let i = 0; i < first; i++){
+        cal.innerHTML += `<div></div>`;
+    }
+
+
+    /* 날짜 */
+
+    for(let d = 1; d <= last; d++){
+
+        const key =
+            `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+
+        const text =
+            data[key] || '';
+
+        const has =
+            text.length > 0;
+
+        const isToday =
+            key === todayKey;
+
+
+        /*
+           해당 날짜의 일정 중
+           현재 필터에 맞는 일정이 있는지 확인
+        */
+
+        const match =
+            has && text
+                .split('\n')
+                .some(line => matchesFilter(line));
+
+
+        cal.innerHTML += `
+            <div
+                class="day ${isToday ? 'today' : ''} ${hasActiveFilter() && !match ? 'dim' : ''}"
+                onclick="show('${key}')"
+            >
+                ${d}
+
+                ${
+                    isToday
+                    ? '<div class="dot today-dot"></div>'
+                    : (has ? '<div class="dot"></div>' : '')
+                }
+            </div>
+        `;
+    }
+
+
+    renderList();
+    renderHighlight();
+
+
+    /*
+       현재 달이 오늘이 포함된 달이라면
+       오늘 일정을 자동으로 표시
+    */
+
+    if(
+        today.getFullYear() === y &&
+        today.getMonth() === m
+    ){
+
+        show(todayKey);
+    }else{
+
+        document.getElementById('eventBox').innerHTML =
+            '날짜를 클릭하세요';
+
+    }
+}
+
+
+/* ==========================================
+   날짜 클릭
+========================================== */
+
+function show(key){
+
+    const text =
+        data[key] || "일정 없음";
+
+    const lines =
+        text.split('\n');
+
+
+    const html =
+        lines.map(line => {
+
+            const typeMatch =
+                typeFilter === 'all' ||
+                line.includes(typeFilter);
+
+            const memberMatch =
+                memberFilter === 'all' ||
+                line.includes(memberFilter);
+
+            const match =
+                typeMatch && memberMatch;
+
+
+            if(!hasActiveFilter()){
+                return `<div class="line">${line}</div>`;
+            }
+
+            if(match){
+                return `<div class="line highlight">${line}</div>`;
+            }
+
+            return `<div class="line dim-line">${line}</div>`;
+
+        }).join('');
+
+
+    document.getElementById('eventBox').innerHTML =
+        html;
+}
+
+
+/* ==========================================
+   전체 일정
+========================================== */
+
+function renderList(){
+
+    const el =
+        document.getElementById('listView');
+
+
+    const currentMonth =
+        `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+
+
+    let html = '';
+
+
+    Object.keys(data).forEach(k => {
+
+        if(!k.startsWith(currentMonth)){
+            return;
+        }
+
+        html += `
+            <div class="list">
+                <b>${k}</b><br>
+                ${data[k]}
+            </div>
+        `;
+    });
+
+
+    el.innerHTML = html;
+}
+
+
+/* ==========================================
+   하이라이트
+========================================== */
+
+function renderHighlight(){
+
+    const el =
+        document.getElementById('highlightView');
+
+
+    const currentMonth =
+        `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}`;
+
+
+    let html = '';
+
+
+    Object.keys(data).forEach(k => {
+
+        if(!k.startsWith(currentMonth)){
+            return;
+        }
+
+
+        const lines =
+            data[k].split('\n');
+
+
+        const filtered =
+            lines.filter(line =>
+
+                line.includes('💿') ||
+                line.includes('🎉') ||
+                line.includes('🍓') ||
+                line.includes('🌴') ||
+                line.includes('🎀') ||
+                line.includes('🧁') ||
+                line.includes('👾') ||
+                line.includes('🌻') ||
+                line.includes('🫛') ||
+                line.includes('😊')
+
+            );
+
+
+        if(filtered.length > 0){
+
+            html += `
+                <div class="list">
+                    <b>${k}</b><br>
+                    ${filtered.join('\n')}
+                </div>
+            `;
+        }
+
+    });
+
+
+    el.innerHTML = html;
+}
+
+
+/* ==========================================
+   월 이동 애니메이션
+========================================== */
+
+let monthAnimating = false;
+
+function changeMonth(direction){
+
+    if(monthAnimating){
+        return;
+    }
+
+    monthAnimating = true;
+
+    const calendarView =
+        document.getElementById('calendarView');
+
+
+    calendarView.classList.remove(
+        'slide-left',
+        'slide-right',
+        'slide-in-left',
+        'slide-in-right'
+    );
+
+
+    /*
+       다음 달:
+       현재 화면이 왼쪽으로 빠짐
+
+       이전 달:
+       현재 화면이 오른쪽으로 빠짐
+    */
+
+    if(direction > 0){
+        calendarView.classList.add('slide-left');
+    }else{
+        calendarView.classList.add('slide-right');
+    }
+
+
+    setTimeout(function(){
+
+        date.setMonth(date.getMonth() + direction);
+
+        const year =
+            date.getFullYear();
+
+
+        if(!loadedYears[year]){
+
+            loadYear(year);
+
+        }else{
+
+            data = loadedYears[year];
+
+            render();
+        }
+
+
+        calendarView.classList.remove(
+            'slide-left',
+            'slide-right'
+        );
+
+
+        /*
+           다음 달:
+           오른쪽에서 들어옴
+
+           이전 달:
+           왼쪽에서 들어옴
+        */
+
+        if(direction > 0){
+            calendarView.classList.add('slide-in-left');
+        }else{
+            calendarView.classList.add('slide-in-right');
+        }
+
+
+        setTimeout(function(){
+
+            calendarView.classList.remove(
+                'slide-in-left',
+                'slide-in-right'
+            );
+
+            monthAnimating = false;
+
+        },250);
+
+    },250);
+}
+
+
+/* ==========================================
+   이전 달
+========================================== */
+
+function prev(){
+
+    changeMonth(-1);
+}
+
+
+/* ==========================================
+   다음 달
+========================================== */
+
+function next(){
+
+    changeMonth(1);
+}
+
+
+/* ==========================================
+   캘린더 스와이프
+========================================== */
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+const calendarView =
+    document.getElementById('calendarView');
+
+
+calendarView.addEventListener(
+    'touchstart',
+    function(e){
+
+        /*
+           필터의 가로 스크롤을
+           월 이동으로 인식하지 않도록 처리
+        */
+
+        if(e.target.closest('.filter-group')){
+            touchStartX = 0;
+            touchStartY = 0;
+            return;
+        }
+
+        touchStartX =
+            e.touches[0].clientX;
+
+        touchStartY =
+            e.touches[0].clientY;
+
+    },
+    { passive:true }
+);
+
+
+calendarView.addEventListener(
+    'touchend',
+    function(e){
+
+        if(touchStartX === 0){
+            return;
+        }
+
+        const touchEndX =
+            e.changedTouches[0].clientX;
+
+        const touchEndY =
+            e.changedTouches[0].clientY;
+
+
+        const distanceX =
+            touchEndX - touchStartX;
+
+        const distanceY =
+            touchEndY - touchStartY;
+
+
+        /*
+           세로 스크롤보다
+           가로 이동이 클 때만 작동
+        */
+
+        if(
+            Math.abs(distanceX) >
+            Math.abs(distanceY)
+        ){
+
+            /*
+               왼쪽 스와이프
+               → 다음 달
+            */
+
+            if(distanceX < -50){
+
+                next();
+
+            }
+
+            /*
+               오른쪽 스와이프
+               → 이전 달
+            */
+
+            else if(distanceX > 50){
+
+                prev();
+
+            }
+        }
+
+
+        touchStartX = 0;
+        touchStartY = 0;
+
+    },
+    { passive:true }
+);
+
+</script>
+
+</body>
+</html>

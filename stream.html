@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스밍리스트 | H2HCHIVE</title>
+
+<style>
+body{
+    margin:0;
+    background:#f5f6f8;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:#222;
+}
+
+.container{
+    max-width:420px;
+    margin:0 auto;
+    padding:24px 16px 60px;
+}
+
+.back-btn{
+    display:inline-block;
+    text-decoration:none;
+    color:#222;
+    font-size:1.5rem;
+    margin-bottom:20px;
+}
+
+.stream-title{
+    font-size:1rem;
+    font-weight:700;
+    margin-bottom:12px;
+}
+
+.stream-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin-bottom:20px;
+}
+
+.stream-box{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:56px;
+    background:#fff;
+    border-radius:14px;
+    text-decoration:none;
+    color:#222;
+    font-weight:700;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);
+    transition:.15s;
+}
+
+.stream-box:active{
+    transform:scale(.97);
+}
+
+.image{
+    width:100%;
+    display:block;
+    border-radius:18px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a href="index.html" class="back-btn">←</a>
+
+    <div class="stream-title">
+        🎵 스밍 원클릭 (멜론)
+    </div>
+
+    <div class="stream-grid">
+
+        <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,600320356,603038071"
+           class="stream-box">
+           1
+        </a>
+
+        <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,602733454,601332163,39161085,602313595"
+           class="stream-box">
+           2
+        </a>
+
+        <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,600320356,602733454"
+           class="stream-box">
+           3
+        </a>
+
+        <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,39161085"
+           class="stream-box">
+           4
+        </a>
+
+    </div>
+
+    <img
+        src="ICONICHEART-KoreanVer-sming.jpg"
+        alt="아이코닉하트 코리안버전 스밍리스트"
+        class="image"
+    >
+
+</div>
+
+</body>
+</html>
