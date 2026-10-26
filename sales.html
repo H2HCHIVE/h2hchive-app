@@ -53,7 +53,7 @@ a:focus-visible {
     padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
 }
 
-/* 공통 페이지 제목 */
+/* 상단 제목 */
 
 .top-header {
     padding: 24px 16px 0;
@@ -83,6 +83,14 @@ a:focus-visible {
     font-weight: 850;
 }
 
+.subtitle {
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+    word-break: keep-all;
+}
+
 /* 앨범 목록 */
 
 .content {
@@ -107,21 +115,24 @@ a:focus-visible {
     font-size: 11px;
 }
 
+/* 2열 그리드 */
+
 .album-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
 }
 
 .album-card {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     width: 100%;
-    min-height: 112px;
-    padding: 17px;
+    min-width: 0;
+    padding: 9px;
     border: 1px solid rgba(226, 231, 236, .8);
     border-radius: var(--radius);
     background: var(--white);
+    color: var(--text);
     text-align: left;
     cursor: pointer;
     transition: transform .16s ease, border-color .16s ease;
@@ -129,45 +140,49 @@ a:focus-visible {
 }
 
 .album-card:active {
-    transform: scale(.985);
+    transform: scale(.98);
     border-color: var(--blue);
 }
 
-/* 실제 앨범 커버 */
+/* 앨범 커버 */
 
-.album-art {
-    display: block;
-    flex: 0 0 76px;
-    width: 76px;
-    height: 76px;
-    object-fit: cover;
+.album-art-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    margin-right: 15px;
     border-radius: 12px;
     background: #edf1f5;
 }
 
+.album-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .album-info {
-    flex: 1;
     min-width: 0;
+    padding: 12px 3px 5px;
 }
 
 .album-name {
     margin: 0;
     overflow-wrap: anywhere;
-    font-size: 17px;
+    font-size: 15px;
+    line-height: 1.45;
     font-weight: 800;
-    letter-spacing: -.45px;
+    letter-spacing: -.4px;
 }
 
 .album-date {
-    margin-top: 7px;
+    margin-top: 6px;
     color: #959ba4;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 500;
 }
 
-/* 앨범 상세 화면 */
+/* 상세 화면 */
 
 #viewer {
     display: none;
@@ -191,7 +206,7 @@ a:focus-visible {
 
 .detail-subtitle {
     margin-top: 8px;
-    color: #9298a2;
+    color: var(--muted);
     font-size: 12px;
 }
 
@@ -230,6 +245,7 @@ a:focus-visible {
     font-size: 12px;
     line-height: 1.7;
     text-align: center;
+    overflow-wrap: anywhere;
 }
 
 .image-error strong {
@@ -294,21 +310,13 @@ a:focus-visible {
 /* 작은 화면 대응 */
 
 @media (max-width: 360px) {
-    .top-header {
-        padding-right: 14px;
-        padding-left: 14px;
-    }
-
+    .top-header,
     .detail-header {
         padding-right: 14px;
         padding-left: 14px;
     }
 
-    .content {
-        padding-right: 14px;
-        padding-left: 14px;
-    }
-
+    .content,
     .detail-content {
         padding-right: 14px;
         padding-left: 14px;
@@ -318,19 +326,20 @@ a:focus-visible {
         font-size: 29px;
     }
 
-    .album-card {
-        padding: 14px;
+    .album-list {
+        gap: 10px;
     }
 
-    .album-art {
-        flex-basis: 63px;
-        width: 63px;
-        height: 68px;
-        margin-right: 12px;
+    .album-card {
+        padding: 7px;
     }
 
     .album-name {
-        font-size: 15px;
+        font-size: 14px;
+    }
+
+    .album-date {
+        font-size: 10px;
     }
 
     .bottom-nav a {
@@ -358,10 +367,12 @@ a:focus-visible {
 
         <header class="top-header">
             <a class="back-btn" href="archive.html" aria-label="아카이브로 돌아가기">←</a>
+
             <h1 class="page-title">초동 판매량</h1>
-        <p class="subtitle">
-            Hearts2Hearts 앨범별 초동 판매량을 확인하세요.
-        </p>
+
+            <p class="subtitle">
+                앨범 발매 후 첫 일주일의 판매 기록을 확인하세요.
+            </p>
         </header>
 
         <main class="content">
@@ -459,11 +470,31 @@ function renderList() {
         card.className = "album-card";
         card.setAttribute("aria-label", album.title + " 초동 기록 보기");
 
+        const artWrap = document.createElement("div");
+        artWrap.className = "album-art-wrap";
+
         const art = document.createElement("img");
         art.className = "album-art";
         art.src = album.cover;
         art.alt = album.title + " 앨범 커버";
         art.loading = "lazy";
+
+        art.addEventListener("error", () => {
+            artWrap.style.display = "flex";
+            artWrap.style.alignItems = "center";
+            artWrap.style.justifyContent = "center";
+
+            const fallback = document.createElement("span");
+            fallback.style.padding = "10px";
+            fallback.style.color = "#9298a2";
+            fallback.style.fontSize = "11px";
+            fallback.style.textAlign = "center";
+            fallback.textContent = "앨범 커버를 불러올 수 없습니다.";
+
+            art.replaceWith(fallback);
+        }, { once: true });
+
+        artWrap.appendChild(art);
 
         const info = document.createElement("div");
         info.className = "album-info";
@@ -477,7 +508,7 @@ function renderList() {
         date.textContent = album.date;
 
         info.append(name, date);
-        card.append(art, info);
+        card.append(artWrap, info);
 
         card.addEventListener("click", () => openAlbum(index));
 
