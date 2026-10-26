@@ -6,56 +6,118 @@
 <title>응원법 | H2HCHIVE</title>
 
 <style>
-body{
-    margin:0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#f5f6f8;
-    color:#222;
+* {
+    box-sizing: border-box;
 }
 
-.container{
-    max-width:420px;
-    margin:0 auto;
-    padding:24px 16px 60px;
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f6f8;
+    color: #222;
 }
 
-.back-btn{
-    display:inline-block;
-    text-decoration:none;
-    color:#222;
-    font-size:1.5rem;
-    margin-bottom:20px;
+.container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 24px 16px calc(90px + env(safe-area-inset-bottom, 0px));
 }
 
-.title{
-    font-size:2rem;
-    font-weight:700;
-    margin-bottom:24px;
+.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #222;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
-.cheer-list{
-    display:flex;
-    flex-direction:column;
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
 }
 
-.cheer-link{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 0;
-    border-bottom:1px solid #ddd;
-    text-decoration:none;
-    color:#222;
-    font-size:1rem;
-    font-weight:500;
+.cheer-list {
+    display: flex;
+    flex-direction: column;
 }
 
-.cheer-link:active{
-    opacity:0.6;
+.cheer-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none;
+    color: #222;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
-.arrow{
-    color:#999;
+.cheer-link:active {
+    opacity: 0.6;
+}
+
+.arrow {
+    color: #999;
+}
+
+/* =========================
+   FIXED BOTTOM NAVIGATION
+   ========================= */
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 14px rgba(0, 0, 0, .06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.bottom-nav a {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 0 2px;
+    color: #777;
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.bottom-nav a.active {
+    color: #222;
+    font-weight: 800;
+    position: relative;
+}
+
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 28%;
+    right: 28%;
+    height: 3px;
+    border-radius: 4px;
+    background: #89CFF0;
+}
+
+@media (max-width: 360px) {
+    .bottom-nav a {
+        font-size: .68rem;
+    }
 }
 </style>
 </head>
@@ -64,7 +126,7 @@ body{
 
 <div class="container">
 
-    <a href="index.html" class="back-btn">←</a>
+    <a href="index.html" class="back-btn" aria-label="홈으로 돌아가기">←</a>
 
     <div class="title">응원법</div>
 
@@ -79,7 +141,7 @@ body{
             <span>STYLE</span>
             <span class="arrow">→</span>
         </a>
-        
+
         <a href="prettyplease-cheer.html" class="cheer-link">
             <span>Pretty Please</span>
             <span class="arrow">→</span>
@@ -94,17 +156,17 @@ body{
             <span>RUDE!</span>
             <span class="arrow">→</span>
         </a>
-        
+
         <a href="LemonTang-cheer.html" class="cheer-link">
             <span>Lemon Tang</span>
             <span class="arrow">→</span>
         </a>
-        
+
         <a href="15-LOVE-cheer.html" class="cheer-link">
             <span>15-LOVE</span>
             <span class="arrow">→</span>
         </a>
-         
+
         <a href="ICONICHEART-KR-cheer.html" class="cheer-link">
             <span>ICONICE HEART(KR VER.)</span>
             <span class="arrow">→</span>
@@ -113,6 +175,14 @@ body{
     </div>
 
 </div>
+
+<nav class="bottom-nav" aria-label="주요 메뉴">
+    <a href="stream.html">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html" class="active" aria-current="page">홈</a>
+    <a href="selfcontent.html">자컨</a>
+    <a href="musicshow.html">음방</a>
+</nav>
 
 </body>
 </html>
