@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-<title>프로모션 스케줄러 | H2HCHIVE</title>
+<title>초동 판매량 | H2HCHIVE</title>
 
 <style>
 :root {
@@ -44,8 +44,6 @@ a:focus-visible {
     outline: 3px solid var(--blue);
     outline-offset: 3px;
 }
-
-/* 페이지 */
 
 .page {
     width: 100%;
@@ -117,7 +115,7 @@ a:focus-visible {
     font-size: 11px;
 }
 
-/* 2열 앨범 그리드 */
+/* 2열 그리드 */
 
 .album-list {
     display: grid;
@@ -146,14 +144,11 @@ a:focus-visible {
     border-color: var(--blue);
 }
 
-/* 프로모션 이미지 미리보기 */
+/* 앨범 커버 */
 
 .album-art-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 12px;
     background: #edf1f5;
@@ -163,22 +158,7 @@ a:focus-visible {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-
-.preview-error {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    color: #9298a2;
-    font-size: 11px;
-    line-height: 1.6;
-    text-align: center;
-    overflow-wrap: anywhere;
+    object-fit: cover;
 }
 
 .album-info {
@@ -196,13 +176,13 @@ a:focus-visible {
 }
 
 .album-date {
-    margin: 6px 0 0;
+    margin-top: 6px;
     color: #959ba4;
     font-size: 11px;
     font-weight: 500;
 }
 
-/* 앨범 상세 화면 */
+/* 상세 화면 */
 
 #viewer {
     display: none;
@@ -221,7 +201,6 @@ a:focus-visible {
     font-size: 29px;
     font-weight: 850;
     letter-spacing: -1px;
-    line-height: 1.3;
     overflow-wrap: anywhere;
 }
 
@@ -276,7 +255,7 @@ a:focus-visible {
     font-size: 13px;
 }
 
-/* 하단 메뉴 - 초동 판매량 페이지 디자인 적용 */
+/* 하단 메뉴: 화면 좌우 끝까지 확장 */
 
 .bottom-nav {
     position: fixed;
@@ -289,11 +268,17 @@ a:focus-visible {
     grid-template-columns: repeat(5, minmax(0, 1fr));
 
     width: 100%;
+    max-width: none;
     margin: 0;
-    padding: 7px 5px calc(7px + env(safe-area-inset-bottom, 0px));
+    padding: 7px 0 calc(7px + env(safe-area-inset-bottom, 0px));
 
-    border: 0;
+    transform: none;
+
     border-top: 1px solid rgba(229, 233, 238, .9);
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+
     background: rgba(255, 255, 255, .96);
     box-shadow: 0 -4px 18px rgba(0, 0, 0, .035);
 
@@ -309,15 +294,14 @@ a:focus-visible {
 
     width: 100%;
     min-width: 0;
-    min-height: 42px;
-    padding: 0 2px;
+    min-height: 45px;
+    margin: 0;
+    padding: 0;
 
-    color: #777;
+    color: #969ca5;
+    font-size: 11px;
+    font-weight: 650;
     text-decoration: none;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.2;
-    font-weight: 600;
     white-space: nowrap;
 
     -webkit-tap-highlight-color: transparent;
@@ -374,11 +358,6 @@ a:focus-visible {
         font-size: 10px;
     }
 
-    .bottom-nav {
-        padding-right: 3px;
-        padding-left: 3px;
-    }
-
     .bottom-nav a {
         font-size: 10px;
     }
@@ -400,17 +379,15 @@ a:focus-visible {
 <div class="page">
 
     <!-- 앨범 목록 화면 -->
-    <section id="listView" aria-label="프로모션 앨범 목록">
+    <section id="listView" aria-label="앨범 목록">
 
         <header class="top-header">
-            <a class="back-btn"
-               href="archive.html"
-               aria-label="아카이브로 돌아가기">←</a>
+            <a class="back-btn" href="archive.html" aria-label="아카이브로 돌아가기">←</a>
 
-            <h1 class="page-title">프로모션 스케줄러</h1>
+            <h1 class="page-title">초동 판매량</h1>
 
             <p class="subtitle">
-                Hearts2Hearts 앨범별 프로모션 일정을 확인하세요.
+                앨범 발매 후 첫 일주일의 판매 기록을 확인하세요.
             </p>
         </header>
 
@@ -421,14 +398,14 @@ a:focus-visible {
                 <span class="section-caption">발매일 기준</span>
             </div>
 
-            <div class="album-list" id="albumList"></div>
+            <div class="album-list" id="list"></div>
 
         </main>
 
     </section>
 
     <!-- 앨범 상세 화면 -->
-    <section id="viewer" aria-label="앨범 프로모션 상세">
+    <section id="viewer" aria-label="앨범 초동 상세">
 
         <header class="detail-header">
             <button
@@ -441,12 +418,12 @@ a:focus-visible {
 
         <main class="detail-content">
 
-            <h2 class="albumTitle" id="detailTitle"></h2>
+            <h2 class="albumTitle" id="albumTitle"></h2>
 
-            <div class="detail-subtitle" id="detailDate"></div>
+            <div class="detail-subtitle" id="albumDate"></div>
 
             <div class="image-heading">
-                <strong>프로모션 일정</strong>
+                <strong>초동 기록</strong>
             </div>
 
             <div class="imageBox" id="imageBox"></div>
@@ -457,13 +434,12 @@ a:focus-visible {
 
 </div>
 
-<!-- 하단 메뉴 -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
     <a href="stream.html">스밍</a>
     <a href="schedule.html">일정</a>
-    <a href="index.html" class="active" aria-current="page">홈</a>
+    <a href="index.html">홈</a>
     <a href="content.html">콘텐츠</a>
-    <a href="archive.html">아카이브</a>
+    <a href="archive.html" class="active" aria-current="page">아카이브</a>
 </nav>
 
 <script>
@@ -471,71 +447,70 @@ const albums = [
     {
         title: "The Chase",
         date: "2025.02.24",
-        images: ["TheChase-scheduler.jpg"]
-    },
-    {
-        title: "STYLE",
-        date: "2025.06.18",
-        images: ["STYLE-scheduler.jpg"]
+        cover: "TheChase-cover.jpg",
+        images: [
+            "TheChase-sales.png"
+        ]
     },
     {
         title: "FOCUS",
         date: "2025.10.20",
-        images: ["FOCUS-scheduler.jpg"]
-    },
-    {
-        title: "RUDE!",
-        date: "2026.02.20",
-        images: ["RUDE-scheduler.jpg"]
+        cover: "FOCUS-cover.jpg",
+        images: [
+            "FOCUS-sales.png"
+        ]
     },
     {
         title: "Lemon Tang",
         date: "2026.06.22",
-        images: ["LemonTang-scheduler.jpg"]
-    },
-    {
-        title: "ICONIC HEART",
-        date: "2026.08.12",
-        images: ["ICONICHEART-scheduler.png"]
+        cover: "LemonTang-cover.jpg",
+        images: [
+            "LemonTang-sales.png"
+        ]
     }
 ];
 
+const list = document.getElementById("list");
 const listView = document.getElementById("listView");
 const viewer = document.getElementById("viewer");
-const albumList = document.getElementById("albumList");
-const detailTitle = document.getElementById("detailTitle");
-const detailDate = document.getElementById("detailDate");
+const albumTitle = document.getElementById("albumTitle");
+const albumDate = document.getElementById("albumDate");
 const imageBox = document.getElementById("imageBox");
 
 function renderList() {
-    albumList.innerHTML = "";
+    list.innerHTML = "";
 
     albums.forEach((album, index) => {
         const card = document.createElement("button");
         card.type = "button";
         card.className = "album-card";
-        card.setAttribute(
-            "aria-label",
-            album.title + " 프로모션 일정 보기"
-        );
+        card.setAttribute("aria-label", album.title + " 초동 기록 보기");
 
-        const preview = document.createElement("div");
-        preview.className = "album-art-wrap";
+        const artWrap = document.createElement("div");
+        artWrap.className = "album-art-wrap";
 
-        const img = document.createElement("img");
-        img.className = "album-art";
-        img.src = album.images[0];
-        img.alt = album.title + " 프로모션 일정 미리보기";
-        img.loading = "lazy";
+        const art = document.createElement("img");
+        art.className = "album-art";
+        art.src = album.cover;
+        art.alt = album.title + " 앨범 커버";
+        art.loading = "lazy";
 
-        img.addEventListener("error", function () {
-            const error = document.createElement("div");
-            error.className = "preview-error";
-            error.textContent = "이미지를 불러올 수 없습니다.";
-            img.replaceWith(error);
+        art.addEventListener("error", () => {
+            artWrap.style.display = "flex";
+            artWrap.style.alignItems = "center";
+            artWrap.style.justifyContent = "center";
+
+            const fallback = document.createElement("span");
+            fallback.style.padding = "10px";
+            fallback.style.color = "#9298a2";
+            fallback.style.fontSize = "11px";
+            fallback.style.textAlign = "center";
+            fallback.textContent = "앨범 커버를 불러올 수 없습니다.";
+
+            art.replaceWith(fallback);
         }, { once: true });
 
-        preview.appendChild(img);
+        artWrap.appendChild(art);
 
         const info = document.createElement("div");
         info.className = "album-info";
@@ -544,16 +519,16 @@ function renderList() {
         name.className = "album-name";
         name.textContent = album.title;
 
-        const date = document.createElement("p");
+        const date = document.createElement("div");
         date.className = "album-date";
         date.textContent = album.date;
 
         info.append(name, date);
-        card.append(preview, info);
+        card.append(artWrap, info);
 
         card.addEventListener("click", () => openAlbum(index));
 
-        albumList.appendChild(card);
+        list.appendChild(card);
     });
 }
 
@@ -562,18 +537,18 @@ function openAlbum(index) {
 
     if (!album) return;
 
-    detailTitle.textContent = album.title;
-    detailDate.textContent = "발매일 · " + album.date;
+    albumTitle.textContent = album.title;
+    albumDate.textContent = "발매일 · " + album.date;
     imageBox.innerHTML = "";
 
     album.images.forEach((src) => {
         const img = document.createElement("img");
 
         img.src = src;
-        img.alt = album.title + " 프로모션 일정";
+        img.alt = album.title + " 초동 판매량";
         img.loading = "lazy";
 
-        img.addEventListener("error", function () {
+        img.addEventListener("error", () => {
             const error = document.createElement("div");
             error.className = "image-error";
 
@@ -609,10 +584,7 @@ function showList() {
     });
 }
 
-document.getElementById("backToList").addEventListener(
-    "click",
-    showList
-);
+document.getElementById("backToList").addEventListener("click", showList);
 
 renderList();
 </script>
