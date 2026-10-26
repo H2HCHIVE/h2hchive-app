@@ -2,233 +2,416 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
 <title>초동 판매량 | H2HCHIVE</title>
 
 <style>
+:root {
+    --bg: #f5f6f8;
+    --white: #ffffff;
+    --text: #22252a;
+    --muted: #9298a2;
+    --line: #e9edf1;
+    --blue: #89CFF0;
+    --blue-light: #eaf7fd;
+    --radius: 20px;
+}
+
 * {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    background: #f5f6f8;
-    color: #222;
+html {
+    scroll-behavior: smooth;
 }
 
-.container {
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Noto Sans KR", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+button {
+    font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+}
+
+.page {
     width: 100%;
     max-width: 420px;
+    min-height: 100vh;
     margin: 0 auto;
-    padding: 24px 16px calc(90px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+}
+
+/* 공통 페이지 제목 */
+
+.top-header {
+    padding: 24px 16px 0;
 }
 
 .back-btn {
     display: inline-block;
-    text-decoration: none;
+    min-height: auto;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: #222;
     font-size: 1.5rem;
-    margin-bottom: 20px;
-    line-height: 1;
+    font-weight: 400;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .page-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin: 0 0 24px;
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.25;
+    letter-spacing: -1.4px;
+    font-weight: 850;
+}
+
+/* 앨범 목록 */
+
+.content {
+    padding: 30px 16px 20px;
 }
 
 .section-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin: 0 3px 14px;
 }
 
-.section-heading h2 {
+.section-title {
     margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 800;
 }
 
-.section-heading span {
-    font-size: .8rem;
-    color: #888;
+.section-caption {
+    color: #9ba1aa;
+    font-size: 11px;
 }
 
 .album-list {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
 .album-card {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid #ddd;
+    width: 100%;
+    min-height: 112px;
+    padding: 17px;
+    border: 1px solid rgba(226, 231, 236, .8);
+    border-radius: var(--radius);
+    background: var(--white);
+    text-align: left;
     cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease;
     -webkit-tap-highlight-color: transparent;
 }
 
 .album-card:active {
-    opacity: .65;
+    transform: scale(.985);
+    border-color: var(--blue);
 }
 
-.album-cover {
-    width: 88px;
-    height: 88px;
-    flex-shrink: 0;
-    object-fit: cover;
-    border-radius: 12px;
-    background: #e8eaf0;
+.album-art {
+    position: relative;
+    display: flex;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-right: 15px;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #edf9ff, #d9effb);
+}
+
+.album-art::before {
+    content: "";
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    top: -17px;
+    right: -15px;
+    border-radius: 50%;
+    background: rgba(137, 207, 240, .45);
+}
+
+.album-art::after {
+    content: "";
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    left: -20px;
+    bottom: -21px;
+    border: 8px solid rgba(255, 255, 255, .7);
+    border-radius: 50%;
+}
+
+.album-art .art-text {
+    position: relative;
+    z-index: 1;
+    color: #4d9bc1;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.album-card:nth-child(2) .album-art {
+    background: linear-gradient(145deg, #f0f0ff, #e0e5ff);
+}
+
+.album-card:nth-child(2) .album-art .art-text {
+    color: #7b83c5;
+}
+
+.album-card:nth-child(2) .album-art::before {
+    background: rgba(172, 178, 240, .38);
+}
+
+.album-card:nth-child(3) .album-art {
+    background: linear-gradient(145deg, #fff5e9, #ffe6d4);
+}
+
+.album-card:nth-child(3) .album-art .art-text {
+    color: #ce9369;
+}
+
+.album-card:nth-child(3) .album-art::before {
+    background: rgba(255, 195, 151, .42);
 }
 
 .album-info {
-    min-width: 0;
     flex: 1;
-}
-
-.album-name {
-    margin: 0 0 6px;
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-}
-
-.album-date {
-    margin: 0 0 10px;
-    font-size: .82rem;
-    color: #888;
+    min-width: 0;
 }
 
 .album-label {
     display: inline-block;
-    padding: 5px 9px;
-    border-radius: 7px;
-    background: #e6f5fc;
-    color: #347da0;
-    font-size: .75rem;
-    font-weight: 700;
+    margin-bottom: 7px;
+    padding: 4px 7px;
+    border-radius: 6px;
+    background: var(--blue-light);
+    color: #549fc5;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+.album-name {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.45px;
+}
+
+.album-date {
+    margin-top: 6px;
+    color: #959ba4;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 /* 앨범 상세 화면 */
 
-#detailView {
+#viewer {
     display: none;
 }
 
-#detailView .back-btn {
-    border: 0;
-    background: none;
-    padding: 0;
-    cursor: pointer;
-    font-family: inherit;
+.detail-header {
+    padding: 24px 16px 0;
 }
 
-.detail-album {
-    text-align: center;
+.detail-content {
+    padding: 0 16px 24px;
 }
 
-.detail-cover {
-    display: block;
-    width: 100%;
-    max-width: 320px;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto 24px;
-    object-fit: cover;
-    border-radius: 18px;
-    background: #e8eaf0;
-}
-
-.detail-album-title {
-    margin: 0 0 8px;
-    font-size: 1.5rem;
-    font-weight: 800;
-    line-height: 1.4;
+.albumTitle {
+    margin: 0;
+    font-size: 29px;
+    font-weight: 850;
+    letter-spacing: -1px;
     overflow-wrap: anywhere;
 }
 
-.detail-release-date {
-    margin: 0 0 24px;
-    color: #888;
-    font-size: .9rem;
+.detail-subtitle {
+    margin-top: 8px;
+    color: #9298a2;
+    font-size: 12px;
 }
 
-.detail-record {
-    padding: 20px 16px;
+.image-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 24px 3px 13px;
+}
+
+.image-heading strong {
+    font-size: 14px;
+}
+
+.imageBox {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.imageBox img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    border: 1px solid #e8ecf0;
+    border-radius: 17px;
     background: #fff;
-    border-radius: 16px;
-    text-align: left;
 }
 
-.detail-record-label {
-    margin: 0;
-    font-size: .9rem;
-    font-weight: 700;
-    color: #555;
+.image-error {
+    padding: 22px 15px;
+    border: 1px dashed #d7dfe6;
+    border-radius: 15px;
+    color: #858c96;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.image-error strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #525a65;
+    font-size: 13px;
 }
 
 /* 하단 메뉴 */
 
 .bottom-nav {
     position: fixed;
-    left: 0;
-    right: 0;
+    left: 50%;
     bottom: 0;
-    z-index: 9000;
+    z-index: 1000;
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
-    background: rgba(255, 255, 255, .97);
-    border-top: 1px solid #e8e8e8;
-    box-shadow: 0 -3px 14px rgba(0, 0, 0, .06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    width: 100%;
+    max-width: 420px;
+    padding: 7px 5px calc(7px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    border-top: 1px solid rgba(229, 233, 238, .9);
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, .035);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .bottom-nav a {
-    min-width: 0;
+    position: relative;
     display: flex;
+    min-width: 0;
+    min-height: 45px;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    min-height: 42px;
     padding: 0 2px;
-    color: #777;
+    color: #969ca5;
+    font-size: 11px;
+    font-weight: 650;
     text-decoration: none;
-    font-size: .75rem;
-    font-weight: 600;
     white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-nav a.active {
-    color: #222;
-    font-weight: 800;
-    position: relative;
+    color: #252a30;
+    font-weight: 850;
 }
 
 .bottom-nav a.active::before {
     content: "";
     position: absolute;
-    top: -6px;
-    left: 28%;
-    right: 28%;
+    top: -7px;
+    left: 30%;
+    right: 30%;
     height: 3px;
     border-radius: 4px;
-    background: #89CFF0;
+    background: var(--blue);
 }
 
+/* 작은 화면 대응 */
+
 @media (max-width: 360px) {
-    .bottom-nav a {
-        font-size: .68rem;
+    .top-header {
+        padding-right: 14px;
+        padding-left: 14px;
     }
 
-    .album-cover {
-        width: 76px;
-        height: 76px;
+    .detail-header {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .content {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .detail-content {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .page-title {
+        font-size: 29px;
+    }
+
+    .album-card {
+        padding: 14px;
+    }
+
+    .album-art {
+        flex-basis: 63px;
+        width: 63px;
+        height: 68px;
+        margin-right: 12px;
+    }
+
+    .album-name {
+        font-size: 15px;
+    }
+
+    .bottom-nav a {
+        font-size: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
     }
 }
 </style>
@@ -236,115 +419,59 @@ body {
 
 <body>
 
-<div class="container">
+<div class="page">
 
     <!-- 앨범 목록 화면 -->
-    <section id="listView">
+    <section id="listView" aria-label="앨범 목록">
 
-        <a href="archive.html" class="back-btn"
-           aria-label="아카이브로 돌아가기">←</a>
+        <header class="top-header">
+            <a class="back-btn" href="archive.html" aria-label="아카이브로 돌아가기">←</a>
+            <h1 class="page-title">초동 판매량</h1>
+        </header>
 
-        <h1 class="page-title">초동 판매량</h1>
+        <main class="content">
 
-        <div class="section-heading">
-            <h2>앨범 목록</h2>
-            <span>발매일 기준</span>
-        </div>
+            <div class="section-heading">
+                <h2 class="section-title">앨범 목록</h2>
+                <span class="section-caption">발매일 기준</span>
+            </div>
 
-        <div class="album-list">
+            <div class="album-list" id="list"></div>
 
-            <article class="album-card"
-                     role="button"
-                     tabindex="0"
-                     onclick="showDetail(0)"
-                     onkeydown="handleAlbumKey(event, 0)">
+        </main>
 
-                <img
-                    src="TheChase-scheduler.jpg"
-                    alt="The Chase 앨범"
-                    class="album-cover">
-
-                <div class="album-info">
-                    <h3 class="album-name">The Chase</h3>
-                    <p class="album-date">2025.02.24</p>
-                    <span class="album-label">초동 기록</span>
-                </div>
-            </article>
-
-            <article class="album-card"
-                     role="button"
-                     tabindex="0"
-                     onclick="showDetail(1)"
-                     onkeydown="handleAlbumKey(event, 1)">
-
-                <img
-                    src="FOCUS-sales.png"
-                    alt="FOCUS 앨범"
-                    class="album-cover">
-
-                <div class="album-info">
-                    <h3 class="album-name">FOCUS</h3>
-                    <p class="album-date">2025.10.20</p>
-                    <span class="album-label">초동 기록</span>
-                </div>
-            </article>
-
-            <article class="album-card"
-                     role="button"
-                     tabindex="0"
-                     onclick="showDetail(2)"
-                     onkeydown="handleAlbumKey(event, 2)">
-
-                <img
-                    src="LemonTang-sales.png"
-                    alt="Lemon Tang 앨범"
-                    class="album-cover">
-
-                <div class="album-info">
-                    <h3 class="album-name">Lemon Tang</h3>
-                    <p class="album-date">2026.06.22</p>
-                    <span class="album-label">초동 기록</span>
-                </div>
-            </article>
-
-        </div>
     </section>
 
     <!-- 앨범 상세 화면 -->
-    <section id="detailView">
+    <section id="viewer" aria-label="앨범 초동 상세">
 
-        <button
-            type="button"
-            class="back-btn"
-            onclick="showList()"
-            aria-label="앨범 목록으로 돌아가기">
-            ←
-        </button>
+        <header class="detail-header">
+            <button
+                class="back-btn"
+                type="button"
+                id="backToList"
+                aria-label="앨범 목록으로 돌아가기"
+            >←</button>
+        </header>
 
-        <!-- 상세 화면에는 초동 판매량 제목을 표시하지 않음 -->
+        <main class="detail-content">
 
-        <div class="detail-album">
+            <h2 class="albumTitle" id="albumTitle"></h2>
 
-            <img
-                id="detailCover"
-                class="detail-cover"
-                src=""
-                alt="">
+            <div class="detail-subtitle" id="albumDate"></div>
 
-            <h1 id="detailTitle" class="detail-album-title"></h1>
-
-            <p id="detailDate" class="detail-release-date"></p>
-
-            <div class="detail-record">
-                <p class="detail-record-label">초동 기록</p>
+            <div class="image-heading">
+                <strong>초동 기록</strong>
             </div>
 
-        </div>
+            <div class="imageBox" id="imageBox"></div>
+
+        </main>
+
     </section>
 
 </div>
 
-<!-- 하단 메뉴 -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
     <a href="stream.html">스밍</a>
     <a href="schedule.html">일정</a>
@@ -358,49 +485,129 @@ const albums = [
     {
         title: "The Chase",
         date: "2025.02.24",
-        image: "TheChase-scheduler.jpg"
+        images: [
+            "TheChase-scheduler.jpg"
+        ]
     },
     {
         title: "FOCUS",
         date: "2025.10.20",
-        image: "FOCUS-sales.png"
+        images: [
+            "FOCUS-sales.png"
+        ]
     },
     {
         title: "Lemon Tang",
         date: "2026.06.22",
-        image: "LemonTang-sales.png"
+        images: [
+            "LemonTang-sales.png"
+        ]
     }
 ];
 
-function showDetail(index) {
+const list = document.getElementById("list");
+const listView = document.getElementById("listView");
+const viewer = document.getElementById("viewer");
+const albumTitle = document.getElementById("albumTitle");
+const albumDate = document.getElementById("albumDate");
+const imageBox = document.getElementById("imageBox");
+
+function renderList() {
+    list.innerHTML = "";
+
+    albums.forEach((album, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "album-card";
+        card.setAttribute("aria-label", album.title + " 초동 기록 보기");
+
+        const art = document.createElement("div");
+        art.className = "album-art";
+
+        const artText = document.createElement("span");
+        artText.className = "art-text";
+        artText.textContent = "H2H";
+        art.appendChild(artText);
+
+        const info = document.createElement("div");
+        info.className = "album-info";
+
+        const label = document.createElement("span");
+        label.className = "album-label";
+        label.textContent = "초동 기록";
+
+        const name = document.createElement("h3");
+        name.className = "album-name";
+        name.textContent = album.title;
+
+        const date = document.createElement("div");
+        date.className = "album-date";
+        date.textContent = album.date;
+
+        info.append(label, name, date);
+        card.append(art, info);
+
+        card.addEventListener("click", () => openAlbum(index));
+
+        list.appendChild(card);
+    });
+}
+
+function openAlbum(index) {
     const album = albums[index];
 
     if (!album) return;
 
-    document.getElementById("detailCover").src = album.image;
-    document.getElementById("detailCover").alt = album.title + " 앨범";
-    document.getElementById("detailTitle").textContent = album.title;
-    document.getElementById("detailDate").textContent = album.date;
+    albumTitle.textContent = album.title;
+    albumDate.textContent = "발매일 · " + album.date;
+    imageBox.innerHTML = "";
 
-    document.getElementById("listView").style.display = "none";
-    document.getElementById("detailView").style.display = "block";
+    album.images.forEach((src) => {
+        const img = document.createElement("img");
 
-    window.scrollTo({ top: 0, behavior: "instant" });
+        img.src = src;
+        img.alt = album.title + " 초동 판매량";
+        img.loading = "lazy";
+
+        img.addEventListener("error", () => {
+            const error = document.createElement("div");
+            error.className = "image-error";
+
+            const title = document.createElement("strong");
+            title.textContent = "이미지를 불러올 수 없습니다.";
+
+            const message = document.createElement("span");
+            message.textContent = "파일명과 경로를 확인해주세요: " + src;
+
+            error.append(title, message);
+            img.replaceWith(error);
+        }, { once: true });
+
+        imageBox.appendChild(img);
+    });
+
+    listView.style.display = "none";
+    viewer.style.display = "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 function showList() {
-    document.getElementById("detailView").style.display = "none";
-    document.getElementById("listView").style.display = "block";
+    viewer.style.display = "none";
+    listView.style.display = "block";
 
-    window.scrollTo({ top: 0, behavior: "instant" });
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
-function handleAlbumKey(event, index) {
-    if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        showDetail(index);
-    }
-}
+document.getElementById("backToList").addEventListener("click", showList);
+
+renderList();
 </script>
 
 </body>
