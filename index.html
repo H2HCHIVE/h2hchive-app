@@ -19,6 +19,10 @@ html {
     -webkit-tap-highlight-color: transparent;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", sans-serif;
@@ -34,10 +38,10 @@ body.menu-open {
 }
 
 .container {
-    max-width: 420px;
+    width: 100%;
+    max-width: 460px;
     margin: 0 auto;
-    padding: 24px 16px 32px;
-    box-sizing: border-box;
+    padding: 20px 18px 32px;
 }
 
 .header {
@@ -64,7 +68,6 @@ body.menu-open {
     grid-row: 1;
     width: 100%;
     min-width: 0;
-    box-sizing: border-box;
     margin: 0;
     padding: 6px 56px;
     text-align: center;
@@ -82,7 +85,6 @@ body.menu-open {
     font-weight: 900;
 }
 
-/* 햄버거 메뉴 버튼 */
 .dday-menu-button {
     position: relative;
     grid-column: 1;
@@ -90,14 +92,12 @@ body.menu-open {
     justify-self: end;
     align-self: center;
     z-index: 2;
-
     width: 48px;
     height: 48px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: none;
     border-radius: 14px;
     background: #fff;
@@ -114,7 +114,6 @@ body.menu-open {
     transform: scale(.96);
 }
 
-/* 디데이 슬라이드 애니메이션 */
 #dday-box.slide-out-left {
     animation: ddaySlideOutLeft .4s ease forwards;
 }
@@ -132,47 +131,23 @@ body.menu-open {
 }
 
 @keyframes ddaySlideOutLeft {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(-30px); }
 }
 
 @keyframes ddaySlideOutRight {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(30px);
-    }
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(30px); }
 }
 
 @keyframes ddaySlideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes ddaySlideInRight {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 #dday-indicator {
@@ -209,6 +184,7 @@ body.menu-open {
     padding: 18px;
     box-shadow: 0 4px 12px rgba(0,0,0,.08);
     line-height: 2;
+    overflow-wrap: anywhere;
 }
 
 .todo-header {
@@ -244,10 +220,6 @@ body.menu-open {
     white-space: nowrap;
 }
 
-/* =========================
-   ICONIC HEART COUNTER
-   ========================= */
-
 #iconic-heart-count {
     font-variant-numeric: tabular-nums;
 }
@@ -264,10 +236,10 @@ body.menu-open {
 }
 
 .mvSwiper iframe {
-    width: 100%;
-    height: 220px;
-    border: 0;
     display: block;
+    width: 100%;
+    height: clamp(180px, 52vw, 240px);
+    border: 0;
 }
 
 .swiper-pagination {
@@ -291,7 +263,6 @@ body.menu-open {
         calc(20px + env(safe-area-inset-top, 0px))
         22px
         calc(24px + env(safe-area-inset-bottom, 0px));
-    box-sizing: border-box;
 }
 
 .fullscreen-menu.open {
@@ -343,7 +314,6 @@ body.menu-open {
     justify-content: space-between;
     gap: 12px;
     padding: 0 18px;
-    box-sizing: border-box;
     border: none;
     border-radius: 16px;
     background: #fff;
@@ -433,7 +403,6 @@ body.menu-open {
     display: flex;
     align-items: center;
     padding: 7px 12px;
-    box-sizing: border-box;
     z-index: 8000;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -552,6 +521,11 @@ body.menu-open {
 }
 
 @media (max-width: 360px) {
+    .container {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
     .bottom-nav a {
         font-size: .68rem;
     }
@@ -570,6 +544,10 @@ body.menu-open {
     .fullscreen-sns {
         gap: 6px;
     }
+
+    .todo-box {
+        padding: 15px;
+    }
 }
 </style>
 </head>
@@ -578,7 +556,6 @@ body.menu-open {
 
 <div class="container">
 
-    <!-- HEADER / D-DAY / MV -->
     <div class="header">
 
         <div id="dday-container">
@@ -648,7 +625,6 @@ body.menu-open {
 
     </div>
 
-    <!-- TODAY SCHEDULE -->
     <section class="todo-section">
         <div class="todo-box">
             <div class="todo-header">📅 오늘의 일정</div>
@@ -656,7 +632,6 @@ body.menu-open {
         </div>
     </section>
 
-    <!-- TODAY MISSION -->
     <section class="todo-section">
         <div class="todo-box">
             <div class="todo-header">📍 오늘의 미션</div>
@@ -664,17 +639,13 @@ body.menu-open {
         </div>
     </section>
 
-    <!-- ICONIC HEART COUNTER -->
     <section class="todo-section">
         <div class="todo-box">
-
             <div class="todo-header">💜 스밍이 끊기지 않았다면</div>
-
             <div style="font-weight:700;">
                 ICONIC HEART (Korean.ver) 누적
                 <span id="iconic-heart-count">0</span>회
             </div>
-
         </div>
     </section>
 
@@ -690,7 +661,6 @@ body.menu-open {
     aria-hidden="true">
 
     <div class="fullscreen-menu-header">
-
         <div class="fullscreen-menu-title">전체 메뉴</div>
 
         <button
@@ -700,22 +670,18 @@ body.menu-open {
             aria-label="전체 메뉴 닫기">
             ×
         </button>
-
     </div>
 
     <nav class="fullscreen-menu-list" aria-label="전체 메뉴 항목">
 
-        <!-- OFFICIAL ACCOUNTS -->
         <button
             type="button"
             class="fullscreen-menu-item"
             id="official-accounts-toggle"
             aria-expanded="false"
             aria-controls="fullscreen-sns">
-
             <span>공식 계정</span>
             <span class="arrow" aria-hidden="true">＋</span>
-
         </button>
 
         <div class="fullscreen-sns" id="fullscreen-sns">
@@ -724,79 +690,63 @@ body.menu-open {
                 href="https://www.instagram.com/hearts2hearts"
                 target="_blank"
                 rel="noopener noreferrer">
-
                 <img
                     src="instargram-logo.svg"
                     alt="Instagram"
                     onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg'">
-
                 <span>Instagram</span>
-
             </a>
 
             <a
                 href="https://x.com/Hearts2Hearts"
                 target="_blank"
                 rel="noopener noreferrer">
-
                 <img
                     src="x-logo.svg"
                     alt="X"
                     onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/x.svg'">
-
                 <span>X</span>
-
             </a>
 
             <a
                 href="https://youtube.com/@hearts2hearts.official"
                 target="_blank"
                 rel="noopener noreferrer">
-
                 <img
                     src="youtube-logo.svg"
                     alt="YouTube"
                     onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/youtube.svg'">
-
                 <span>YouTube</span>
-
             </a>
 
             <a
                 href="https://weverse.io/hearts2hearts/highlight"
                 target="_blank"
                 rel="noopener noreferrer">
-
                 <img
                     src="weverse-logo.svg"
                     alt="Weverse"
                     onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/weverse.svg'">
-
                 <span>Weverse</span>
-
             </a>
 
         </div>
 
-        <!-- MV -->
         <a href="mv.html" class="fullscreen-menu-item">
             <span>MV</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
-        <!-- CHEER -->
         <a href="cheer.html" class="fullscreen-menu-item">
             <span>응원법</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
-        <!-- ARCHIVE -->
         <a href="archive.html" class="fullscreen-menu-item">
             <span>아카이브</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
-        <!-- NOTICE -->
         <a href="notice.html" class="fullscreen-menu-item">
             <span>공지</span>
             <span class="arrow" aria-hidden="true">›</span>
@@ -814,9 +764,7 @@ body.menu-open {
 
 <!-- KST MINI PLAYER -->
 <div class="kst-player" id="kst-player">
-
     <div class="kst-player-info">
-
         <div class="kst-player-song">
             <div id="kst-player-title" class="kst-player-title">-</div>
             <div id="kst-player-number" class="kst-player-number">17 / 19</div>
@@ -827,24 +775,16 @@ body.menu-open {
         <div class="kst-player-progress">
             <div id="kst-player-progress-bar" class="kst-player-progress-bar"></div>
         </div>
-
     </div>
-
 </div>
 
 <!-- FIXED BOTTOM NAVIGATION -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
-
     <a href="stream.html">스밍</a>
-
     <a href="schedule.html">일정</a>
-
     <a href="index.html" class="active" aria-current="page">홈</a>
-
     <a href="selfcontent.html">자컨</a>
-
     <a href="musicshow.html">음방</a>
-
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -857,7 +797,6 @@ body.menu-open {
 const fullscreenMenu = document.getElementById("fullscreen-menu");
 const openFullscreenMenu = document.getElementById("open-fullscreen-menu");
 const closeFullscreenMenu = document.getElementById("close-fullscreen-menu");
-
 const officialAccountsToggle = document.getElementById("official-accounts-toggle");
 const fullscreenSns = document.getElementById("fullscreen-sns");
 
@@ -865,6 +804,10 @@ function openMenu() {
     fullscreenMenu.classList.add("open");
     fullscreenMenu.setAttribute("aria-hidden", "false");
     document.body.classList.add("menu-open");
+
+    // 메뉴가 열린 상태에서 뒤로 가기를 누르면 메뉴부터 닫도록 기록
+    history.pushState({ h2hchiveMenu: true }, "", location.href);
+
     closeFullscreenMenu.focus();
 }
 
@@ -899,6 +842,26 @@ document.addEventListener("keydown", function (event) {
         fullscreenMenu.classList.contains("open")
     ) {
         closeMenu();
+    }
+});
+
+/* =========================
+   ANDROID / BROWSER BACK
+   ========================= */
+
+history.replaceState({ h2hchiveHome: true }, "", location.href);
+
+window.addEventListener("popstate", function () {
+    if (fullscreenMenu.classList.contains("open")) {
+        closeMenu();
+        history.pushState({ h2hchiveHome: true }, "", location.href);
+        return;
+    }
+
+    const shouldExit = confirm("H2HCHIVE를 종료할까요?");
+
+    if (!shouldExit) {
+        history.pushState({ h2hchiveHome: true }, "", location.href);
     }
 });
 
