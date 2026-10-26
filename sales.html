@@ -275,20 +275,27 @@ a:focus-visible {
     -webkit-backdrop-filter: blur(14px);
 }
 
-.bottom-nav a {
-    position: relative;
-    display: flex;
-    min-width: 0;
-    min-height: 45px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 2px;
-    color: #969ca5;
-    font-size: 11px;
-    font-weight: 650;
-    text-decoration: none;
-    white-space: nowrap;
-    -webkit-tap-highlight-color: transparent;
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+
+    width: 100%;
+    max-width: none;
+
+    padding: 7px 5px calc(7px + env(safe-area-inset-bottom, 0px));
+
+    border-top: 1px solid rgba(229, 233, 238, .9);
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, .035);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .bottom-nav a.active {
