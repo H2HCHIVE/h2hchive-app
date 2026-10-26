@@ -225,46 +225,33 @@ a:focus-visible {
     display: none;
 }
 
+/* 좌측 상단 뒤로가기 */
+
 .detail-header {
-    padding: 20px 22px 0;
+    padding: 8px 18px 0;
 }
 
 .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 40px;
+    display: inline-block;
+    min-height: auto;
+    margin: 0;
     padding: 0;
     border: 0;
     background: transparent;
-    color: #5c6570;
-    font-size: 13px;
-    font-weight: 700;
+    color: #222;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.4;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .back-arrow {
-    display: inline-flex;
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #e4e9ee;
-    border-radius: 50%;
-    background: #fff;
-    font-size: 17px;
+    display: none;
 }
 
 .detail-content {
-    padding: 24px 18px;
-}
-
-.detail-kicker {
-    margin-bottom: 8px;
-    color: #75bce0;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
+    padding: 12px 18px 24px;
 }
 
 .albumTitle {
@@ -285,7 +272,7 @@ a:focus-visible {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 28px 3px 13px;
+    margin: 24px 3px 13px;
 }
 
 .image-heading strong {
@@ -293,8 +280,7 @@ a:focus-visible {
 }
 
 .image-heading span {
-    color: #969ca5;
-    font-size: 11px;
+    display: none;
 }
 
 .imageBox {
@@ -454,15 +440,15 @@ a:focus-visible {
         <section id="viewer" aria-label="앨범 초동 상세">
 
             <div class="detail-header">
-                <button class="back-btn" type="button" id="backToList">
-                    <span class="back-arrow">←</span>
-                    앨범 목록
-                </button>
+                <button
+                    class="back-btn"
+                    type="button"
+                    id="backToList"
+                    aria-label="앨범 목록으로 돌아가기"
+                >←</button>
             </div>
 
             <div class="detail-content">
-
-                <div class="detail-kicker">FIRST WEEK SALES</div>
 
                 <h2 class="albumTitle" id="albumTitle"></h2>
 
@@ -470,7 +456,6 @@ a:focus-visible {
 
                 <div class="image-heading">
                     <strong>초동 기록</strong>
-                    <span>SALES RECORD</span>
                 </div>
 
                 <div class="imageBox" id="imageBox"></div>
@@ -557,7 +542,6 @@ function renderList() {
 
         info.append(label, name, date);
 
-        /* 오른쪽 > 버튼 제거 */
         card.append(art, info);
 
         card.addEventListener("click", () => openAlbum(index));
