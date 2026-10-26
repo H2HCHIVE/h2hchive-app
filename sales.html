@@ -53,57 +53,10 @@ a:focus-visible {
     padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
 }
 
-/* 상단 영역 */
+/* 상단 제목 */
 
 .top-header {
-    padding: 26px 22px 0;
-}
-
-.header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-}
-
-.brand {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #59616b;
-}
-
-.brand span {
-    color: #76bde1;
-}
-
-.count-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 11px;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 30px;
-    color: #707783;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .3px;
-}
-
-.count-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--blue);
-}
-
-.eyebrow {
-    margin-bottom: 9px;
-    color: #73b9dd;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 2px;
+    padding: 32px 22px 0;
 }
 
 .page-title {
@@ -114,14 +67,7 @@ a:focus-visible {
     font-weight: 850;
 }
 
-.page-description {
-    margin: 10px 0 0;
-    color: #858b95;
-    font-size: 13px;
-    line-height: 1.6;
-}
-
-/* 목록 */
+/* 앨범 목록 */
 
 .content {
     padding: 30px 18px 20px;
@@ -152,7 +98,6 @@ a:focus-visible {
 }
 
 .album-card {
-    position: relative;
     display: flex;
     align-items: center;
     width: 100%;
@@ -274,58 +219,7 @@ a:focus-visible {
     font-weight: 500;
 }
 
-.album-arrow {
-    display: flex;
-    flex: 0 0 30px;
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    margin-left: 8px;
-    border-radius: 50%;
-    background: #f5f7f9;
-    color: #858d97;
-    font-size: 20px;
-    transition: background .16s ease;
-}
-
-.album-card:active .album-arrow {
-    background: var(--blue-light);
-}
-
-/* 안내 문구 */
-
-.archive-note {
-    display: flex;
-    gap: 10px;
-    margin-top: 18px;
-    padding: 15px;
-    border: 1px solid #e9edf1;
-    border-radius: 15px;
-    background: rgba(255, 255, 255, .65);
-}
-
-.note-icon {
-    display: flex;
-    flex: 0 0 23px;
-    width: 23px;
-    height: 23px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--blue-light);
-    color: #559fc4;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.note-text {
-    color: #858c96;
-    font-size: 11px;
-    line-height: 1.65;
-}
-
-/* 상세 화면 */
+/* 앨범 상세 화면 */
 
 #viewer {
     display: none;
@@ -488,13 +382,7 @@ a:focus-visible {
     background: var(--blue);
 }
 
-.footer {
-    padding: 15px 0 0;
-    color: #b0b5bd;
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-align: center;
-}
+/* 작은 화면 대응 */
 
 @media (max-width: 360px) {
     .top-header {
@@ -547,25 +435,13 @@ a:focus-visible {
 <div class="page">
 
     <header class="top-header">
-        <div class="header-row">
-            <div class="brand">H2H<span>CHIVE</span></div>
-
-            <div class="count-badge">
-                <span class="count-dot"></span>
-                <span id="albumCount">3 ALBUMS</span>
-            </div>
-        </div>
-
-        <div class="eyebrow">ALBUM ARCHIVE</div>
         <h1 class="page-title">초동 판매량</h1>
-        <p class="page-description">
-            Hearts2Hearts의 앨범별 초동 기록을 모아보세요.
-        </p>
     </header>
 
     <main class="content">
 
         <section id="listView" aria-label="앨범 목록">
+
             <div class="section-heading">
                 <h2 class="section-title">앨범 목록</h2>
                 <span class="section-caption">발매일 기준</span>
@@ -573,16 +449,10 @@ a:focus-visible {
 
             <div class="album-list" id="list"></div>
 
-            <div class="archive-note">
-                <div class="note-icon">i</div>
-                <div class="note-text">
-                    앨범을 선택하면 등록된 초동 판매량 자료를 확인할 수 있습니다.
-                    자료 이미지는 원본 비율에 맞춰 표시됩니다.
-                </div>
-            </div>
         </section>
 
         <section id="viewer" aria-label="앨범 초동 상세">
+
             <div class="detail-header">
                 <button class="back-btn" type="button" id="backToList">
                     <span class="back-arrow">←</span>
@@ -591,9 +461,11 @@ a:focus-visible {
             </div>
 
             <div class="detail-content">
+
                 <div class="detail-kicker">FIRST WEEK SALES</div>
 
                 <h2 class="albumTitle" id="albumTitle"></h2>
+
                 <div class="detail-subtitle" id="albumDate"></div>
 
                 <div class="image-heading">
@@ -602,10 +474,10 @@ a:focus-visible {
                 </div>
 
                 <div class="imageBox" id="imageBox"></div>
-            </div>
-        </section>
 
-        <footer class="footer">H2HCHIVE · ARCHIVE</footer>
+            </div>
+
+        </section>
 
     </main>
 
@@ -651,9 +523,6 @@ const albumTitle = document.getElementById("albumTitle");
 const albumDate = document.getElementById("albumDate");
 const imageBox = document.getElementById("imageBox");
 
-document.getElementById("albumCount").textContent =
-    albums.length + (albums.length === 1 ? " ALBUM" : " ALBUMS");
-
 function renderList() {
     list.innerHTML = "";
 
@@ -688,12 +557,9 @@ function renderList() {
 
         info.append(label, name, date);
 
-        const arrow = document.createElement("span");
-        arrow.className = "album-arrow";
-        arrow.setAttribute("aria-hidden", "true");
-        arrow.textContent = "›";
+        /* 오른쪽 > 버튼 제거 */
+        card.append(art, info);
 
-        card.append(art, info, arrow);
         card.addEventListener("click", () => openAlbum(index));
 
         list.appendChild(card);
@@ -755,12 +621,6 @@ function showList() {
 
 document.getElementById("backToList").addEventListener("click", showList);
 
-/*
- * 페이지 내부에서 앨범 상세를 열었다가
- * 브라우저 뒤로가기를 누르면 목록으로 돌아가도록 처리.
- * 기기 뒤로가기를 항상 홈으로 보내는 동작은
- * 앱 WebView 설정에 따라 별도 처리가 필요할 수 있음.
- */
 renderList();
 </script>
 
