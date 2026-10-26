@@ -103,14 +103,14 @@ body.menu-open {
     align-items: center;
     justify-content: center;
     border: none;
-    border-radius: 14px;
-    background: #fff;
+    border-radius: 0;
+    background: transparent;
     color: #222;
     font-family: inherit;
-    font-size: 25px;
+    font-size: 30px;
     line-height: 1;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,.07);
+    box-shadow: none;
     -webkit-tap-highlight-color: transparent;
 }
 
@@ -276,14 +276,9 @@ body.menu-open {
 .fullscreen-menu-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     max-width: 420px;
     margin: 0 auto 24px;
-}
-
-.fullscreen-menu-title {
-    font-size: 1.3rem;
-    font-weight: 800;
 }
 
 .fullscreen-menu-close {
@@ -335,14 +330,8 @@ body.menu-open {
     transform: scale(.99);
 }
 
-.fullscreen-menu-item .arrow {
-    flex-shrink: 0;
-    color: #999;
-    font-size: 1.2rem;
-    font-weight: 400;
-}
+/* 공식 계정은 항상 열린 상태 */
 
-/* 공식 계정: 기본적으로 열린 상태 */
 .fullscreen-sns {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -377,13 +366,24 @@ body.menu-open {
     object-fit: contain;
 }
 
+/* 저작권 안내: 별도 버튼 없이 일반 문구로 표시 */
+
 .fullscreen-menu-copyright {
     max-width: 420px;
-    margin: 26px auto 0;
-    font-size: .73rem;
-    line-height: 1.8;
+    margin: 18px auto 0;
+    padding: 8px 2px;
+    font-size: .76rem;
+    line-height: 1.9;
     color: #777;
-    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+.fullscreen-menu-copyright strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #444;
+    font-size: .88rem;
+    font-weight: 800;
 }
 
 /* =========================
@@ -575,7 +575,7 @@ body.menu-open {
                 class="dday-menu-button"
                 id="open-fullscreen-menu"
                 aria-label="전체 메뉴 열기">
-                三
+                ≡
             </button>
 
         </div>
@@ -666,8 +666,6 @@ body.menu-open {
     aria-hidden="true">
 
     <div class="fullscreen-menu-header">
-        <div class="fullscreen-menu-title">메뉴</div>
-
         <button
             type="button"
             class="fullscreen-menu-close"
@@ -680,9 +678,12 @@ body.menu-open {
     <nav class="fullscreen-menu-list" aria-label="사이트 정보">
 
         <div
-            class="fullscreen-menu-item"
-            style="cursor:default;">
-            <span>공식 계정</span>
+            style="
+                font-size: .96rem;
+                font-weight: 800;
+                padding: 4px 2px 0;
+            ">
+            공식 계정
         </div>
 
         <div class="fullscreen-sns" id="fullscreen-sns">
@@ -735,20 +736,15 @@ body.menu-open {
 
         <a href="mailto:h2hchive0224@gmail.com" class="fullscreen-menu-item">
             <span>문의 및 제보</span>
-            <span class="arrow" aria-hidden="true">›</span>
-        </a>
-
-        <a href="copyright.html" class="fullscreen-menu-item">
-            <span>저작권 및 안내</span>
-            <span class="arrow" aria-hidden="true">›</span>
         </a>
 
     </nav>
 
-    <p class="fullscreen-menu-copyright">
+    <div class="fullscreen-menu-copyright">
+        <strong>저작권 및 안내</strong>
         본 페이지는 팬이 제작 &amp; 운영하는 비공식 팬페이지입니다.<br>
         직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은 소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
-    </p>
+    </div>
 
 </div>
 
