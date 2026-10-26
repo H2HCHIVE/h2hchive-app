@@ -3,66 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>스밍리스트 | H2HCHIVE</title>
 
 <style>
-body{
-    margin:0;
-    background:#f5f6f8;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    color:#222;
+* {
+    box-sizing: border-box;
 }
 
-.container{
-    max-width:420px;
-    margin:0 auto;
-    padding:24px 16px 60px;
+body {
+    margin: 0;
+    background: #f5f6f8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #222;
 }
 
-.back-btn{
-    display:inline-block;
-    text-decoration:none;
-    color:#222;
-    font-size:1.5rem;
-    margin-bottom:20px;
+.container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 24px 16px calc(90px + env(safe-area-inset-bottom, 0px));
 }
 
-.stream-title{
-    font-size:1rem;
-    font-weight:700;
-    margin-bottom:12px;
+.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #222;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
-.stream-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-    margin-bottom:20px;
+.stream-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
-.stream-box{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    height:56px;
-    background:#fff;
-    border-radius:14px;
-    text-decoration:none;
-    color:#222;
-    font-weight:700;
-    box-shadow:0 2px 8px rgba(0,0,0,.06);
-    transition:.15s;
+.stream-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-.stream-box:active{
-    transform:scale(.97);
+.stream-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+    background: #fff;
+    border-radius: 14px;
+    text-decoration: none;
+    color: #222;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+    transition: transform .15s;
 }
 
-.image{
-    width:100%;
-    display:block;
-    border-radius:18px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);
+.stream-box:active {
+    transform: scale(.97);
+}
+
+.image {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+}
+
+/* =========================
+   FIXED BOTTOM NAVIGATION
+   ========================= */
+
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 14px rgba(0, 0, 0, .06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.bottom-nav a {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 0 2px;
+    color: #777;
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.bottom-nav a.active {
+    color: #222;
+    font-weight: 800;
+    position: relative;
+}
+
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 28%;
+    right: 28%;
+    height: 3px;
+    border-radius: 4px;
+    background: #89CFF0;
+}
+
+@media (max-width: 360px) {
+    .bottom-nav a {
+        font-size: .68rem;
+    }
 }
 </style>
 </head>
@@ -71,7 +134,7 @@ body{
 
 <div class="container">
 
-    <a href="index.html" class="back-btn">←</a>
+    <a href="index.html" class="back-btn" aria-label="홈으로 돌아가기">←</a>
 
     <div class="stream-title">
         🎵 스밍 원클릭 (멜론)
@@ -81,22 +144,22 @@ body{
 
         <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,600320356,603038071"
            class="stream-box">
-           1
+            1
         </a>
 
         <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,602733454,601332163,39161085,602313595"
            class="stream-box">
-           2
+            2
         </a>
 
         <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,600320356,602733454"
            class="stream-box">
-           3
+            3
         </a>
 
         <a href="melonapp://play?ctype=1&menuid=1000002721&cid=602313594,603284438,601332163,39161085"
            class="stream-box">
-           4
+            4
         </a>
 
     </div>
@@ -108,6 +171,14 @@ body{
     >
 
 </div>
+
+<nav class="bottom-nav" aria-label="주요 메뉴">
+    <a href="stream.html" class="active" aria-current="page">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html">홈</a>
+    <a href="selfcontent.html">자컨</a>
+    <a href="musicshow.html">음방</a>
+</nav>
 
 </body>
 </html>
