@@ -35,6 +35,12 @@ body {
 .title {
     font-size: 2rem;
     font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #888;
+    font-size: 0.85rem;
     margin-bottom: 24px;
 }
 
@@ -47,25 +53,37 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 0;
+    padding: 18px 4px;
     border-bottom: 1px solid #ddd;
     text-decoration: none;
     color: #222;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
+    transition: background .15s;
 }
 
 .archive-link:active {
     opacity: 0.6;
 }
 
-.arrow {
-    color: #999;
+.archive-link .label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-/* =========================
-   FIXED BOTTOM NAVIGATION
-   ========================= */
+.archive-link .description {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #888;
+}
+
+.arrow {
+    color: #999;
+    font-size: 1.1rem;
+}
+
+/* 하단 내비게이션 */
 
 .bottom-nav {
     position: fixed;
@@ -130,16 +148,39 @@ body {
     <a href="index.html" class="back-btn" aria-label="홈으로 돌아가기">←</a>
 
     <div class="title">ARCHIVE</div>
+    <div class="subtitle">H2HCHIVE CONTENTS</div>
 
     <div class="archive-list">
 
+        <a href="mv.html" class="archive-link">
+            <span class="label">
+                <span>MV</span>
+                <span class="description">뮤직비디오 모음</span>
+            </span>
+            <span class="arrow">→</span>
+        </a>
+
+        <a href="cheer.html" class="archive-link">
+            <span class="label">
+                <span>응원법</span>
+                <span class="description">음악방송 응원법 모음</span>
+            </span>
+            <span class="arrow">→</span>
+        </a>
+
         <a href="sales.html" class="archive-link">
-            <span>초동</span>
+            <span class="label">
+                <span>초동</span>
+                <span class="description">앨범 초동 판매량 기록</span>
+            </span>
             <span class="arrow">→</span>
         </a>
 
         <a href="promotion_scheduler.html" class="archive-link">
-            <span>프로모션 스케줄러</span>
+            <span class="label">
+                <span>프로모션 스케줄러</span>
+                <span class="description">프로모션 일정 확인</span>
+            </span>
             <span class="arrow">→</span>
         </a>
 
@@ -150,9 +191,9 @@ body {
 <nav class="bottom-nav" aria-label="주요 메뉴">
     <a href="stream.html">스밍</a>
     <a href="schedule.html">일정</a>
-    <a href="index.html" class="active" aria-current="page">홈</a>
+    <a href="index.html">홈</a>
     <a href="content.html">콘텐츠</a>
-    <a href="archive.html">아카이브</a>
+    <a href="archive.html" class="active" aria-current="page">아카이브</a>
 </nav>
 
 </body>
