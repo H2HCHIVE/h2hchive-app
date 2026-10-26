@@ -22,7 +22,7 @@ body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
     background:#f5f6f8;
     color:#222;
-    padding-bottom:78px;
+    padding-bottom:calc(76px + env(safe-area-inset-bottom, 0px));
 }
 
 .content{
@@ -317,56 +317,55 @@ body{
 }
 
 /* =========================
-   하단 메뉴
+   FIXED BOTTOM NAVIGATION
 ========================= */
 
 .bottom-nav{
     position:fixed;
-    z-index:1000;
     left:0;
     right:0;
     bottom:0;
+    z-index:9000;
     display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    align-items:stretch;
-    padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
     background:rgba(255,255,255,.97);
     border-top:1px solid #e8e8e8;
-    box-shadow:0 -3px 12px rgba(0,0,0,.035);
+    box-shadow:0 -3px 14px rgba(0,0,0,.06);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
 }
 
-.nav-item{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:4px;
+.bottom-nav a{
     min-width:0;
-    min-height:48px;
-    padding:4px 2px;
-    border-radius:10px;
-    color:#999;
-    font-family:inherit;
-    font-size:.68rem;
-    font-weight:500;
-    text-align:center;
-    text-decoration:none;
-    white-space:nowrap;
-    -webkit-tap-highlight-color:transparent;
-}
-
-.nav-icon{
     display:flex;
-    justify-content:center;
     align-items:center;
-    height:22px;
-    font-size:1.15rem;
-    line-height:1;
+    justify-content:center;
+    text-align:center;
+    min-height:42px;
+    padding:0 2px;
+    color:#777;
+    text-decoration:none;
+    font-size:.75rem;
+    font-weight:600;
+    white-space:nowrap;
 }
 
-.nav-item.active{
-    color:#4aa8d5;
-    font-weight:700;
+.bottom-nav a.active{
+    color:#222;
+    font-weight:800;
+    position:relative;
+}
+
+.bottom-nav a.active::before{
+    content:"";
+    position:absolute;
+    top:-6px;
+    left:28%;
+    right:28%;
+    height:3px;
+    border-radius:4px;
+    background:#89CFF0;
 }
 
 /* =========================
@@ -410,8 +409,8 @@ body{
         font-size:.65rem;
     }
 
-    .nav-item{
-        font-size:.63rem;
+    .bottom-nav a{
+        font-size:.68rem;
     }
 }
 </style>
@@ -569,27 +568,11 @@ body{
 
 <!-- 하단 메뉴 -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
-
-    <a class="nav-item" href="schedule.html">
-        <span class="nav-icon" aria-hidden="true">📅</span>
-        <span>스밍 일정</span>
-    </a>
-
-    <a class="nav-item" href="index.html">
-        <span class="nav-icon" aria-hidden="true">⌂</span>
-        <span>홈</span>
-    </a>
-
-    <a class="nav-item active" href="musicshow.html" aria-current="page">
-        <span class="nav-icon" aria-hidden="true">🎤</span>
-        <span>음방</span>
-    </a>
-
-    <a class="nav-item" href="selfcontent.html">
-        <span class="nav-icon" aria-hidden="true">▶</span>
-        <span>자컨</span>
-    </a>
-
+    <a href="stream.html">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html">홈</a>
+    <a href="selfcontent.html">자컨</a>
+    <a href="musicshow.html" class="active" aria-current="page">음방</a>
 </nav>
 
 <script>
