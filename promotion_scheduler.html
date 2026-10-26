@@ -2,314 +2,240 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>프로모션 스케줄러 | H2HCHIVE</title>
 
 <style>
-:root{
-    --bg:#f5f6f8;
-    --white:#fff;
-    --text:#22252a;
-    --muted:#9298a2;
-    --line:#e9edf1;
-    --blue:#89CFF0;
-    --radius:20px;
+* {
+    box-sizing: border-box;
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #f5f6f8;
+    color: #222;
 }
 
-html{
-    scroll-behavior:smooth;
+.container {
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 24px 16px calc(90px + env(safe-area-inset-bottom, 0px));
 }
 
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
-                "Noto Sans KR",sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    -webkit-font-smoothing:antialiased;
+/* 뒤로 가기 */
+.back-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #222;
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-bottom: 20px;
+    -webkit-tap-highlight-color: transparent;
 }
 
-button{
-    font:inherit;
+.title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 8px;
 }
 
-button:focus-visible{
-    outline:3px solid var(--blue);
-    outline-offset:3px;
+.subtitle {
+    color: #888;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
 }
 
-.page{
-    width:100%;
-    max-width:420px;
-    min-height:100vh;
-    margin:0 auto;
-    padding-bottom:30px;
+/* 앨범 목록 - 2열 */
+.album-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
 }
 
-/* 목록 상단 */
-
-.top-header{
-    padding:28px 16px 0;
+.album-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 9px;
+    background: #fff;
+    border: 1px solid #eceef1;
+    border-radius: 18px;
+    text-align: left;
+    color: #222;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.15s ease;
 }
 
-.page-title{
-    font-size:30px;
-    line-height:1.3;
-    font-weight:850;
-    letter-spacing:-1.2px;
+.album-card:active {
+    transform: scale(0.98);
 }
 
-.page-subtitle{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.6;
+/* 이미지 미리보기 */
+.album-preview {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #edf0f4;
 }
 
-/* 2열 앨범 목록 */
-
-.content{
-    padding:30px 16px 20px;
+.album-preview img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
-.section-heading{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:0 3px 14px;
+.preview-error {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 11px;
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 
-.section-title{
-    font-size:14px;
-    font-weight:800;
+.album-info {
+    padding: 12px 3px 5px;
 }
 
-.section-caption{
-    color:#9ba1aa;
-    font-size:11px;
+.album-name {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
 }
 
-.album-list{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:13px;
-}
-
-.album-card{
-    display:flex;
-    flex-direction:column;
-    min-width:0;
-    padding:9px 9px 14px;
-    border:1px solid rgba(226,231,236,.8);
-    border-radius:18px;
-    background:var(--white);
-    text-align:left;
-    cursor:pointer;
-    overflow:hidden;
-    transition:transform .16s ease,border-color .16s ease;
-    -webkit-tap-highlight-color:transparent;
-}
-
-.album-card:active{
-    transform:scale(.975);
-    border-color:var(--blue);
-}
-
-/* 프로모션 이미지 미리보기 */
-
-.album-preview{
-    position:relative;
-    width:100%;
-    aspect-ratio:3/4;
-    overflow:hidden;
-    border-radius:12px;
-    background:#edf0f4;
-}
-
-.album-preview img{
-    display:block;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    object-position:top center;
-}
-
-.preview-placeholder{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    height:100%;
-    padding:12px;
-    color:#9298a2;
-    font-size:11px;
-    text-align:center;
-    line-height:1.6;
-    overflow-wrap:anywhere;
-}
-
-.album-info{
-    min-width:0;
-    padding:12px 3px 0;
-}
-
-.album-name{
-    font-size:15px;
-    line-height:1.4;
-    font-weight:800;
-    letter-spacing:-.4px;
-    overflow-wrap:anywhere;
-}
-
-.album-date{
-    margin-top:6px;
-    color:#959ba4;
-    font-size:11px;
-    font-weight:500;
+.album-date {
+    margin: 6px 0 0;
+    color: #999;
+    font-size: 11px;
 }
 
 /* 상세 화면 */
-
-#viewer{
-    display:none;
+#viewer {
+    display: none;
 }
 
-.detail-header{
-    padding:24px 16px 0;
+.detail-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
 }
 
-.back-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:40px;
-    height:40px;
-    margin-bottom:20px;
-    border:1px solid var(--line);
-    border-radius:13px;
-    background:var(--white);
-    color:var(--text);
-    font-size:22px;
-    cursor:pointer;
-    -webkit-tap-highlight-color:transparent;
+.detail-date {
+    margin-top: 8px;
+    color: #888;
+    font-size: 0.8rem;
 }
 
-.detail-content{
-    padding:0 16px 24px;
+.detail-heading {
+    margin: 28px 0 14px;
+    font-size: 1rem;
+    font-weight: 700;
 }
 
-.albumTitle{
-    font-size:29px;
-    font-weight:850;
-    letter-spacing:-1px;
-    line-height:1.3;
-    overflow-wrap:anywhere;
+.image-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.detail-subtitle{
-    margin-top:8px;
-    color:var(--muted);
-    font-size:12px;
+.image-box img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .06);
 }
 
-.image-heading{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin:26px 3px 13px;
+.image-error {
+    padding: 18px;
+    border-radius: 12px;
+    background: #fff;
+    color: #888;
+    font-size: 12px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
 }
 
-.image-heading strong{
-    font-size:14px;
-    font-weight:800;
+/* 하단 메뉴 */
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, .97);
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 14px rgba(0, 0, 0, .06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.imageBox{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
+.bottom-nav a {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 0 2px;
+    color: #777;
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.imageBox img{
-    display:block;
-    width:100%;
-    height:auto;
-    border:1px solid #e8ecf0;
-    border-radius:17px;
-    background:var(--white);
+.bottom-nav a.active {
+    color: #222;
+    font-weight: 800;
+    position: relative;
 }
 
-.image-error{
-    padding:22px 15px;
-    border:1px dashed #d7dfe6;
-    border-radius:15px;
-    color:#858c96;
-    font-size:12px;
-    line-height:1.7;
-    text-align:center;
-    overflow-wrap:anywhere;
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 28%;
+    right: 28%;
+    height: 3px;
+    border-radius: 4px;
+    background: #89CFF0;
 }
 
-/* 하단 안내 */
-
-.footer{
-    padding:20px 16px 25px;
-    color:#a1a7b0;
-    font-size:11px;
-    text-align:center;
-}
-
-/* 작은 화면 */
-
-@media(max-width:360px){
-    .top-header,
-    .detail-header{
-        padding-right:14px;
-        padding-left:14px;
+@media (max-width: 360px) {
+    .bottom-nav a {
+        font-size: .68rem;
     }
 
-    .content,
-    .detail-content{
-        padding-right:14px;
-        padding-left:14px;
+    .album-list {
+        gap: 10px;
     }
 
-    .page-title{
-        font-size:28px;
+    .album-card {
+        padding: 7px;
     }
 
-    .album-list{
-        gap:10px;
-    }
-
-    .album-card{
-        padding:7px 7px 12px;
-    }
-
-    .album-info{
-        padding-top:10px;
-    }
-
-    .album-name{
-        font-size:14px;
-    }
-
-    .album-date{
-        font-size:10px;
-    }
-}
-
-@media(prefers-reduced-motion:reduce){
-    *,
-    *::before,
-    *::after{
-        scroll-behavior:auto!important;
-        transition:none!important;
+    .album-name {
+        font-size: 13px;
     }
 }
 </style>
@@ -317,143 +243,118 @@ button:focus-visible{
 
 <body>
 
-<div class="page">
+<div class="container">
 
     <!-- 앨범 목록 -->
     <section id="listView">
 
-        <header class="top-header">
-            <h1 class="page-title">프로모션 스케줄러</h1>
-            <p class="page-subtitle">
-                Hearts2Hearts 앨범별 프로모션 일정을 확인하세요.
-            </p>
-        </header>
+        <a href="index.html" class="back-btn" aria-label="홈으로 돌아가기">←</a>
 
-        <main class="content">
+        <div class="title">프로모션 스케줄러</div>
+        <p class="subtitle">
+            Hearts2Hearts 앨범별 프로모션 일정을 확인하세요.
+        </p>
 
-            <div class="section-heading">
-                <h2 class="section-title">앨범 목록</h2>
-                <span class="section-caption">총 6개 앨범</span>
-            </div>
-
-            <div class="album-list" id="list"></div>
-
-        </main>
-
-        <footer class="footer">
-            H2HCHIVE
-        </footer>
+        <div class="album-list" id="albumList"></div>
 
     </section>
 
     <!-- 앨범 상세 -->
-    <section id="viewer" aria-label="프로모션 스케줄 상세">
+    <section id="viewer">
 
-        <header class="detail-header">
-            <button
-                class="back-btn"
-                id="backToList"
-                type="button"
-                aria-label="앨범 목록으로 돌아가기"
-            >←</button>
-        </header>
+        <a href="#" class="back-btn" id="backToList" aria-label="목록으로 돌아가기">←</a>
 
-        <main class="detail-content">
+        <div class="detail-title" id="detailTitle"></div>
+        <div class="detail-date" id="detailDate"></div>
 
-            <h2 class="albumTitle" id="albumTitle"></h2>
+        <div class="detail-heading">프로모션 일정</div>
 
-            <div class="detail-subtitle" id="albumDate"></div>
-
-            <div class="image-heading">
-                <strong>프로모션 일정</strong>
-            </div>
-
-            <div class="imageBox" id="imageBox"></div>
-
-        </main>
-
-        <footer class="footer">
-            H2HCHIVE
-        </footer>
+        <div class="image-box" id="imageBox"></div>
 
     </section>
 
 </div>
 
+<!-- 하단 메뉴 -->
+<nav class="bottom-nav" aria-label="주요 메뉴">
+    <a href="stream.html">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html" class="active" aria-current="page">홈</a>
+    <a href="content.html">콘텐츠</a>
+    <a href="archive.html">아카이브</a>
+</nav>
+
 <script>
 const albums = [
     {
-        title:"The Chase",
-        date:"2025.02.24",
-        images:["TheChase-scheduler.jpg"]
+        title: "The Chase",
+        date: "2025.02.24",
+        images: ["TheChase-scheduler.jpg"]
     },
     {
-        title:"STYLE",
-        date:"2025.06.18",
-        images:["STYLE-scheduler.jpg"]
+        title: "STYLE",
+        date: "2025.06.18",
+        images: ["STYLE-scheduler.jpg"]
     },
     {
-        title:"FOCUS",
-        date:"2025.10.20",
-        images:["FOCUS-scheduler.jpg"]
+        title: "FOCUS",
+        date: "2025.10.20",
+        images: ["FOCUS-scheduler.jpg"]
     },
     {
-        title:"RUDE!",
-        date:"2026.02.20",
-        images:["RUDE-scheduler.jpg"]
+        title: "RUDE!",
+        date: "2026.02.20",
+        images: ["RUDE-scheduler.jpg"]
     },
     {
-        title:"Lemon Tang",
-        date:"2026.06.22",
-        images:["LemonTang-scheduler.jpg"]
+        title: "Lemon Tang",
+        date: "2026.06.22",
+        images: ["LemonTang-scheduler.jpg"]
     },
     {
-        title:"ICONIC HEART",
-        date:"2026.08.12",
-        images:["ICONICHEART-scheduler.png"]
+        title: "ICONIC HEART",
+        date: "2026.08.12",
+        images: ["ICONICHEART-scheduler.png"]
     }
 ];
 
-const list = document.getElementById("list");
 const listView = document.getElementById("listView");
 const viewer = document.getElementById("viewer");
-const albumTitle = document.getElementById("albumTitle");
-const albumDate = document.getElementById("albumDate");
+const albumList = document.getElementById("albumList");
+const detailTitle = document.getElementById("detailTitle");
+const detailDate = document.getElementById("detailDate");
 const imageBox = document.getElementById("imageBox");
 
-function renderList(){
-    list.innerHTML = "";
+function renderList() {
+    albumList.innerHTML = "";
 
-    albums.forEach((album,index)=>{
+    albums.forEach((album, index) => {
         const card = document.createElement("button");
         card.type = "button";
         card.className = "album-card";
-        card.setAttribute(
-            "aria-label",
-            album.title + " 프로모션 일정 보기"
-        );
+        card.setAttribute("aria-label", album.title + " 프로모션 일정 보기");
 
         const preview = document.createElement("div");
         preview.className = "album-preview";
 
         const img = document.createElement("img");
         img.src = album.images[0];
-        img.alt = album.title + " 프로모션 이미지 미리보기";
+        img.alt = album.title + " 프로모션 미리보기";
         img.loading = "lazy";
 
-        img.addEventListener("error",()=>{
-            const placeholder = document.createElement("div");
-            placeholder.className = "preview-placeholder";
-            placeholder.textContent = "미리보기를 불러올 수 없습니다.";
-            img.replaceWith(placeholder);
-        },{once:true});
+        img.addEventListener("error", function () {
+            const error = document.createElement("div");
+            error.className = "preview-error";
+            error.textContent = "이미지를 불러올 수 없습니다.";
+            img.replaceWith(error);
+        }, { once: true });
 
         preview.appendChild(img);
 
         const info = document.createElement("div");
         info.className = "album-info";
 
-        const name = document.createElement("h3");
+        const name = document.createElement("h2");
         name.className = "album-name";
         name.textContent = album.title;
 
@@ -461,39 +362,35 @@ function renderList(){
         date.className = "album-date";
         date.textContent = album.date;
 
-        info.append(name,date);
-        card.append(preview,info);
+        info.append(name, date);
+        card.append(preview, info);
 
-        card.addEventListener("click",()=>{
-            openAlbum(index);
-        });
+        card.addEventListener("click", () => openAlbum(index));
 
-        list.appendChild(card);
+        albumList.appendChild(card);
     });
 }
 
-function openAlbum(index){
+function openAlbum(index) {
     const album = albums[index];
+    if (!album) return;
 
-    if(!album) return;
-
-    albumTitle.textContent = album.title;
-    albumDate.textContent = "발매일 · " + album.date;
+    detailTitle.textContent = album.title;
+    detailDate.textContent = "발매일 · " + album.date;
     imageBox.innerHTML = "";
 
-    album.images.forEach(src=>{
+    album.images.forEach(src => {
         const img = document.createElement("img");
         img.src = src;
         img.alt = album.title + " 프로모션 일정";
         img.loading = "lazy";
 
-        img.addEventListener("error",()=>{
+        img.addEventListener("error", function () {
             const error = document.createElement("div");
             error.className = "image-error";
-            error.textContent =
-                "이미지를 불러올 수 없습니다. 파일명과 경로를 확인해주세요: " + src;
+            error.textContent = "이미지를 불러올 수 없습니다: " + src;
             img.replaceWith(error);
-        },{once:true});
+        }, { once: true });
 
         imageBox.appendChild(img);
     });
@@ -501,23 +398,20 @@ function openAlbum(index){
     listView.style.display = "none";
     viewer.style.display = "block";
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
+    window.scrollTo(0, 0);
 }
 
-function showList(){
+function showList() {
     viewer.style.display = "none";
     listView.style.display = "block";
 
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
+    window.scrollTo(0, 0);
 }
 
-document.getElementById("backToList").addEventListener("click",showList);
+document.getElementById("backToList").addEventListener("click", function (event) {
+    event.preventDefault();
+    showList();
+});
 
 renderList();
 </script>
