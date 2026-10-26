@@ -2,230 +2,766 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H2HCHIVE | 초동 판매량</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+<title>초동 판매량 | H2HCHIVE</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+:root {
+    --bg: #f5f6f8;
+    --white: #ffffff;
+    --text: #22252a;
+    --muted: #9298a2;
+    --line: #e9edf1;
+    --blue: #89CFF0;
+    --blue-light: #eaf7fd;
+    --radius: 20px;
 }
 
-body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    background:#f5f6f8;
-    color:#111;
+* {
+    box-sizing: border-box;
 }
 
-header{
-    background:#fff;
-    padding:22px;
-    text-align:center;
-    font-size:24px;
-    font-weight:700;
-    box-shadow:0 2px 8px rgba(0,0,0,.08);
-    position:sticky;
-    top:0;
-    z-index:10;
+html {
+    scroll-behavior: smooth;
 }
 
-.container{
-    max-width:700px;
-    margin:24px auto;
-    padding:16px;
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                 "Noto Sans KR", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
 }
 
-.card{
-    background:#fff;
-    border-radius:18px;
-    padding:18px 20px;
-    margin-bottom:16px;
-    box-shadow:0 4px 14px rgba(0,0,0,.08);
-    cursor:pointer;
-    transition:.2s;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+button {
+    font: inherit;
 }
 
-.card:hover{
-    transform:translateY(-2px);
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
 }
 
-.card:active{
-    transform:scale(.98);
+.page {
+    width: 100%;
+    max-width: 480px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
 }
 
-.card h2{
-    font-size:20px;
-    margin-bottom:6px;
+/* 상단 영역 */
+
+.top-header {
+    padding: 26px 22px 0;
 }
 
-.card p{
-    color:#666;
-    font-size:14px;
+.header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
 }
 
-.arrow{
-    font-size:24px;
-    color:#aaa;
+.brand {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #59616b;
 }
 
-#viewer{
-    display:none;
+.brand span {
+    color: #76bde1;
 }
 
-.backBtn{
-    display:inline-block;
-    margin-bottom:18px;
-    color:#111;
-    font-weight:600;
-    cursor:pointer;
+.count-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 11px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 30px;
+    color: #707783;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .3px;
 }
 
-.albumTitle{
-    font-size:26px;
-    font-weight:700;
-    margin-bottom:20px;
+.count-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
 }
 
-.imageBox img{
-    width:100%;
-    display:block;
-    border-radius:14px;
-    margin-bottom:18px;
-    box-shadow:0 3px 10px rgba(0,0,0,.08);
+.eyebrow {
+    margin-bottom: 9px;
+    color: #73b9dd;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
-.footer{
-    text-align:center;
-    color:#999;
-    padding:25px;
-    font-size:13px;
+.page-title {
+    margin: 0;
+    font-size: 32px;
+    line-height: 1.25;
+    letter-spacing: -1.4px;
+    font-weight: 850;
+}
+
+.page-description {
+    margin: 10px 0 0;
+    color: #858b95;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* 목록 */
+
+.content {
+    padding: 30px 18px 20px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 3px 14px;
+}
+
+.section-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.section-caption {
+    color: #9ba1aa;
+    font-size: 11px;
+}
+
+.album-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.album-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 112px;
+    padding: 17px;
+    border: 1px solid rgba(226, 231, 236, .8);
+    border-radius: var(--radius);
+    background: var(--white);
+    text-align: left;
+    cursor: pointer;
+    transition: transform .16s ease, border-color .16s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.album-card:active {
+    transform: scale(.985);
+    border-color: var(--blue);
+}
+
+.album-art {
+    position: relative;
+    display: flex;
+    flex: 0 0 72px;
+    width: 72px;
+    height: 76px;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-right: 15px;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #edf9ff, #d9effb);
+}
+
+.album-art::before {
+    content: "";
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    top: -17px;
+    right: -15px;
+    border-radius: 50%;
+    background: rgba(137, 207, 240, .45);
+}
+
+.album-art::after {
+    content: "";
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    left: -20px;
+    bottom: -21px;
+    border: 8px solid rgba(255, 255, 255, .7);
+    border-radius: 50%;
+}
+
+.album-art .art-text {
+    position: relative;
+    z-index: 1;
+    color: #4d9bc1;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.album-card:nth-child(2) .album-art {
+    background: linear-gradient(145deg, #f0f0ff, #e0e5ff);
+}
+
+.album-card:nth-child(2) .album-art .art-text {
+    color: #7b83c5;
+}
+
+.album-card:nth-child(2) .album-art::before {
+    background: rgba(172, 178, 240, .38);
+}
+
+.album-card:nth-child(3) .album-art {
+    background: linear-gradient(145deg, #fff5e9, #ffe6d4);
+}
+
+.album-card:nth-child(3) .album-art .art-text {
+    color: #ce9369;
+}
+
+.album-card:nth-child(3) .album-art::before {
+    background: rgba(255, 195, 151, .42);
+}
+
+.album-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.album-label {
+    display: inline-block;
+    margin-bottom: 7px;
+    padding: 4px 7px;
+    border-radius: 6px;
+    background: var(--blue-light);
+    color: #549fc5;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .3px;
+}
+
+.album-name {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -.45px;
+}
+
+.album-date {
+    margin-top: 6px;
+    color: #959ba4;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.album-arrow {
+    display: flex;
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    border-radius: 50%;
+    background: #f5f7f9;
+    color: #858d97;
+    font-size: 20px;
+    transition: background .16s ease;
+}
+
+.album-card:active .album-arrow {
+    background: var(--blue-light);
+}
+
+/* 안내 문구 */
+
+.archive-note {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 15px;
+    border: 1px solid #e9edf1;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, .65);
+}
+
+.note-icon {
+    display: flex;
+    flex: 0 0 23px;
+    width: 23px;
+    height: 23px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--blue-light);
+    color: #559fc4;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.note-text {
+    color: #858c96;
+    font-size: 11px;
+    line-height: 1.65;
+}
+
+/* 상세 화면 */
+
+#viewer {
+    display: none;
+}
+
+.detail-header {
+    padding: 20px 22px 0;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #5c6570;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.back-arrow {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e4e9ee;
+    border-radius: 50%;
+    background: #fff;
+    font-size: 17px;
+}
+
+.detail-content {
+    padding: 24px 18px;
+}
+
+.detail-kicker {
+    margin-bottom: 8px;
+    color: #75bce0;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.albumTitle {
+    margin: 0;
+    font-size: 29px;
+    font-weight: 850;
+    letter-spacing: -1px;
+    overflow-wrap: anywhere;
+}
+
+.detail-subtitle {
+    margin-top: 8px;
+    color: #9298a2;
+    font-size: 12px;
+}
+
+.image-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 28px 3px 13px;
+}
+
+.image-heading strong {
+    font-size: 14px;
+}
+
+.image-heading span {
+    color: #969ca5;
+    font-size: 11px;
+}
+
+.imageBox {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.imageBox img {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-height: 80px;
+    border: 1px solid #e8ecf0;
+    border-radius: 17px;
+    background: #fff;
+}
+
+.image-error {
+    padding: 22px 15px;
+    border: 1px dashed #d7dfe6;
+    border-radius: 15px;
+    color: #858c96;
+    font-size: 12px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.image-error strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #525a65;
+    font-size: 13px;
+}
+
+/* 하단 메뉴 */
+
+.bottom-nav {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    max-width: 480px;
+    padding: 7px 5px calc(7px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    border-top: 1px solid rgba(229, 233, 238, .9);
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, .035);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+.bottom-nav a {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 45px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2px;
+    color: #969ca5;
+    font-size: 11px;
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bottom-nav a.active {
+    color: #252a30;
+    font-weight: 850;
+}
+
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: 30%;
+    right: 30%;
+    height: 3px;
+    border-radius: 4px;
+    background: var(--blue);
+}
+
+.footer {
+    padding: 15px 0 0;
+    color: #b0b5bd;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+@media (max-width: 360px) {
+    .top-header {
+        padding-right: 18px;
+        padding-left: 18px;
+    }
+
+    .content {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .page-title {
+        font-size: 29px;
+    }
+
+    .album-card {
+        padding: 14px;
+    }
+
+    .album-art {
+        flex-basis: 63px;
+        width: 63px;
+        height: 68px;
+        margin-right: 12px;
+    }
+
+    .album-name {
+        font-size: 15px;
+    }
+
+    .bottom-nav a {
+        font-size: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header>
-📈 초동 판매량
-</header>
+<div class="page">
 
-<div class="container">
+    <header class="top-header">
+        <div class="header-row">
+            <div class="brand">H2H<span>CHIVE</span></div>
 
-<div id="list"></div>
+            <div class="count-badge">
+                <span class="count-dot"></span>
+                <span id="albumCount">3 ALBUMS</span>
+            </div>
+        </div>
 
-<div id="viewer">
+        <div class="eyebrow">ALBUM ARCHIVE</div>
+        <h1 class="page-title">초동 판매량</h1>
+        <p class="page-description">
+            Hearts2Hearts의 앨범별 초동 기록을 모아보세요.
+        </p>
+    </header>
 
-<div class="backBtn" onclick="showList()">
-← 목록으로
-</div>
+    <main class="content">
 
-<div class="albumTitle" id="albumTitle"></div>
-
-<div class="imageBox" id="imageBox"></div>
-
-</div>
-
-</div>
-
-<div class="footer">
-H2HCHIVE
-</div>
-
-<script>
-
-const albums = [
-{
-    title:"The Chase",
-    date:"2025.02.24",
-    images:[
-        "TheChase-sales.png"
-    ]
-},
-{
-    title:"FOCUS",
-    date:"2025.10.20",
-    images:[
-        "FOCUS-sales.png"
-    ]
-},
-{
-    title:"Lemon Tang",
-    date:"2026.06.22",
-    images:[
-        "LemonTang-sales.png"
-    ]
-}
-];
-
-function renderList(){
-
-    const list=document.getElementById("list");
-    list.innerHTML="";
-
-    albums.forEach((album,index)=>{
-
-        list.innerHTML+=`
-        <div class="card" onclick="openAlbum(${index})">
-
-            <div>
-                <h2>${album.title}</h2>
-                <p>${album.date}</p>
+        <section id="listView" aria-label="앨범 목록">
+            <div class="section-heading">
+                <h2 class="section-title">앨범 목록</h2>
+                <span class="section-caption">발매일 기준</span>
             </div>
 
-            <div class="arrow">›</div>
+            <div class="album-list" id="list"></div>
 
-        </div>
-        `;
+            <div class="archive-note">
+                <div class="note-icon">i</div>
+                <div class="note-text">
+                    앨범을 선택하면 등록된 초동 판매량 자료를 확인할 수 있습니다.
+                    자료 이미지는 원본 비율에 맞춰 표시됩니다.
+                </div>
+            </div>
+        </section>
 
+        <section id="viewer" aria-label="앨범 초동 상세">
+            <div class="detail-header">
+                <button class="back-btn" type="button" id="backToList">
+                    <span class="back-arrow">←</span>
+                    앨범 목록
+                </button>
+            </div>
+
+            <div class="detail-content">
+                <div class="detail-kicker">FIRST WEEK SALES</div>
+
+                <h2 class="albumTitle" id="albumTitle"></h2>
+                <div class="detail-subtitle" id="albumDate"></div>
+
+                <div class="image-heading">
+                    <strong>초동 기록</strong>
+                    <span>SALES RECORD</span>
+                </div>
+
+                <div class="imageBox" id="imageBox"></div>
+            </div>
+        </section>
+
+        <footer class="footer">H2HCHIVE · ARCHIVE</footer>
+
+    </main>
+
+</div>
+
+<nav class="bottom-nav" aria-label="주요 메뉴">
+    <a href="stream.html">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html">홈</a>
+    <a href="content.html">콘텐츠</a>
+    <a href="archive.html" class="active" aria-current="page">아카이브</a>
+</nav>
+
+<script>
+const albums = [
+    {
+        title: "The Chase",
+        date: "2025.02.24",
+        images: [
+            "TheChase-sales.png"
+        ]
+    },
+    {
+        title: "FOCUS",
+        date: "2025.10.20",
+        images: [
+            "FOCUS-sales.png"
+        ]
+    },
+    {
+        title: "Lemon Tang",
+        date: "2026.06.22",
+        images: [
+            "LemonTang-sales.png"
+        ]
+    }
+];
+
+const list = document.getElementById("list");
+const listView = document.getElementById("listView");
+const viewer = document.getElementById("viewer");
+const albumTitle = document.getElementById("albumTitle");
+const albumDate = document.getElementById("albumDate");
+const imageBox = document.getElementById("imageBox");
+
+document.getElementById("albumCount").textContent =
+    albums.length + (albums.length === 1 ? " ALBUM" : " ALBUMS");
+
+function renderList() {
+    list.innerHTML = "";
+
+    albums.forEach((album, index) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "album-card";
+        card.setAttribute("aria-label", album.title + " 초동 기록 보기");
+
+        const art = document.createElement("div");
+        art.className = "album-art";
+
+        const artText = document.createElement("span");
+        artText.className = "art-text";
+        artText.textContent = "H2H";
+        art.appendChild(artText);
+
+        const info = document.createElement("div");
+        info.className = "album-info";
+
+        const label = document.createElement("span");
+        label.className = "album-label";
+        label.textContent = "초동 기록";
+
+        const name = document.createElement("h3");
+        name.className = "album-name";
+        name.textContent = album.title;
+
+        const date = document.createElement("div");
+        date.className = "album-date";
+        date.textContent = album.date;
+
+        info.append(label, name, date);
+
+        const arrow = document.createElement("span");
+        arrow.className = "album-arrow";
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.textContent = "›";
+
+        card.append(art, info, arrow);
+        card.addEventListener("click", () => openAlbum(index));
+
+        list.appendChild(card);
     });
-
 }
 
-function openAlbum(index){
+function openAlbum(index) {
+    const album = albums[index];
 
-    document.getElementById("list").style.display="none";
-    document.getElementById("viewer").style.display="block";
+    if (!album) return;
 
-    const album=albums[index];
+    albumTitle.textContent = album.title;
+    albumDate.textContent = "발매일 · " + album.date;
+    imageBox.innerHTML = "";
 
-    document.getElementById("albumTitle").textContent=album.title;
+    album.images.forEach((src) => {
+        const img = document.createElement("img");
 
-    const imageBox=document.getElementById("imageBox");
-    imageBox.innerHTML="";
+        img.src = src;
+        img.alt = album.title + " 초동 판매량";
+        img.loading = "lazy";
 
-    album.images.forEach(img=>{
+        img.addEventListener("error", () => {
+            const error = document.createElement("div");
+            error.className = "image-error";
 
-        imageBox.innerHTML+=`
-            <img src="${img}" alt="${album.title}">
-        `;
+            const title = document.createElement("strong");
+            title.textContent = "이미지를 불러올 수 없습니다.";
 
+            const message = document.createElement("span");
+            message.textContent =
+                "파일명과 경로를 확인해주세요: " + src;
+
+            error.append(title, message);
+            img.replaceWith(error);
+        }, { once: true });
+
+        imageBox.appendChild(img);
     });
+
+    listView.style.display = "none";
+    viewer.style.display = "block";
 
     window.scrollTo({
-        top:0,
-        behavior:"smooth"
+        top: 0,
+        behavior: "smooth"
     });
-
 }
 
-function showList(){
-
-    document.getElementById("viewer").style.display="none";
-    document.getElementById("list").style.display="block";
+function showList() {
+    viewer.style.display = "none";
+    listView.style.display = "block";
 
     window.scrollTo({
-        top:0,
-        behavior:"smooth"
+        top: 0,
+        behavior: "smooth"
     });
-
 }
 
+document.getElementById("backToList").addEventListener("click", showList);
+
+/*
+ * 페이지 내부에서 앨범 상세를 열었다가
+ * 브라우저 뒤로가기를 누르면 목록으로 돌아가도록 처리.
+ * 기기 뒤로가기를 항상 홈으로 보내는 동작은
+ * 앱 WebView 설정에 따라 별도 처리가 필요할 수 있음.
+ */
 renderList();
-
 </script>
 
 </body>
