@@ -342,17 +342,14 @@ body.menu-open {
     font-weight: 400;
 }
 
+/* 공식 계정: 기본적으로 열린 상태 */
 .fullscreen-sns {
-    display: none;
+    display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 8px;
     padding: 16px 8px;
     border-radius: 15px;
     background: #fff;
-}
-
-.fullscreen-sns.open {
-    display: grid;
 }
 
 .fullscreen-sns a {
@@ -682,15 +679,11 @@ body.menu-open {
 
     <nav class="fullscreen-menu-list" aria-label="사이트 정보">
 
-        <button
-            type="button"
+        <div
             class="fullscreen-menu-item"
-            id="official-accounts-toggle"
-            aria-expanded="false"
-            aria-controls="fullscreen-sns">
+            style="cursor:default;">
             <span>공식 계정</span>
-            <span class="arrow" aria-hidden="true">＋</span>
-        </button>
+        </div>
 
         <div class="fullscreen-sns" id="fullscreen-sns">
 
@@ -740,8 +733,8 @@ body.menu-open {
 
         </div>
 
-        <a href="contact.html" class="fullscreen-menu-item">
-            <span>연락하기</span>
+        <a href="mailto:h2hchive0224@gmail.com" class="fullscreen-menu-item">
+            <span>문의 및 제보</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
@@ -753,8 +746,8 @@ body.menu-open {
     </nav>
 
     <p class="fullscreen-menu-copyright">
-        H2HCHIVE는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
-        모든 상표와 콘텐츠의 권리는 각 권리자에게 있습니다.
+        본 페이지는 팬이 제작 &amp; 운영하는 비공식 팬페이지입니다.<br>
+        직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은 소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
     </p>
 
 </div>
@@ -794,8 +787,6 @@ body.menu-open {
 const fullscreenMenu = document.getElementById("fullscreen-menu");
 const openFullscreenMenu = document.getElementById("open-fullscreen-menu");
 const closeFullscreenMenu = document.getElementById("close-fullscreen-menu");
-const officialAccountsToggle = document.getElementById("official-accounts-toggle");
-const fullscreenSns = document.getElementById("fullscreen-sns");
 
 function openMenu() {
     fullscreenMenu.classList.add("open");
@@ -813,21 +804,6 @@ function closeMenu() {
 
 openFullscreenMenu.addEventListener("click", openMenu);
 closeFullscreenMenu.addEventListener("click", closeMenu);
-
-officialAccountsToggle.addEventListener("click", function () {
-    const expanded =
-        officialAccountsToggle.getAttribute("aria-expanded") === "true";
-
-    officialAccountsToggle.setAttribute(
-        "aria-expanded",
-        String(!expanded)
-    );
-
-    fullscreenSns.classList.toggle("open", !expanded);
-
-    officialAccountsToggle.querySelector(".arrow").textContent =
-        expanded ? "＋" : "−";
-});
 
 document.addEventListener("keydown", function (event) {
     if (
