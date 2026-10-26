@@ -133,91 +133,23 @@ a:focus-visible {
     border-color: var(--blue);
 }
 
+/* 실제 앨범 커버 */
+
 .album-art {
-    position: relative;
-    display: flex;
-    flex: 0 0 72px;
-    width: 72px;
+    display: block;
+    flex: 0 0 76px;
+    width: 76px;
     height: 76px;
-    align-items: center;
-    justify-content: center;
+    object-fit: cover;
     overflow: hidden;
     margin-right: 15px;
-    border-radius: 15px;
-    background: linear-gradient(145deg, #edf9ff, #d9effb);
-}
-
-.album-art::before {
-    content: "";
-    position: absolute;
-    width: 54px;
-    height: 54px;
-    top: -17px;
-    right: -15px;
-    border-radius: 50%;
-    background: rgba(137, 207, 240, .45);
-}
-
-.album-art::after {
-    content: "";
-    position: absolute;
-    width: 48px;
-    height: 48px;
-    left: -20px;
-    bottom: -21px;
-    border: 8px solid rgba(255, 255, 255, .7);
-    border-radius: 50%;
-}
-
-.album-art .art-text {
-    position: relative;
-    z-index: 1;
-    color: #4d9bc1;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    text-align: center;
-}
-
-.album-card:nth-child(2) .album-art {
-    background: linear-gradient(145deg, #f0f0ff, #e0e5ff);
-}
-
-.album-card:nth-child(2) .album-art .art-text {
-    color: #7b83c5;
-}
-
-.album-card:nth-child(2) .album-art::before {
-    background: rgba(172, 178, 240, .38);
-}
-
-.album-card:nth-child(3) .album-art {
-    background: linear-gradient(145deg, #fff5e9, #ffe6d4);
-}
-
-.album-card:nth-child(3) .album-art .art-text {
-    color: #ce9369;
-}
-
-.album-card:nth-child(3) .album-art::before {
-    background: rgba(255, 195, 151, .42);
+    border-radius: 12px;
+    background: #edf1f5;
 }
 
 .album-info {
     flex: 1;
     min-width: 0;
-}
-
-.album-label {
-    display: inline-block;
-    margin-bottom: 7px;
-    padding: 4px 7px;
-    border-radius: 6px;
-    background: var(--blue-light);
-    color: #549fc5;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: .3px;
 }
 
 .album-name {
@@ -229,7 +161,7 @@ a:focus-visible {
 }
 
 .album-date {
-    margin-top: 6px;
+    margin-top: 7px;
     color: #959ba4;
     font-size: 12px;
     font-weight: 500;
@@ -485,13 +417,15 @@ const albums = [
     {
         title: "The Chase",
         date: "2025.02.24",
+        cover: "TheChase-cover.jpg",
         images: [
-            "TheChase-sales.png"
+            "TheChase-scheduler.jpg"
         ]
     },
     {
         title: "FOCUS",
         date: "2025.10.20",
+        cover: "FOCUS-cover.jpg",
         images: [
             "FOCUS-sales.png"
         ]
@@ -499,6 +433,7 @@ const albums = [
     {
         title: "Lemon Tang",
         date: "2026.06.22",
+        cover: "LemonTang-cover.jpg",
         images: [
             "LemonTang-sales.png"
         ]
@@ -521,20 +456,14 @@ function renderList() {
         card.className = "album-card";
         card.setAttribute("aria-label", album.title + " 초동 기록 보기");
 
-        const art = document.createElement("div");
+        const art = document.createElement("img");
         art.className = "album-art";
-
-        const artText = document.createElement("span");
-        artText.className = "art-text";
-        artText.textContent = "H2H";
-        art.appendChild(artText);
+        art.src = album.cover;
+        art.alt = album.title + " 앨범 커버";
+        art.loading = "lazy";
 
         const info = document.createElement("div");
         info.className = "album-info";
-
-        const label = document.createElement("span");
-        label.className = "album-label";
-        label.textContent = "초동 기록";
 
         const name = document.createElement("h3");
         name.className = "album-name";
@@ -544,7 +473,7 @@ function renderList() {
         date.className = "album-date";
         date.textContent = album.date;
 
-        info.append(label, name, date);
+        info.append(name, date);
         card.append(art, info);
 
         card.addEventListener("click", () => openAlbum(index));
