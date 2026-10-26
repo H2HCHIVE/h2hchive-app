@@ -322,60 +322,56 @@ body{
 }
 
 /* =========================
-   하단 메뉴
+   FIXED BOTTOM NAVIGATION
+   index.html과 동일
 ========================= */
 
-.bottom-nav{
-    position:fixed;
-    z-index:1000;
-    left:0;
-    right:0;
-    bottom:0;
-    display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    align-items:stretch;
-    padding:7px 8px calc(7px + env(safe-area-inset-bottom));
-    background:rgba(255,255,255,.97);
-    border-top:1px solid #e8e8e8;
-    box-shadow:0 -3px 12px rgba(0,0,0,.035);
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255,255,255,.97);
+    border-top: 1px solid #e8e8e8;
+    box-shadow: 0 -3px 14px rgba(0,0,0,.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-.nav-item{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    gap:4px;
-    min-width:0;
-    min-height:48px;
-    padding:4px 2px;
-    border-radius:10px;
-    color:#999;
-    font-family:inherit;
-    font-size:.68rem;
-    font-weight:500;
-    text-align:center;
-    text-decoration:none;
-    white-space:nowrap;
-    -webkit-tap-highlight-color:transparent;
+.bottom-nav a {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 42px;
+    padding: 0 2px;
+    color: #777;
+    text-decoration: none;
+    font-size: .75rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
-.nav-icon{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:22px;
-    font-size:1.15rem;
-    line-height:1;
+.bottom-nav a.active {
+    color: #222;
+    font-weight: 800;
+    position: relative;
 }
 
-.nav-item.active{
-    color:#4aa8d5;
-    font-weight:700;
-}
-
-.nav-item.active .nav-icon{
-    color:#4aa8d5;
+.bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: -6px;
+    left: 28%;
+    right: 28%;
+    height: 3px;
+    border-radius: 4px;
+    background: #89CFF0;
 }
 
 /* =========================
@@ -425,8 +421,8 @@ body{
         font-size:.74rem;
     }
 
-    .nav-item{
-        font-size:.63rem;
+    .bottom-nav a {
+        font-size: .68rem;
     }
 }
 </style>
@@ -553,27 +549,13 @@ body{
     </div>
 </main>
 
-<!-- 하단 메뉴 -->
+<!-- 하단 메뉴: index.html과 동일한 구조 -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
-    <a class="nav-item" href="stream.html">
-        <span>스밍</span>
-    </a>
-
-    <a class="nav-item" href="schedule.html">
-        <span>일정</span>
-    </a>
-
-    <a class="nav-item" href="index.html">
-        <span>홈</span>
-    </a>
-
-    <a class="nav-item active" href="selfcontent.html" aria-current="page">
-        <span>자컨</span>
-    </a>
-
-    <a class="nav-item" href="musicshow.html">
-        <span>음방</span>
-    </a>
+    <a href="stream.html">스밍</a>
+    <a href="schedule.html">일정</a>
+    <a href="index.html">홈</a>
+    <a href="selfcontent.html" class="active" aria-current="page">자컨</a>
+    <a href="musicshow.html">음방</a>
 </nav>
 
 <script>
