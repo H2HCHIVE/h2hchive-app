@@ -425,7 +425,9 @@ body.picker-open {
     margin-bottom: 4px;
 }
 
-/* 하단 메뉴 */
+/* =========================
+   FIXED BOTTOM NAVIGATION
+   ========================= */
 
 .bottom-nav {
     position: fixed;
@@ -434,8 +436,8 @@ body.picker-open {
     bottom: 0;
     z-index: 9000;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
     background: rgba(255,255,255,.97);
     border-top: 1px solid #e8e8e8;
     box-shadow: 0 -3px 14px rgba(0,0,0,.06);
@@ -445,23 +447,23 @@ body.picker-open {
 
 .bottom-nav a {
     min-width: 0;
-    min-height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    min-height: 42px;
     padding: 0 2px;
     color: #777;
     text-decoration: none;
-    font-size: .78rem;
+    font-size: .75rem;
     font-weight: 600;
     white-space: nowrap;
-    position: relative;
 }
 
 .bottom-nav a.active {
     color: #222;
     font-weight: 800;
+    position: relative;
 }
 
 .bottom-nav a.active::before {
@@ -509,7 +511,7 @@ body.picker-open {
     }
 
     .bottom-nav a {
-        font-size: .72rem;
+        font-size: .68rem;
     }
 }
 
@@ -641,8 +643,9 @@ body.picker-open {
 <!-- 하단 메뉴 -->
 <nav class="bottom-nav" aria-label="주요 메뉴">
     <a href="stream.html">스밍</a>
+    <a href="schedule.html" class="active" aria-current="page">일정</a>
     <a href="index.html">홈</a>
-    <a href="schedule.html" class="active" aria-current="page">스밍 일정</a>
+    <a href="selfcontent.html">자컨</a>
     <a href="musicshow.html">음방</a>
 </nav>
 
