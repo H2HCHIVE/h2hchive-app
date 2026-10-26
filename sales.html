@@ -53,10 +53,26 @@ a:focus-visible {
     padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
 }
 
-/* 상단 제목 */
+/* 공통 페이지 제목 */
 
 .top-header {
-    padding: 32px 22px 0;
+    padding: 8px 18px 0;
+}
+
+.back-btn {
+    display: inline-block;
+    min-height: auto;
+    margin: 0 0 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #222;
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .page-title {
@@ -225,33 +241,12 @@ a:focus-visible {
     display: none;
 }
 
-/* 좌측 상단 뒤로가기 */
-
 .detail-header {
     padding: 8px 18px 0;
 }
 
-.back-btn {
-    display: inline-block;
-    min-height: auto;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: #222;
-    font-size: 1.5rem;
-    font-weight: 400;
-    line-height: 1.4;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-}
-
-.back-arrow {
-    display: none;
-}
-
 .detail-content {
-    padding: 12px 18px 24px;
+    padding: 0 18px 24px;
 }
 
 .albumTitle {
@@ -277,10 +272,6 @@ a:focus-visible {
 
 .image-heading strong {
     font-size: 14px;
-}
-
-.image-heading span {
-    display: none;
 }
 
 .imageBox {
@@ -372,8 +363,13 @@ a:focus-visible {
 
 @media (max-width: 360px) {
     .top-header {
-        padding-right: 18px;
-        padding-left: 18px;
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .detail-header {
+        padding-right: 14px;
+        padding-left: 14px;
     }
 
     .content {
@@ -420,13 +416,15 @@ a:focus-visible {
 
 <div class="page">
 
-    <header class="top-header">
-        <h1 class="page-title">초동 판매량</h1>
-    </header>
+    <!-- 앨범 목록 화면 -->
+    <section id="listView" aria-label="앨범 목록">
 
-    <main class="content">
+        <header class="top-header">
+            <a class="back-btn" href="archive.html" aria-label="아카이브로 돌아가기">←</a>
+            <h1 class="page-title">초동 판매량</h1>
+        </header>
 
-        <section id="listView" aria-label="앨범 목록">
+        <main class="content">
 
             <div class="section-heading">
                 <h2 class="section-title">앨범 목록</h2>
@@ -435,36 +433,39 @@ a:focus-visible {
 
             <div class="album-list" id="list"></div>
 
-        </section>
+        </main>
 
-        <section id="viewer" aria-label="앨범 초동 상세">
+    </section>
 
-            <div class="detail-header">
-                <button
-                    class="back-btn"
-                    type="button"
-                    id="backToList"
-                    aria-label="앨범 목록으로 돌아가기"
-                >←</button>
+    <!-- 앨범 상세 화면 -->
+    <section id="viewer" aria-label="앨범 초동 상세">
+
+        <header class="detail-header">
+            <button
+                class="back-btn"
+                type="button"
+                id="backToList"
+                aria-label="앨범 목록으로 돌아가기"
+            >←</button>
+
+            <h1 class="page-title">초동 판매량</h1>
+        </header>
+
+        <main class="detail-content">
+
+            <h2 class="albumTitle" id="albumTitle"></h2>
+
+            <div class="detail-subtitle" id="albumDate"></div>
+
+            <div class="image-heading">
+                <strong>초동 기록</strong>
             </div>
 
-            <div class="detail-content">
+            <div class="imageBox" id="imageBox"></div>
 
-                <h2 class="albumTitle" id="albumTitle"></h2>
+        </main>
 
-                <div class="detail-subtitle" id="albumDate"></div>
-
-                <div class="image-heading">
-                    <strong>초동 기록</strong>
-                </div>
-
-                <div class="imageBox" id="imageBox"></div>
-
-            </div>
-
-        </section>
-
-    </main>
+    </section>
 
 </div>
 
@@ -541,7 +542,6 @@ function renderList() {
         date.textContent = album.date;
 
         info.append(label, name, date);
-
         card.append(art, info);
 
         card.addEventListener("click", () => openAlbum(index));
@@ -574,8 +574,7 @@ function openAlbum(index) {
             title.textContent = "이미지를 불러올 수 없습니다.";
 
             const message = document.createElement("span");
-            message.textContent =
-                "파일명과 경로를 확인해주세요: " + src;
+            message.textContent = "파일명과 경로를 확인해주세요: " + src;
 
             error.append(title, message);
             img.replaceWith(error);
