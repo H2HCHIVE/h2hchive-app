@@ -37,11 +37,15 @@ body.menu-open {
     overflow: hidden;
 }
 
+/* =========================
+   MAIN CONTAINER
+   ========================= */
+
 .container {
     width: 100%;
     max-width: 460px;
     margin: 0 auto;
-    padding: 20px 18px 32px;
+    padding: 20px 24px 32px;
 }
 
 .header {
@@ -92,8 +96,8 @@ body.menu-open {
     justify-self: end;
     align-self: center;
     z-index: 2;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -103,7 +107,7 @@ body.menu-open {
     background: #fff;
     color: #222;
     font-family: inherit;
-    font-size: 27px;
+    font-size: 25px;
     line-height: 1;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(0,0,0,.07);
@@ -181,8 +185,8 @@ body.menu-open {
 .todo-box {
     background: #fff;
     border-radius: 18px;
-    padding: 18px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    padding: 17px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.06);
     line-height: 2;
     overflow-wrap: anywhere;
 }
@@ -230,15 +234,15 @@ body.menu-open {
 
 .mvSwiper {
     width: 100%;
-    border-radius: 18px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    box-shadow: 0 4px 12px rgba(0,0,0,.07);
 }
 
 .mvSwiper iframe {
     display: block;
     width: 100%;
-    height: clamp(180px, 52vw, 240px);
+    height: clamp(170px, 48vw, 220px);
     border: 0;
 }
 
@@ -261,7 +265,7 @@ body.menu-open {
     background: #f5f6f8;
     padding:
         calc(20px + env(safe-area-inset-top, 0px))
-        22px
+        24px
         calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
@@ -274,17 +278,17 @@ body.menu-open {
     align-items: center;
     justify-content: space-between;
     max-width: 420px;
-    margin: 0 auto 30px;
+    margin: 0 auto 24px;
 }
 
 .fullscreen-menu-title {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
     font-weight: 800;
 }
 
 .fullscreen-menu-close {
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -294,37 +298,37 @@ body.menu-open {
     background: #fff;
     color: #222;
     font-family: inherit;
-    font-size: 27px;
+    font-size: 26px;
     cursor: pointer;
 }
 
 .fullscreen-menu-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     max-width: 420px;
     margin: 0 auto;
 }
 
 .fullscreen-menu-item {
     width: 100%;
-    min-height: 62px;
+    min-height: 58px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 0 18px;
+    padding: 0 17px;
     border: none;
-    border-radius: 16px;
+    border-radius: 15px;
     background: #fff;
     color: #222;
     text-align: left;
     text-decoration: none;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: .96rem;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(0,0,0,.05);
+    box-shadow: 0 3px 10px rgba(0,0,0,.04);
 }
 
 .fullscreen-menu-item:active {
@@ -341,9 +345,9 @@ body.menu-open {
 .fullscreen-sns {
     display: none;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-    padding: 18px 8px;
-    border-radius: 16px;
+    gap: 8px;
+    padding: 16px 8px;
+    border-radius: 15px;
     background: #fff;
 }
 
@@ -361,7 +365,7 @@ body.menu-open {
     padding: 5px 0;
     color: #444;
     text-decoration: none;
-    font-size: .75rem;
+    font-size: .72rem;
     font-weight: 600;
 }
 
@@ -370,17 +374,17 @@ body.menu-open {
 }
 
 .fullscreen-sns img {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     display: block;
     object-fit: contain;
 }
 
 .fullscreen-menu-copyright {
     max-width: 420px;
-    margin: 30px auto 0;
-    font-size: .75rem;
-    line-height: 1.7;
+    margin: 26px auto 0;
+    font-size: .73rem;
+    line-height: 1.8;
     color: #777;
     text-align: center;
 }
@@ -391,18 +395,18 @@ body.menu-open {
 
 .kst-player {
     position: fixed;
-    left: 12px;
-    right: 12px;
+    left: 24px;
+    right: 24px;
     bottom: calc(66px + env(safe-area-inset-bottom, 0px));
     width: auto;
     min-height: 48px;
     background: rgba(255,255,255,.97);
     border: 1px solid rgba(137,207,240,.45);
-    border-radius: 14px;
-    box-shadow: 0 4px 14px rgba(0,0,0,.10);
+    border-radius: 13px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
     display: flex;
     align-items: center;
-    padding: 7px 12px;
+    padding: 7px 11px;
     z-index: 8000;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -520,10 +524,14 @@ body.menu-open {
     background: #89CFF0;
 }
 
+/* =========================
+   RESPONSIVE
+   ========================= */
+
 @media (max-width: 360px) {
     .container {
-        padding-left: 14px;
-        padding-right: 14px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .bottom-nav a {
@@ -531,18 +539,18 @@ body.menu-open {
     }
 
     .kst-player {
-        left: 8px;
-        right: 8px;
+        left: 20px;
+        right: 20px;
         bottom: calc(62px + env(safe-area-inset-bottom, 0px));
     }
 
     .fullscreen-menu {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 20px;
+        padding-right: 20px;
     }
 
     .fullscreen-sns {
-        gap: 6px;
+        gap: 5px;
     }
 
     .todo-box {
@@ -661,18 +669,18 @@ body.menu-open {
     aria-hidden="true">
 
     <div class="fullscreen-menu-header">
-        <div class="fullscreen-menu-title">전체 메뉴</div>
+        <div class="fullscreen-menu-title">메뉴</div>
 
         <button
             type="button"
             class="fullscreen-menu-close"
             id="close-fullscreen-menu"
-            aria-label="전체 메뉴 닫기">
+            aria-label="메뉴 닫기">
             ×
         </button>
     </div>
 
-    <nav class="fullscreen-menu-list" aria-label="전체 메뉴 항목">
+    <nav class="fullscreen-menu-list" aria-label="사이트 정보">
 
         <button
             type="button"
@@ -732,32 +740,21 @@ body.menu-open {
 
         </div>
 
-        <a href="mv.html" class="fullscreen-menu-item">
-            <span>MV</span>
+        <a href="contact.html" class="fullscreen-menu-item">
+            <span>연락하기</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
-        <a href="cheer.html" class="fullscreen-menu-item">
-            <span>응원법</span>
-            <span class="arrow" aria-hidden="true">›</span>
-        </a>
-
-        <a href="archive.html" class="fullscreen-menu-item">
-            <span>아카이브</span>
-            <span class="arrow" aria-hidden="true">›</span>
-        </a>
-
-        <a href="notice.html" class="fullscreen-menu-item">
-            <span>공지</span>
+        <a href="copyright.html" class="fullscreen-menu-item">
+            <span>저작권 및 안내</span>
             <span class="arrow" aria-hidden="true">›</span>
         </a>
 
     </nav>
 
     <p class="fullscreen-menu-copyright">
-        본 페이지는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
-        직접 제작한 자료를 제외한 모든 콘텐츠의 저작권은
-        소속사 및 각 콘텐츠의 권리자(방송사 등)에게 있습니다.
+        H2HCHIVE는 팬이 제작·운영하는 비공식 팬페이지입니다.<br>
+        모든 상표와 콘텐츠의 권리는 각 권리자에게 있습니다.
     </p>
 
 </div>
@@ -783,8 +780,8 @@ body.menu-open {
     <a href="stream.html">스밍</a>
     <a href="schedule.html">일정</a>
     <a href="index.html" class="active" aria-current="page">홈</a>
-    <a href="selfcontent.html">자컨</a>
-    <a href="musicshow.html">음방</a>
+    <a href="content.html">콘텐츠</a>
+    <a href="archive.html">아카이브</a>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -804,10 +801,6 @@ function openMenu() {
     fullscreenMenu.classList.add("open");
     fullscreenMenu.setAttribute("aria-hidden", "false");
     document.body.classList.add("menu-open");
-
-    // 메뉴가 열린 상태에서 뒤로 가기를 누르면 메뉴부터 닫도록 기록
-    history.pushState({ h2hchiveMenu: true }, "", location.href);
-
     closeFullscreenMenu.focus();
 }
 
@@ -842,26 +835,6 @@ document.addEventListener("keydown", function (event) {
         fullscreenMenu.classList.contains("open")
     ) {
         closeMenu();
-    }
-});
-
-/* =========================
-   ANDROID / BROWSER BACK
-   ========================= */
-
-history.replaceState({ h2hchiveHome: true }, "", location.href);
-
-window.addEventListener("popstate", function () {
-    if (fullscreenMenu.classList.contains("open")) {
-        closeMenu();
-        history.pushState({ h2hchiveHome: true }, "", location.href);
-        return;
-    }
-
-    const shouldExit = confirm("H2HCHIVE를 종료할까요?");
-
-    if (!shouldExit) {
-        history.pushState({ h2hchiveHome: true }, "", location.href);
     }
 });
 
@@ -1287,7 +1260,6 @@ window.addEventListener("scroll", function () {
         kstPlayer.classList.remove("scrolling");
     }, 500);
 }, { passive: true });
-
 </script>
 
 </body>
